@@ -18,9 +18,9 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
-    Page<User> getUserList(UserSearch userSearch, Pageable pageable);
+    Page<User> getUserList(UserSearch userSearch);
 
-    Integer getTotalUserNumber(UserSearch userSearch);
+    Integer count(UserSearch userSearch);
 
     // u
     void updateUser(Long id, UserCreateUpdateDto userDto);

@@ -4,6 +4,7 @@ import cms.sogi_cms.SogiCmsApplication;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.service.UserService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceImplTest {
 
     @Autowired private UserService userService;
+
+    @BeforeEach
+    void beforeEach() {
+        saveUser();
+    }
 
     @Test
     void saveUser() {
@@ -43,15 +49,14 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById() {
-    }
-
-    @Test
     void getUserByUsername() {
+        User user = userService.getUserByUsername("jinseok");
+        Assertions.assertThat(user.getUsername()).isEqualTo("jinseok");
     }
 
     @Test
     void getUserList() {
+        userService.getUserList(null);
     }
 
     @Test

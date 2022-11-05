@@ -49,13 +49,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getUserList(UserSearch userSearch, Pageable pageable) {
-        return userRepository.findPage(userSearch, pageable);
+    public Page<User> getUserList(UserSearch userSearch) {
+        return userRepository.findPage(userSearch);
     }
 
     @Override
-    public Integer getTotalUserNumber(UserSearch userSearch) {
-        return userRepository.findTotalUserNumber(userSearch);
+    public Integer count(UserSearch userSearch) {
+        return userRepository.count(userSearch);
     }
 
     @Override

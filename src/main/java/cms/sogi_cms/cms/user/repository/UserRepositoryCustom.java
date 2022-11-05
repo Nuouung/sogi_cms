@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserRepositoryCustom {
 
-    Page<User> findPage(UserSearch userSearch, Pageable pageable);
-    Integer findTotalUserNumber(UserSearch userSearch);
+    Page<User> findPage(UserSearch userSearch);
+    Integer count(UserSearch userSearch);
 }
