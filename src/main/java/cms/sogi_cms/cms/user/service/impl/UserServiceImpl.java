@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.user.service.impl;
 
+import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
@@ -11,10 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -38,24 +41,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id)
+        User foundUser = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
+
+        foundUser.removePassword();
+
+        return foundUser;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
+        User foundUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
+
+        foundUser.removePassword();
+
+        return foundUser;
     }
 
     @Override
-    public Page<User> getUserList(UserSearch userSearch) {
-        return userRepository.findPage(userSearch);
+    public Paging<User> getUserList(UserSearch userSearch) {
+        Paging<User> paging = userRepository.findPage(userSearch);
+
+        List<User> contents = paging.getContents();
+        for (User foundUser : contents) {
+            foundUser.removePassword();
+        }
+
+        paging.setContents(contents);
+
+        return paging;
     }
 
     @Override
-    public Integer count(UserSearch userSearch) {
+    public Long count(UserSearch userSearch) {
         return userRepository.count(userSearch);
+    }
+
+    @Override
+    public String getPasswordByUserId(Long id) {
+        userRepository.findById(id);
+        return null;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.user.repository.impl;
 
+import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.repository.UserRepositoryCustom;
@@ -8,9 +9,10 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static cms.sogi_cms.cms.user.entity.QUser.*;
 
@@ -18,10 +20,11 @@ import static cms.sogi_cms.cms.user.entity.QUser.*;
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final EntityManager entityManager;
 
     @Override
-    public Page<User> findPage(UserSearch userSearch) {
-        queryFactory.selectFrom(user)
+    public Paging<User> findPage(UserSearch userSearch) {
+        List<User> contents = queryFactory.selectFrom(user)
                 .orderBy(order(userSearch))
                 .where(
                         usernameLike(userSearch.getUsername()),
@@ -38,13 +41,42 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .limit(userSearch.getSize())
                 .fetch();
 
-        return null;
-        // https://adrenal.tistory.com/25
+        Long count = queryFactory.select(user.count())
+                .from(user)
+                .where(
+                        usernameLike(userSearch.getUsername()),
+                        betweenRegisteredDateTime(userSearch.getRegisteredDateTime_start(), userSearch.getRegisteredDateTime_end()),
+                        lastnameLike(userSearch.getLastname()),
+                        firstnameList(userSearch.getFirstname()),
+                        emailEquals(userSearch.getEmail()),
+                        isMailing(userSearch.isMailing()),
+                        genderEquals(userSearch.getGender()),
+                        isBirthdaySolar(userSearch.isBirthdaySolar()),
+                        isActive(userSearch.isActive()),
+                        isDeleted(userSearch.isDeleted()))
+                .fetchOne();
+
+        return new Paging<>(contents, count == null ? 0 : count, userSearch);
     }
 
     @Override
-    public Integer count(UserSearch userSearch) {
-        return null;
+    public Long count(UserSearch userSearch) {
+        Long count = queryFactory.select(user.count())
+                .from(user)
+                .where(
+                        usernameLike(userSearch.getUsername()),
+                        betweenRegisteredDateTime(userSearch.getRegisteredDateTime_start(), userSearch.getRegisteredDateTime_end()),
+                        lastnameLike(userSearch.getLastname()),
+                        firstnameList(userSearch.getFirstname()),
+                        emailEquals(userSearch.getEmail()),
+                        isMailing(userSearch.isMailing()),
+                        genderEquals(userSearch.getGender()),
+                        isBirthdaySolar(userSearch.isBirthdaySolar()),
+                        isActive(userSearch.isActive()),
+                        isDeleted(userSearch.isDeleted()))
+                .fetchOne();
+
+        return count == null ? 0 : count;
     }
 
     private Predicate isDeleted(boolean deleted) {

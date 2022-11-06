@@ -109,6 +109,10 @@ public class User {
         this.lastLoginDateTime = LocalDateTime.now();
     }
 
+    public void removePassword() {
+        this.password = "";
+    }
+
     public void delete() {
         this.isDeleted = true;
         this.isActive = false;
