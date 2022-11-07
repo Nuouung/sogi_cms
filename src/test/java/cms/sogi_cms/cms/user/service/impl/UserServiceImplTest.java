@@ -6,9 +6,12 @@ import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.service.UserService;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ThrowableAssert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -117,7 +120,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updatePassword() {
+    void deleteUser() {
         UserCreateUpdateDto dto = new UserCreateUpdateDto();
         dto.setUsername("jinseok");
         dto.setPassword("1234");
@@ -134,22 +137,13 @@ class UserServiceImplTest {
         dto.setZipCode("11111");
 
         userService.saveUser(dto);
+
         User foundUser = userService.getUserByUsername("jinseok");
 
-        userService.updatePassword(foundUser.getId(), "12345");
+        userService.deleteUser(foundUser.getId());
 
-        userService.getUserByUsername()
-    }
+        foundUser = userService.getUserByUsername("jinseok");
 
-    @Test
-    void updateLastLoginDateTime() {
-    }
-
-    @Test
-    void deleteUser() {
-    }
-
-    @Test
-    void deleteUsers() {
+        Assertions.assertThat(foundUser.isDeleted()).isTrue();
     }
 }

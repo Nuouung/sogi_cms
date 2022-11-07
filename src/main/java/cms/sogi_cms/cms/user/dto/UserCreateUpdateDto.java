@@ -7,6 +7,7 @@ import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,8 +15,11 @@ public class UserCreateUpdateDto {
 
     private Long id;
 
+    @NotNull
     private String username; // 아이디
+    @NotNull
     private String password;
+    private String passwordCheck;
 
     private String lastname; // 이름
     private String firstname; // 성

@@ -21,9 +21,7 @@ public interface UserService {
 
     Paging<User> getUserList(UserSearch userSearch);
 
-    Long count(UserSearch userSearch);
-
-    String getPasswordByUserId(Long id);
+    Long getTotalNumber(UserSearch userSearch);
 
     // u
     void updateUser(Long id, UserCreateUpdateDto userDto);

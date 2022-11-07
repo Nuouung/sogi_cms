@@ -7,8 +7,6 @@ import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.repository.UserRepository;
 import cms.sogi_cms.cms.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,14 +72,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long count(UserSearch userSearch) {
+    public Long getTotalNumber(UserSearch userSearch) {
         return userRepository.count(userSearch);
-    }
-
-    @Override
-    public String getPasswordByUserId(Long id) {
-        userRepository.findById(id);
-        return null;
     }
 
     @Override
