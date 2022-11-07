@@ -1,10 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymelear.org">
+<head th:replace="~{admin/common/include :: head}"></head>
 <body>
-    hello
+    <header></header>
+    <main>
+        <form>
+            <div>
+                <label>
+                    <span>아이디</span>
+                    <input>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>비밀번호</span>
+                    <input>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이름</span>
+                    <label>
+                        <span>성</span>
+                        <input>
+                    </label>
+                    <label>
+                        <span>이름</span>
+                        <input>
+                    </label>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이메일</span>
+                    <input>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이메일 수신 동의</span>
+                    <input type="checkbox">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>휴대폰 번호</span>
+                    <input>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>성별</span>
+                    <input>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>생년월일</span>
+                    <input>
+                    <input>
+                    <input>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>양력 음력 여부</span>
+                    <input type="checkbox">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>주소</span>
+                    나중에 api 넣기
+                </label>
+            </div>
+            <button type="submit">회원가입</button>
+        </form>
+    </main>
 </body>
 </html>

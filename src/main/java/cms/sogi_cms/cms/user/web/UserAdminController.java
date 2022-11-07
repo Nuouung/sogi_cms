@@ -9,17 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user")
 @RequiredArgsConstructor
 public class UserAdminController {
 
     private final UserService userService;
 
     // c
-    @GetMapping(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user/insert")
+    @GetMapping("/insert")
     public String insertUserGet(@ModelAttribute UserCreateUpdateDto userDto, Model model) {
         model.addAttribute("userDto", userDto);
         model.addAttribute("formMode", "INSERT");
