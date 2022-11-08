@@ -7,7 +7,7 @@ import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,27 +15,49 @@ public class UserCreateUpdateDto {
 
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String username; // 아이디
-    @NotNull
+    @NotBlank
     private String password;
+    @NotBlank
     private String passwordCheck;
 
-    private String lastname; // 이름
-    private String firstname; // 성
+    @NotBlank
+    private String lastname; // 성
+    @NotBlank
+    private String firstname; // 이름
 
+    @NotBlank @Email
     private String email;
-    private boolean isMailing;
+    private Boolean isMailing;
 
-    private String phoneNumber;
+    @NotBlank @Digits(integer = 3, fraction = 0)
+    private String phoneNumberFront;
+    @NotBlank @Digits(integer = 4, fraction = 0)
+    private String phoneNumberMiddle;
+    @NotBlank @Digits(integer = 4, fraction = 0)
+    private String phoneNumberLast;
 
+    @NotBlank
     private String gender;
-    private String birthday;
-    private boolean isBirthdaySolar;
+    @NotBlank
+    private String birthdayYear;
+    @NotBlank
+    private String birthdayMonth;
+    @NotBlank
+    private String birthdayDay;
 
-    private String address; // 주소
-    private String addressSub; // 상세주소
+    private Boolean isBirthdaySolar;
+
+    @NotBlank
+    private String roadNameAddress; // 도로명 주소
+    @NotBlank
+    private String lotNumberAddress; // 지번 주소
+    @NotBlank
+    private String detailAddress; // 상세 주소
+    @NotBlank
     private String zipCode; // 우편번호
+    private String extraAddress; // 참고사항
 
     // TODO 프로필 사진
 

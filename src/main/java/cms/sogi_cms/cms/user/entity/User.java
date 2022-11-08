@@ -27,13 +27,13 @@ public class User {
     private String firstname; // 성
 
     private String email;
-    private boolean isMailing;
+    private Boolean isMailing;
 
     private String phoneNumber;
 
     private String gender;
     private String birthday;
-    private boolean isBirthdaySolar;
+    private Boolean isBirthdaySolar;
 
     @Embedded
     private Address address;
@@ -51,9 +51,11 @@ public class User {
 
     public static User create(UserCreateUpdateDto dto, String hashedPassword, Role role) {
         Address address = Address.builder()
-                .address(dto.getAddress())
-                .addressSub(dto.getAddressSub())
+                .roadNameAddress(dto.getRoadNameAddress())
+                .lotNumberAddress(dto.getLotNumberAddress())
+                .detailAddress(dto.getDetailAddress())
                 .zipCode(dto.getZipCode())
+                .extraAddress(dto.getExtraAddress())
                 .build();
 
         return User.builder()
@@ -65,11 +67,11 @@ public class User {
                 .lastname(dto.getLastname())
                 .firstname(dto.getFirstname())
                 .email(dto.getEmail())
-                .isMailing(dto.isMailing())
-                .phoneNumber(dto.getPhoneNumber())
+                .isMailing(dto.getIsMailing())
+                .phoneNumber(dto.getPhoneNumberFront() + "-" + dto.getPhoneNumberMiddle() + "-" + dto.getPhoneNumberLast())
                 .gender(dto.getGender())
-                .birthday(dto.getBirthday())
-                .isBirthdaySolar(dto.isBirthdaySolar())
+                .birthday(dto.getBirthdayYear() + "-" + dto.getBirthdayMonth() + "-" + dto.getBirthdayDay())
+                .isBirthdaySolar(dto.getIsBirthdaySolar())
                 .address(address)
                 .isActive(true)
                 .isDeleted(false)
@@ -78,9 +80,11 @@ public class User {
 
     public void update(UserCreateUpdateDto dto) {
         Address address = Address.builder()
-                .address(dto.getAddress())
-                .addressSub(dto.getAddressSub())
+                .roadNameAddress(dto.getRoadNameAddress())
+                .lotNumberAddress(dto.getLotNumberAddress())
+                .detailAddress(dto.getDetailAddress())
                 .zipCode(dto.getZipCode())
+                .extraAddress(dto.getExtraAddress())
                 .build();
 
         this.username = dto.getUsername();
@@ -90,11 +94,11 @@ public class User {
         this.lastname = dto.getLastname();
         this.firstname = dto.getFirstname();
         this.email = dto.getEmail();
-        this.isMailing = dto.isMailing();
-        this.phoneNumber = dto.getPhoneNumber();
+        this.isMailing = dto.getIsMailing();
+        this.phoneNumber = dto.getPhoneNumberFront() + "-" + dto.getPhoneNumberMiddle() + "-" + dto.getPhoneNumberLast();
         this.gender = dto.getGender();
-        this.birthday = dto.getBirthday();
-        this.isBirthdaySolar = dto.isBirthdaySolar();
+        this.birthday = dto.getBirthdayYear() + "-" + dto.getBirthdayMonth() + "-" + dto.getBirthdayDay();
+        this.isBirthdaySolar = dto.getIsBirthdaySolar();
         this.address = address;
         this.isActive = true;
         this.isDeleted = false;

@@ -10,7 +10,9 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor
 public class Address {
 
-    private String address; // 주소
-    private String addressSub; // 상세주소
+    private String roadNameAddress; // 도로명 주소
+    private String lotNumberAddress; // 지번 주소
+    private String detailAddress; // 상세 주소
     private String zipCode; // 우편번호
+    private String extraAddress; // 참고사항
 }
