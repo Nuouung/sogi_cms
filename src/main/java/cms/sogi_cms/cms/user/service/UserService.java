@@ -2,6 +2,7 @@ package cms.sogi_cms.cms.user.service;
 
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
+import cms.sogi_cms.cms.user.dto.UserResponseDto;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
-    Paging<User> getUserList(UserSearch userSearch);
+    Paging<UserResponseDto> getUserList(UserSearch userSearch);
 
     Long getTotalNumber(UserSearch userSearch);
 

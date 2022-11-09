@@ -23,40 +23,22 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     private final EntityManager entityManager;
 
     @Override
-    public Paging<User> findPage(UserSearch userSearch) {
-        List<User> contents = queryFactory.selectFrom(user)
+    public List<User> findList(UserSearch userSearch) {
+        return queryFactory.selectFrom(user)
                 .orderBy(order(userSearch))
                 .where(
                         usernameLike(userSearch.getUsername()),
                         betweenRegisteredDateTime(userSearch.getRegisteredDateTime_start(), userSearch.getRegisteredDateTime_end()),
-                        lastnameLike(userSearch.getLastname()),
-                        firstnameList(userSearch.getFirstname()),
+                        nameLike(userSearch.getName()),
                         emailEquals(userSearch.getEmail()),
-                        isMailing(userSearch.isMailing()),
+                        isMailing(userSearch.getIsMailing()),
                         genderEquals(userSearch.getGender()),
-                        isBirthdaySolar(userSearch.isBirthdaySolar()),
-                        isActive(userSearch.isActive()),
-                        isDeleted(userSearch.isDeleted()))
+                        isBirthdaySolar(userSearch.getIsBirthdaySolar()),
+                        isActive(userSearch.getIsActive()),
+                        isDeleted(userSearch.getIsDeleted()))
                 .offset(userSearch.getOffset())
                 .limit(userSearch.getSize())
                 .fetch();
-
-        Long count = queryFactory.select(user.count())
-                .from(user)
-                .where(
-                        usernameLike(userSearch.getUsername()),
-                        betweenRegisteredDateTime(userSearch.getRegisteredDateTime_start(), userSearch.getRegisteredDateTime_end()),
-                        lastnameLike(userSearch.getLastname()),
-                        firstnameList(userSearch.getFirstname()),
-                        emailEquals(userSearch.getEmail()),
-                        isMailing(userSearch.isMailing()),
-                        genderEquals(userSearch.getGender()),
-                        isBirthdaySolar(userSearch.isBirthdaySolar()),
-                        isActive(userSearch.isActive()),
-                        isDeleted(userSearch.isDeleted()))
-                .fetchOne();
-
-        return new Paging<>(contents, count == null ? 0 : count, userSearch);
     }
 
     @Override
@@ -66,29 +48,28 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .where(
                         usernameLike(userSearch.getUsername()),
                         betweenRegisteredDateTime(userSearch.getRegisteredDateTime_start(), userSearch.getRegisteredDateTime_end()),
-                        lastnameLike(userSearch.getLastname()),
-                        firstnameList(userSearch.getFirstname()),
+                        nameLike(userSearch.getName()),
                         emailEquals(userSearch.getEmail()),
-                        isMailing(userSearch.isMailing()),
+                        isMailing(userSearch.getIsMailing()),
                         genderEquals(userSearch.getGender()),
-                        isBirthdaySolar(userSearch.isBirthdaySolar()),
-                        isActive(userSearch.isActive()),
-                        isDeleted(userSearch.isDeleted()))
+                        isBirthdaySolar(userSearch.getIsBirthdaySolar()),
+                        isActive(userSearch.getIsActive()),
+                        isDeleted(userSearch.getIsDeleted()))
                 .fetchOne();
 
         return count == null ? 0 : count;
     }
 
-    private Predicate isDeleted(boolean deleted) {
-        return user.isDeleted.eq(deleted);
+    private Predicate isDeleted(Boolean deleted) {
+        return deleted == null ? null : user.isDeleted.eq(deleted);
     }
 
-    private Predicate isActive(boolean active) {
-        return user.isActive.eq(active);
+    private Predicate isActive(Boolean active) {
+        return active == null ? null : user.isActive.eq(active);
     }
 
-    private Predicate isBirthdaySolar(boolean birthdaySolar) {
-        return user.isBirthdaySolar.eq(birthdaySolar);
+    private Predicate isBirthdaySolar(Boolean birthdaySolar) {
+        return birthdaySolar == null ? null : user.isBirthdaySolar.eq(birthdaySolar);
     }
 
     private Predicate genderEquals(String gender) {
@@ -96,19 +77,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     private Predicate isMailing(Boolean mailing) {
-        return user.isMailing.eq(mailing);
+        return mailing == null ? null : user.isMailing.eq(mailing);
     }
 
     private Predicate emailEquals(String email) {
-        return email != null ? user.email.eq(email) : null;
+        return email == null ? null : user.email.eq(email);
     }
 
-    private Predicate firstnameList(String firstname) {
-        return firstname != null ? user.firstname.contains(firstname) : null;
-    }
-
-    private Predicate lastnameLike(String lastname) {
-        return lastname != null ? user.lastname.contains(lastname) : null;
+    private Predicate nameLike(String name) {
+        return name == null ? null : user.firstname.contains(name);
     }
 
     private Predicate betweenRegisteredDateTime(LocalDateTime registeredDateTime_start, LocalDateTime registeredDateTime_end) {

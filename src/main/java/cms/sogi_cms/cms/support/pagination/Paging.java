@@ -23,7 +23,7 @@ public class Paging<T> {
     }
 
     public int getSize() {
-        return pagingSearch.isPaged() ? pagingSearch.getSize() : contents.size();
+        return pagingSearch.getIsPaged() ? pagingSearch.getSize() : contents.size();
     }
 
     public boolean hasNext() {
@@ -35,6 +35,6 @@ public class Paging<T> {
     }
 
     public int getPageNumber() {
-        return pagingSearch.isPaged() ? pagingSearch.getPageNumber() : 0;
+        return pagingSearch.getIsPaged() ? pagingSearch.getPageNumber() : 0;
     }
 }

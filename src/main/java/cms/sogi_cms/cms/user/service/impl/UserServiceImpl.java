@@ -2,6 +2,7 @@ package cms.sogi_cms.cms.user.service.impl;
 
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
+import cms.sogi_cms.cms.user.dto.UserResponseDto;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.repository.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -58,17 +60,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Paging<User> getUserList(UserSearch userSearch) {
-        Paging<User> paging = userRepository.findPage(userSearch);
+    public Paging<UserResponseDto> getUserList(UserSearch userSearch) {
+        List<UserResponseDto> contents = userRepository.findList(userSearch).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+        Long total = userRepository.count(userSearch);
 
-        List<User> contents = paging.getContents();
-        for (User foundUser : contents) {
-            foundUser.removePassword();
-        }
+        return new Paging<>(contents, total, userSearch);
+    }
 
-        paging.setContents(contents);
+    private UserResponseDto toResponseDto(User user) {
+        UserResponseDto dto = new UserResponseDto();
+        dto.setUsername(user.getUsername());
+        dto.setLastname(user.getLastname());
+        dto.setFirstname(user.getFirstname());
+        dto.setEmail(user.getEmail());
+        dto.setIsMailing(user.getIsMailing());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setGender(user.getGender());
+        dto.setBirthday(user.getBirthday());
+        dto.setIsBirthdaySolar(user.getIsBirthdaySolar());
+        dto.setRoadNameAddress(user.getAddress().getRoadNameAddress());
+        dto.setLotNumberAddress(user.getAddress().getLotNumberAddress());
+        dto.setDetailAddress(user.getAddress().getDetailAddress());
+        dto.setZipCode(user.getAddress().getZipCode());
+        dto.setExtraAddress(user.getAddress().getExtraAddress());
 
-        return paging;
+        return dto;
     }
 
     @Override

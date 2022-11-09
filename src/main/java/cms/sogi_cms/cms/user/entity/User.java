@@ -58,6 +58,9 @@ public class User {
                 .extraAddress(dto.getExtraAddress())
                 .build();
 
+        String birthdayMonth = dto.getBirthdayMonth().length() == 1 ? "0" + dto.getBirthdayMonth() : dto.getBirthdayMonth();
+        String birthdayDay = dto.getBirthdayDay().length() == 1 ? "0" + dto.getBirthdayDay() : dto.getBirthdayDay();
+
         return User.builder()
                 .username(dto.getUsername())
                 .password(hashedPassword)
@@ -70,7 +73,7 @@ public class User {
                 .isMailing(dto.getIsMailing())
                 .phoneNumber(dto.getPhoneNumberFront() + "-" + dto.getPhoneNumberMiddle() + "-" + dto.getPhoneNumberLast())
                 .gender(dto.getGender())
-                .birthday(dto.getBirthdayYear() + "-" + dto.getBirthdayMonth() + "-" + dto.getBirthdayDay())
+                .birthday(dto.getBirthdayYear() + "-" + birthdayMonth + "-" + birthdayDay)
                 .isBirthdaySolar(dto.getIsBirthdaySolar())
                 .address(address)
                 .isActive(true)
@@ -87,6 +90,10 @@ public class User {
                 .extraAddress(dto.getExtraAddress())
                 .build();
 
+        String birthdayMonth = dto.getBirthdayMonth().length() == 1 ? "0" + dto.getBirthdayMonth() : dto.getBirthdayMonth();
+        String birthdayDay = dto.getBirthdayDay().length() == 1 ? "0" + dto.getBirthdayDay() : dto.getBirthdayDay();
+
+
         this.username = dto.getUsername();
         this.registeredDateTime = LocalDateTime.now();
         this.passwordLastUpdatedDateTime = LocalDateTime.now();
@@ -97,7 +104,7 @@ public class User {
         this.isMailing = dto.getIsMailing();
         this.phoneNumber = dto.getPhoneNumberFront() + "-" + dto.getPhoneNumberMiddle() + "-" + dto.getPhoneNumberLast();
         this.gender = dto.getGender();
-        this.birthday = dto.getBirthdayYear() + "-" + dto.getBirthdayMonth() + "-" + dto.getBirthdayDay();
+        this.birthday = dto.getBirthdayYear() + "-" + birthdayMonth + "-" + birthdayDay;
         this.isBirthdaySolar = dto.getIsBirthdaySolar();
         this.address = address;
         this.isActive = true;

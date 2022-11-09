@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymelear.org">
+<head th:replace="~{admin/common/include :: head}"></head>
+<body>
+    <header th:replace="~{admin/common/include :: header_admin}"></header>
+    <main>
+        <section>
+            <div>
+                <label>
+                    <span>아이디</span>
+                    <span th:text="${user.username}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>아이디</span>
+                    <span th:text="${user.username}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이름</span>
+                    <span th:text="|${user.lastname}${user.firstname}|"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이메일</span>
+                    <span th:text="${user.email}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이메일 수신 동의</span>
+<!--                    <span th:text="${user.username}"></span>-->
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>휴대폰 번호</span>
+                    <span th:text="${user.phoneNumber}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>성별</span>
+<!--                    <span th:text="${user.username}"></span>-->
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>생년월일</span>
+                    <span th:text="${user.birthday}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>양력/음력</span>
+<!--                    <span th:text="${user.username}"></span>-->
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>주소</span>
+<!--                    <span th:text="${user.username}"></span>-->
+                </label>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
