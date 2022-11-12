@@ -29,11 +29,15 @@ public class UserSearch extends PagingSearch {
     private Boolean isActive;
     private Boolean isDeleted;
 
-    public UserSearch(Integer pageNumber, Integer size, String sortProperty, SortDirection sortDirection, Boolean isPaged, String username, LocalDateTime registeredDateTime_start, LocalDateTime registeredDateTime_end, String name, String email, Boolean isMailing, String gender, Boolean isBirthdaySolar, Boolean isActive, Boolean isDeleted) {
+    public UserSearch(Integer pageNumber, Integer size, String sortProperty, SortDirection sortDirection, Boolean isPaged, String username, String registeredDateTime_start, String registeredDateTime_end, String name, String email, Boolean isMailing, String gender, Boolean isBirthdaySolar, Boolean isActive, Boolean isDeleted) {
         super(pageNumber, size, sortProperty, sortDirection, isPaged);
         this.username = username;
-        this.registeredDateTime_start = registeredDateTime_start;
-        this.registeredDateTime_end = registeredDateTime_end;
+
+        if (registeredDateTime_start != null) {
+            LocalDateTime parse = LocalDateTime.parse(registeredDateTime_start);
+        }
+//        this.registeredDateTime_start = registeredDateTime_start;
+//        this.registeredDateTime_end = registeredDateTime_end;
         this.name = name;
         this.email = email;
         this.isMailing = isMailing;
@@ -49,35 +53,35 @@ public class UserSearch extends PagingSearch {
         sb.append(super.queryString());
 
         if (StringUtils.hasText(getUsername())) {
-            sb.append("&amp;username=").append(getUsername());
+            sb.append("&username=").append(getUsername());
         }
 
         if (StringUtils.hasText(getName())) {
-            sb.append("&amp;name=").append(getName());
+            sb.append("&name=").append(getName());
         }
 
         if (StringUtils.hasText(getEmail())) {
-            sb.append("&amp;email=").append(getEmail());
+            sb.append("&email=").append(getEmail());
         }
 
         if (getIsMailing() != null) {
-            sb.append("&amp;isMailing=").append(getIsMailing());
+            sb.append("&isMailing=").append(getIsMailing());
         }
 
         if (StringUtils.hasText(getGender())) {
-            sb.append("&amp;gender=").append(getGender());
+            sb.append("&gender=").append(getGender());
         }
 
         if (getIsBirthdaySolar() != null) {
-            sb.append("&amp;isBirthdaySolar=").append(getIsBirthdaySolar());
+            sb.append("&isBirthdaySolar=").append(getIsBirthdaySolar());
         }
 
         if (getIsActive() != null) {
-            sb.append("&amp;isActive=").append(getIsActive());
+            sb.append("&isActive=").append(getIsActive());
         }
 
         if (getIsDeleted() != null) {
-            sb.append("&amp;isDeleted=").append(getIsDeleted());
+            sb.append("&isDeleted=").append(getIsDeleted());
         }
 
         return sb.toString();

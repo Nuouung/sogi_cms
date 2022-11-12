@@ -28,6 +28,12 @@
                     <input type="password" th:field="*{passwordCheck}">
                 </label>
             </div>
+            <div th:if="${formMode eq 'UPDATE'}">
+                <label>
+                    <span>비밀번호 변경</span>
+                    <button type="button" th:onclick="|location.href='@{/sogi/admin/user/update/password/{id}(id=${id})}'|">비밀번호 변경하기</button>
+                </label>
+            </div>
             <div>
                 <label>
                     <span>이름</span>
@@ -90,14 +96,14 @@
                     <select id="birthdayMonth" name="birthdayMonth">
                         <option value="">월</option>
                         <th:block th:each="month : ${#numbers.sequence(1, 12)}">
-                            <option th:value="${month}" th:text="${month}"></option>
+                            <option th:value="${month}" th:text="${month}"  th:selected="${userCreateUpdateDto.birthdayMonth} == ${month}"></option>
                         </th:block>
                         <div th:errors="*{birthdayMonth}"></div>
                     </select>
                     <select id="birthdayDay" name="birthdayDay">
                         <option value="">일</option>
                         <th:block th:each="day : ${#numbers.sequence(1, 31)}">
-                            <option th:value="${day}" th:text="${day}"></option>
+                            <option th:value="${day}" th:text="${day}"  th:selected="${userCreateUpdateDto.birthdayDay} == ${day}"></option>
                         </th:block>
                         <div th:errors="*{birthdayDay}"></div>
                     </select>
@@ -190,7 +196,8 @@
                     </div>
                 </label>
             </div>
-            <button type="submit">회원가입</button>
+            <button th:if="${formMode eq 'INSERT'" type="submit">회원가입</button>
+            <button th:if="${formMode eq 'UPDATE'" type="submit">회원정보 변경</button>
         </form>
     </main>
 </body>

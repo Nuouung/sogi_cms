@@ -5,6 +5,38 @@
     <header th:replace="~{admin/common/include :: header_admin}"></header>
     <main>
         <section>
+            <form method="get" th:action="${requestURI}">
+                <div>
+                    <label>정렬조건</label>
+                    <div>
+                        <select id="size" name="size">
+                            <option value="10">10개씩</option>
+                            <option value="20">20개씩</option>
+                            <option value="40">40개씩</option>
+                        </select>
+                        <select id="sortProperty" name="sortProperty">
+                            <option value="registeredDateTime">가입일시</option>
+                            <option value="username">회원아이디</option>
+                            <option value="name">회원이름</option>
+                        </select>
+                        <select id="sortDirection" name="sortDirection">
+                            <option value="DESC">내림차순</option>
+                            <option value="ASC">오름차순</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>회원이름</label>
+                    <input name="name">
+                </div>
+                <div>
+                    <label>가입기간</label>
+                    <input type="datetime-local" name="registeredDateTime_start"> ~ <input type="datetime-local" name="registeredDateTime_end">
+                </div>
+                <button type="submit">검색</button>
+            </form>
+        </section>
+        <section>
             <table style="border: black 1px solid">
                 <thead>
                 <tr>
@@ -13,6 +45,7 @@
                     <th>이메일</th>
                     <th>전화번호</th>
                     <th>생년월일</th>
+                    <th>동작</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,6 +57,13 @@
                     <td th:text="${user.email}"></td>
                     <td th:text="${user.phoneNumber}"></td>
                     <td th:text="${user.birthday}"></td>
+                    <td>
+                        <button type="button" th:onclick="|location.href='@{/sogi/admin/user/update/{id}(id=${user.id})}'|">수정</button>
+                        <form method="post" th:action="|@{/sogi/admin/user/delete/{id}(id=${user.id})}|">
+                            <input type="hidden" name="${user.id}" value="${user.id}">
+                            <button type="submit">삭제</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

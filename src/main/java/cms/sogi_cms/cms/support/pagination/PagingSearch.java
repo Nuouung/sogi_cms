@@ -74,19 +74,19 @@ public class PagingSearch {
         StringBuilder sb = new StringBuilder();
 
         if (StringUtils.hasText(Integer.toString(getSize()))) {
-            sb.append("&amp;size=").append(getSize());
+            sb.append("&size=").append(getSize());
         }
 
         if (StringUtils.hasText(getSortProperty())) {
-            sb.append("&amp;sortProperty=").append(getSortProperty());
+            sb.append("&sortProperty=").append(getSortProperty());
         }
 
         if (getSortDirection() != null) {
-            sb.append("amp;sortDirection=").append(getSortDirection());
+            sb.append("&sortDirection=").append(getSortDirection());
         }
 
         if (getIsPaged() != null) {
-            sb.append("amp;isPaged=").append(getIsPaged());
+            sb.append("&isPaged=").append(getIsPaged());
         }
 
         return sb.toString();

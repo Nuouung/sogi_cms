@@ -3,6 +3,7 @@ package cms.sogi_cms.cms.user.web;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
+import cms.sogi_cms.cms.user.dto.UserPasswordDto;
 import cms.sogi_cms.cms.user.dto.UserResponseDto;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.service.UserService;
@@ -23,6 +24,7 @@ public class UserAdminController {
     private final UserService userService;
 
     private final UserCreateValidator userCreateUpdateValidator;
+    private final UserPasswordValidator userPasswordValidator;
 
     // c
     @GetMapping("/new")
@@ -55,12 +57,14 @@ public class UserAdminController {
     // r
     @GetMapping("/list")
     public String userListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) {
+        userSearch.setIsDeleted(false);
         Paging<UserResponseDto> paging = userService.getUserList(userSearch);
 
         model.addAttribute("paging", paging);
         model.addAttribute("urlPath", request.getRequestURI());
         model.addAttribute("queryString", paging.getPagingSearch().queryString());
         model.addAttribute("totalPage", paging.getTotalPages());
+        model.addAttribute("requestURI", request.getRequestURI());
 
         return "admin/user/list";
     }
@@ -129,19 +133,30 @@ public class UserAdminController {
         return "redirect:" + SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user/list";
     }
 
-//    @GetMapping
-//    public String updateUserPasswordGet() {
-//        return null;
-//    }
-//
-//    @PostMapping
-//    public String updateUserPasswordPost() {
-//        return null;
-//    }
-//
-//    // d
-//    @PostMapping
-//    public String deleteUserPost() {
-//        return null;
-//    }
+    @GetMapping("/update/password/{id}")
+    public String updateUserPasswordGet(HttpServletRequest request, @PathVariable Long id, @ModelAttribute UserPasswordDto userDto, Model model) {
+        model.addAttribute("userPasswordDto", userDto);
+        model.addAttribute("id", id);
+        model.addAttribute("requestURI", request.getRequestURI());
+        return "admin/user/passwordForm";
+    }
+
+    @PostMapping("/update/password/{id}")
+    public String updateUserPasswordPost(@PathVariable Long id, @ModelAttribute UserPasswordDto userDto, BindingResult bindingResult, Model model) {
+        userPasswordValidator.validate(userDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userPasswordDto", userDto);
+            return "admin/user/passwordForm";
+        }
+
+        userService.updatePassword(id, userDto.getPassword());
+        return "redirect:" + SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user/list";
+    }
+
+    // d
+    @PostMapping("/delete/{id}")
+    public String deleteUserPost(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:" + SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user/list";
+    }
 }
