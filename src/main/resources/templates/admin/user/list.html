@@ -18,7 +18,7 @@
                 <tbody>
                 <tr th:each="user : ${paging.contents}">
                     <td>
-                        <a th:href="@{/sogi/user/{id}(id=${user.id})}" th:text="${user.username}"></a>
+                        <a th:href="@{/sogi/admin/user/{id}(id=${user.id})}" th:text="${user.username}"></a>
                     </td>
                     <td th:text="|${user.lastname}${user.firstname}|"></td>
                     <td th:text="${user.email}"></td>

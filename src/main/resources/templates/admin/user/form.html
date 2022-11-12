@@ -4,7 +4,10 @@
 <body>
     <header th:replace="~{admin/common/include :: header_admin}"></header>
     <main>
-        <form th:object="${userCreateUpdateDto}" action="/sogi/admin/user/new" method="post">
+        <form th:object="${userCreateUpdateDto}" th:action="${requestURI}" method="post">
+            <div th:if="${formMode eq 'UPDATE'}">
+                <input type="hidden" th:field="*{id}">
+            </div>
             <div>
                 <label>
                     <span>아이디</span>
@@ -12,14 +15,14 @@
                 </label>
                 <div th:errors="*{username}"></div>
             </div>
-            <div>
+            <div th:if="${formMode eq 'INSERT'}">
                 <label>
                     <span>비밀번호</span>
                     <input type="password" th:field="*{password}">
                     <div th:errors="*{password}"></div>
                 </label>
             </div>
-            <div>
+            <div th:if="${formMode eq 'INSERT'}">
                 <label>
                     <span>비밀번호 확인</span>
                     <input type="password" th:field="*{passwordCheck}">
@@ -69,8 +72,8 @@
                     <span>성별</span>
                     <select id="gender" name="gender">
                         <option value="">성별</option>
-                        <option value="M">남성</option>
-                        <option value="F">여성</option>
+                        <option value="M" th:selected="${userCreateUpdateDto.gender eq 'M'}">남성</option>
+                        <option value="F" th:selected="${userCreateUpdateDto.gender eq 'F'}">여성</option>
                     </select>
                 </label>
             </div>
@@ -80,7 +83,7 @@
                     <select id="birthdayYear" name="birthdayYear">
                         <option value="">출생년도</option>
                         <th:block th:each="year : ${#numbers.sequence(1900, 2022)}">
-                            <option th:value="${year}" th:text="${year}"></option>
+                            <option th:value="${year}" th:text="${year}" th:selected="${userCreateUpdateDto.birthdayYear} == ${year}"></option>
                         </th:block>
                         <div th:errors="*{birthdayYear}"></div>
                     </select>

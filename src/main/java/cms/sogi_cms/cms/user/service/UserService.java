@@ -16,7 +16,7 @@ public interface UserService {
     Long saveUser(UserCreateUpdateDto userDto);
 
     // r
-    User getUserById(Long id);
+    UserResponseDto getUserById(Long id);
 
     User getUserByUsername(String username);
 

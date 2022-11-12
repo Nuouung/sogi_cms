@@ -8,61 +8,104 @@
             <div>
                 <label>
                     <span>아이디</span>
-                    <span th:text="${user.username}"></span>
+                    <span th:text="${userDto.username}"></span>
                 </label>
             </div>
             <div>
                 <label>
                     <span>아이디</span>
-                    <span th:text="${user.username}"></span>
+                    <span th:text="${userDto.username}"></span>
                 </label>
             </div>
             <div>
                 <label>
                     <span>이름</span>
-                    <span th:text="|${user.lastname}${user.firstname}|"></span>
+                    <span th:text="|${userDto.lastname}${userDto.firstname}|"></span>
                 </label>
             </div>
             <div>
                 <label>
                     <span>이메일</span>
-                    <span th:text="${user.email}"></span>
+                    <span th:text="${userDto.email}"></span>
                 </label>
             </div>
             <div>
                 <label>
                     <span>이메일 수신 동의</span>
-<!--                    <span th:text="${user.username}"></span>-->
+<!--                    <span th:text="${userDto.username}"></span>-->
                 </label>
             </div>
             <div>
                 <label>
                     <span>휴대폰 번호</span>
-                    <span th:text="${user.phoneNumber}"></span>
+                    <span th:text="${userDto.phoneNumber}"></span>
                 </label>
             </div>
             <div>
                 <label>
                     <span>성별</span>
-<!--                    <span th:text="${user.username}"></span>-->
+<!--                    <span th:text="${userDto.username}"></span>-->
                 </label>
             </div>
             <div>
                 <label>
                     <span>생년월일</span>
-                    <span th:text="${user.birthday}"></span>
+                    <span th:text="${userDto.birthday}"></span>
                 </label>
             </div>
             <div>
                 <label>
                     <span>양력/음력</span>
-<!--                    <span th:text="${user.username}"></span>-->
+<!--                    <span th:text="${userDto.username}"></span>-->
                 </label>
             </div>
             <div>
                 <label>
                     <span>주소</span>
-<!--                    <span th:text="${user.username}"></span>-->
+                    <div>
+                        <label>
+                            <span>도로명 주소</span>
+                            <span th:text="${userDto.roadNameAddress}"></span>
+                        </label>
+                        <label>
+                            <span>지명 주소</span>
+                            <span th:text="${userDto.lotNumberAddress}"></span>
+                        </label>
+                        <label>
+                            <span>상세 주소</span>
+                            <span th:text="${userDto.detailAddress}"></span>
+                        </label>
+                    </div>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>활성화 여부</span>
+                    <span th:text="${userDto.isActive}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>탈퇴 여부</span>
+                    <span th:text="${userDto.isDeleted}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>가입 일자</span>
+                    <span th:text="${#temporals.format(userDto.registeredDateTime, 'yyyy-MM-dd HH시 mm분')}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>최근 비밀번호 변경 일자</span>
+                    <span th:text="${#temporals.format(userDto.passwordLastUpdatedDateTime, 'yyyy-MM-dd HH시 mm분')}"></span>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>최근 로그인 일자</span>
+                    <span th:text="${#temporals.format(userDto.lastLoginDateTime, 'yyyy-MM-dd HH시 mm분 ss초')}"></span>
                 </label>
             </div>
         </section>

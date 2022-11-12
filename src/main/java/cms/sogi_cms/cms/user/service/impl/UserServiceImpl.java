@@ -40,13 +40,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public UserResponseDto getUserById(Long id) {
         User foundUser = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
 
-        foundUser.removePassword();
-
-        return foundUser;
+        return toResponseDto(foundUser);
     }
 
     @Override
@@ -71,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
     private UserResponseDto toResponseDto(User user) {
         UserResponseDto dto = new UserResponseDto();
+        dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setLastname(user.getLastname());
         dto.setFirstname(user.getFirstname());
@@ -85,6 +84,11 @@ public class UserServiceImpl implements UserService {
         dto.setDetailAddress(user.getAddress().getDetailAddress());
         dto.setZipCode(user.getAddress().getZipCode());
         dto.setExtraAddress(user.getAddress().getExtraAddress());
+        dto.setActive(user.isActive());
+        dto.setDeleted(user.isDeleted());
+        dto.setRegisteredDateTime(user.getRegisteredDateTime());
+        dto.setPasswordLastUpdatedDateTime(user.getPasswordLastUpdatedDateTime());
+        dto.setLastLoginDateTime(user.getLastLoginDateTime());
 
         return dto;
     }

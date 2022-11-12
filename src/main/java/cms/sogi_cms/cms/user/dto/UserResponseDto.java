@@ -2,6 +2,8 @@ package cms.sogi_cms.cms.user.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class UserResponseDto {
 
@@ -29,6 +31,13 @@ public class UserResponseDto {
     private String detailAddress; // 상세 주소
     private String zipCode; // 우편번호
     private String extraAddress; // 참고사항
+
+    private boolean isActive; // 활성화여부
+    private boolean isDeleted; // 삭제여부
+
+    private LocalDateTime registeredDateTime;
+    private LocalDateTime passwordLastUpdatedDateTime;
+    private LocalDateTime lastLoginDateTime;
 
     // TODO 프로필 사진
 
