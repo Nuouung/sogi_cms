@@ -85,7 +85,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     private Predicate nameLike(String name) {
-        return name == null ? null : user.firstname.contains(name);
+        return name == null ? null : user.name.contains(name);
     }
 
     private Predicate betweenRegisteredDateTime(LocalDateTime registeredDateTime_start, LocalDateTime registeredDateTime_end) {

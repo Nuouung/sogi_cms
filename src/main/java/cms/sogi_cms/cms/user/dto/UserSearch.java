@@ -4,9 +4,12 @@ import cms.sogi_cms.cms.support.pagination.PagingSearch;
 import cms.sogi_cms.cms.support.pagination.SortDirection;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter @Setter
 public class UserSearch extends PagingSearch {
@@ -32,12 +35,9 @@ public class UserSearch extends PagingSearch {
     public UserSearch(Integer pageNumber, Integer size, String sortProperty, SortDirection sortDirection, Boolean isPaged, String username, String registeredDateTime_start, String registeredDateTime_end, String name, String email, Boolean isMailing, String gender, Boolean isBirthdaySolar, Boolean isActive, Boolean isDeleted) {
         super(pageNumber, size, sortProperty, sortDirection, isPaged);
         this.username = username;
-
-        if (registeredDateTime_start != null) {
-            LocalDateTime parse = LocalDateTime.parse(registeredDateTime_start);
-        }
-//        this.registeredDateTime_start = registeredDateTime_start;
-//        this.registeredDateTime_end = registeredDateTime_end;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.registeredDateTime_start = registeredDateTime_start == null ? null : LocalDate.parse(registeredDateTime_start, formatter).atStartOfDay();
+        this.registeredDateTime_end = registeredDateTime_end == null ? null : LocalDate.parse(registeredDateTime_end, formatter).atStartOfDay();
         this.name = name;
         this.email = email;
         this.isMailing = isMailing;

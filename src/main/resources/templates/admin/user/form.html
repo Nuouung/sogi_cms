@@ -196,8 +196,9 @@
                     </div>
                 </label>
             </div>
-            <button th:if="${formMode eq 'INSERT'" type="submit">회원가입</button>
-            <button th:if="${formMode eq 'UPDATE'" type="submit">회원정보 변경</button>
+            <button th:if="${formMode eq 'INSERT'}" type="submit">회원가입</button>
+            <button th:if="${formMode eq 'UPDATE'}" type="submit">회원정보 변경</button>
+            <button type="button" onclick="history.back()">뒤로가기</button>
         </form>
     </main>
 </body>

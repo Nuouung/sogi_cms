@@ -29,10 +29,10 @@
                     <label>회원이름</label>
                     <input name="name">
                 </div>
-                <div>
-                    <label>가입기간</label>
-                    <input type="datetime-local" name="registeredDateTime_start"> ~ <input type="datetime-local" name="registeredDateTime_end">
-                </div>
+<!--                <div>-->
+<!--                    <label>가입기간</label>-->
+<!--                    <input type="date" name="registeredDateTime_start"> ~ <input type="date" name="registeredDateTime_end">-->
+<!--                </div>-->
                 <button type="submit">검색</button>
             </form>
         </section>
@@ -76,6 +76,9 @@
                 <a th:if="${actualPageNumber + 1} le ${totalPage}" th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 + 1}${queryString}|" th:text="${actualPageNumber + 1}"></a>
                 <a th:if="${actualPageNumber + 2} le ${totalPage}" th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 + 2}${queryString}|" th:text="${actualPageNumber + 2}"></a>
             </div>
+        </section>
+        <section>
+            <button onclick="location.href='/sogi/admin/user/new'">회원등록</button>
         </section>
     </main>
 </body>

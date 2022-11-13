@@ -23,6 +23,7 @@ public class User {
     private LocalDateTime passwordLastUpdatedDateTime;
     private LocalDateTime lastLoginDateTime;
 
+    private String name; // 전체 이름
     private String lastname; // 이름
     private String firstname; // 성
 
@@ -50,13 +51,7 @@ public class User {
     private String captcha; // 캡차
 
     public static User create(UserCreateUpdateDto dto, String hashedPassword, Role role) {
-        Address address = Address.builder()
-                .roadNameAddress(dto.getRoadNameAddress())
-                .lotNumberAddress(dto.getLotNumberAddress())
-                .detailAddress(dto.getDetailAddress())
-                .zipCode(dto.getZipCode())
-                .extraAddress(dto.getExtraAddress())
-                .build();
+        Address address = getAddress(dto);
 
         String birthdayMonth = dto.getBirthdayMonth().length() == 1 ? "0" + dto.getBirthdayMonth() : dto.getBirthdayMonth();
         String birthdayDay = dto.getBirthdayDay().length() == 1 ? "0" + dto.getBirthdayDay() : dto.getBirthdayDay();
@@ -67,6 +62,7 @@ public class User {
                 .registeredDateTime(LocalDateTime.now())
                 .passwordLastUpdatedDateTime(LocalDateTime.now())
                 .lastLoginDateTime(LocalDateTime.now())
+                .name(dto.getLastname() + dto.getFirstname())
                 .lastname(dto.getLastname())
                 .firstname(dto.getFirstname())
                 .email(dto.getEmail())
@@ -82,13 +78,7 @@ public class User {
     }
 
     public void update(UserCreateUpdateDto dto) {
-        Address address = Address.builder()
-                .roadNameAddress(dto.getRoadNameAddress())
-                .lotNumberAddress(dto.getLotNumberAddress())
-                .detailAddress(dto.getDetailAddress())
-                .zipCode(dto.getZipCode())
-                .extraAddress(dto.getExtraAddress())
-                .build();
+        Address address = getAddress();
 
         String birthdayMonth = dto.getBirthdayMonth().length() == 1 ? "0" + dto.getBirthdayMonth() : dto.getBirthdayMonth();
         String birthdayDay = dto.getBirthdayDay().length() == 1 ? "0" + dto.getBirthdayDay() : dto.getBirthdayDay();
@@ -98,6 +88,7 @@ public class User {
         this.registeredDateTime = LocalDateTime.now();
         this.passwordLastUpdatedDateTime = LocalDateTime.now();
         this.lastLoginDateTime = LocalDateTime.now();
+        this.name = dto.getLastname() + dto.getFirstname();
         this.lastname = dto.getLastname();
         this.firstname = dto.getFirstname();
         this.email = dto.getEmail();
@@ -127,5 +118,15 @@ public class User {
     public void delete() {
         this.isDeleted = true;
         this.isActive = false;
+    }
+
+    private static Address getAddress(UserCreateUpdateDto dto) {
+        return Address.builder()
+                .roadNameAddress(dto.getRoadNameAddress())
+                .lotNumberAddress(dto.getLotNumberAddress())
+                .detailAddress(dto.getDetailAddress())
+                .zipCode(dto.getZipCode())
+                .extraAddress(dto.getExtraAddress())
+                .build();
     }
 }
