@@ -22,13 +22,11 @@ public class Role {
     private String koreanName;
     private String description;
 
-    @CreatedDate
     private LocalDate registerDate;
-
 
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private List<RoleAuthority> roleAuthorityList = new ArrayList<>();
 
     private boolean isAdmin; // 최고 관리자 역할인지
-    private boolean isDefaultMember; // 기본회원
+    private boolean isDefaultUser; // 기본회원
 }

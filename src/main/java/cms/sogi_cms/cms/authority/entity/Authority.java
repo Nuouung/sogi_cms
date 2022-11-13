@@ -3,12 +3,9 @@ package cms.sogi_cms.cms.authority.entity;
 import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
 import cms.sogi_cms.cms.role.entity.RoleAuthority;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +16,21 @@ import java.util.List;
 @AllArgsConstructor
 public class Authority implements GrantedAuthority {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String authorityName;
+    private String authorityKoreanName;
+
     private String description;
 
     @Enumerated(EnumType.STRING)
     private HttpMethod httpMethod;
     private String urlPath;
 
-    private int authorityPriority;
+    private int authorityPriority; // 기본값 100. 값이 커질수록 높은 권한
 
-    private boolean isDefault;
+    private boolean isDefault; // 기본 권한인지
 
     @OneToMany(mappedBy = "authority")
     private List<RoleAuthority> roleAuthorityList = new ArrayList<>();
@@ -48,6 +46,7 @@ public class Authority implements GrantedAuthority {
     public static Authority create(AuthorityCreateUpdateDto dto) {
         return Authority.builder()
                 .authorityName(dto.getAuthorityName())
+                .authorityKoreanName(dto.getAuthorityKoreanName())
                 .description(dto.getDescription())
                 .httpMethod(dto.getHttpMethod())
                 .urlPath(dto.getUrlPath())
