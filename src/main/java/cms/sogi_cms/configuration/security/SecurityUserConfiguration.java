@@ -13,6 +13,6 @@ public class SecurityUserConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.mvcMatcher(SogiConstant.SITE_PATH + "/**")
-                .authorizeRequests().anyRequest().denyAll();
+                .authorizeRequests().anyRequest().permitAll();
     }
 }
