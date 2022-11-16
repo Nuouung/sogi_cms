@@ -1,5 +1,7 @@
 package cms.sogi_cms.cms.user.entity;
 
+import cms.sogi_cms.cms.file.entity.File;
+import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +16,7 @@ import java.util.Collection;
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = SogiConstant.MAIN_SITE_PREFIX + "_USER")
 public class User implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +44,10 @@ public class User implements UserDetails {
 
     @Embedded
     private Address address;
+
+    // 읽기 전용. 데이터베이스에서 조회해 가져오기 때문에 setter, builder, constructor는 없다.
+    @OneToOne(mappedBy = "user")
+    private File file;
 
     // TODO 프로필 사진
 

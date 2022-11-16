@@ -4,8 +4,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * org.apache.commons.io.FilenameUtils 참고
- * 가져온 것도 있고, 만든 것도 있다!
+ * org.apache.commons.io.FilenameUtils 참고하여 작성
  */
 public class FileUtils {
 
@@ -62,16 +61,5 @@ public class FileUtils {
         int lastWindowsPosition = filename.lastIndexOf(WINDOWS_SEPARATOR);
 
         return Math.max(lastUnixPosition, lastWindowsPosition);
-    }
-
-    public static boolean isUploadPossible(String filename, List<String> uploadWhiteList) {
-        String extension = getExtension(filename);
-        for (String s : uploadWhiteList) {
-            if (extension.equals(s)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

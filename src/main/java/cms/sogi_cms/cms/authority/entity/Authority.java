@@ -2,6 +2,7 @@ package cms.sogi_cms.cms.authority.entity;
 
 import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
 import cms.sogi_cms.cms.role.entity.RoleAuthority;
+import cms.sogi_cms.cms.support.SogiConstant;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = SogiConstant.MAIN_SITE_PREFIX + "_AUTHORITY")
 public class Authority implements GrantedAuthority {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

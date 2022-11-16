@@ -17,5 +17,5 @@ public interface FileService {
     // d
     void deleteFile();
 
-    void makeThumbnail();
+    String makeThumbnail(java.io.File uploadFile) throws IOException;
 }

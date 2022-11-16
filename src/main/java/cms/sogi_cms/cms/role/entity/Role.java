@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.role.entity;
 
+import cms.sogi_cms.cms.support.SogiConstant;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = SogiConstant.MAIN_SITE_PREFIX + "_ROLE")
 public class Role {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
