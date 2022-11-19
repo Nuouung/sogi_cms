@@ -65,7 +65,7 @@ public class File {
             BufferedImage image = ImageIO.read(uploadFile);
 
             return File.builder()
-                    .filePath(uploadDirectory.substring(0, uploadDirectory.length() - 1))
+                    .filePath(uploadFile.getAbsolutePath())
                     .fileOriginalName(multipartFile.getOriginalFilename())
                     .fileHashedName(hashedFilename)
                     .fileExtension(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))
@@ -79,7 +79,7 @@ public class File {
                     .build();
         } else {
             return File.builder()
-                    .filePath(uploadDirectory.substring(0, uploadDirectory.length() - 1))
+                    .filePath(uploadFile.getAbsolutePath())
                     .fileOriginalName(multipartFile.getOriginalFilename())
                     .fileHashedName(hashedFilename)
                     .fileExtension(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))
@@ -92,5 +92,9 @@ public class File {
                     .thumbnailFile(null)
                     .build();
         }
+    }
+
+    public void addOneDownloadCount() {
+        this.downloadCount++;
     }
 }

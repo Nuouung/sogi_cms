@@ -13,9 +13,11 @@ import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class FileServiceImpl implements FileService {
 
     private final String UPLOAD_WHITE_LIST = "upload_white_list";
@@ -124,8 +127,58 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteFile() {
+    public void deleteFile(Long id) throws FileNotFoundException {
+        File fileInformation = fileRepository.findById(id)
+                .orElseThrow(() -> new FileNotFoundException("파일을 찾을 수 없습니다."));
 
+        // 실제 파일 제거
+        deleteActualFile(fileInformation);
+
+        // 데이터베이스에 있는 파일 정보 삭제
+        deleteFileInformation(fileInformation);
+    }
+
+    private void deleteFileInformation(File fileInformation) {
+        if (fileInformation.getFileMimeType().contains("image")) {
+            ThumbnailFile thumbnailFile = fileInformation.getThumbnailFile();
+            thumbnailFileRepository.delete(thumbnailFile);
+        }
+
+        fileRepository.delete(fileInformation);
+    }
+
+    private void deleteActualFile(File fileInformation) {
+        java.io.File file = new java.io.File(fileInformation.getFilePath());
+
+        if (file.exists()) {
+            deleteFile(fileInformation.getFileOriginalName(), file);
+        } else {
+            log.info("[SOGICMS] [{}] 파일이 존재하지 않습니다.", fileInformation.getFileOriginalName());
+        }
+
+        // 파일이 이미지라면 썸네일도 제거해야 한다.
+        if (fileInformation.getFileMimeType().contains("image")) {
+            ThumbnailFile thumbnailFileInformation = fileInformation.getThumbnailFile();
+
+            java.io.File thumbnailFile = new java.io.File(thumbnailFileInformation.getFilePath());
+
+            String thumbnailFileName = fileInformation.getFileOriginalName() + "의 썸네일 파일";
+            if (thumbnailFile.exists()) {
+                deleteFile(thumbnailFileName, thumbnailFile);
+            } else {
+                log.info("[SOGICMS] [{}] 파일이 존재하지 않습니다.", thumbnailFileName);
+            }
+        }
+    }
+
+    private void deleteFile(String fileName, java.io.File file) {
+        boolean deleteSuccess = file.delete();
+
+        if (deleteSuccess) {
+            log.info("[SOGICMS] [{}] 파일이 성공적으로 삭제되었습니다.", fileName);
+        } else {
+            log.info("[SOGICMS] [{}] 파일을 성공적으로 삭제하지 못했습니다.", fileName);
+        }
     }
 
     @Override
@@ -138,5 +191,13 @@ public class FileServiceImpl implements FileService {
                 .toFile(thumbnailFilePath);
 
         return thumbnailFilePath;
+    }
+
+    @Override
+    public void addOneDownloadCount(Long id) throws IOException {
+        File fileInformation = fileRepository.findById(id)
+                .orElseThrow(() -> new FileNotFoundException("파일을 찾을 수 없습니다."));
+
+        fileInformation.addOneDownloadCount();
     }
 }

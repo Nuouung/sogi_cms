@@ -23,7 +23,7 @@ public class SogiConstant {
     public static final String ADMIN_CONSTANT = "admin";
 
     // 파일 업로드 경로 최상위 위치
-    public static final String UPLOAD_PATH = PROJECT_ROOT_PATH + SYSTEM_SEPARATOR + "file" + SYSTEM_SEPARATOR + "upload";
+    public static final String UPLOAD_PATH = PROJECT_ROOT_PATH + SYSTEM_SEPARATOR + "uploadFile";
 
     // url 관련 경로
     public static final String SITE_PATH = "/" + SITE_CONSTANT;
