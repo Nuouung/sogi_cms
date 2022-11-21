@@ -1,5 +1,7 @@
 package cms.sogi_cms.cms.file.service.impl;
 
+import cms.sogi_cms.cms.configuration.entity.Configuration;
+import cms.sogi_cms.cms.configuration.service.ConfigurationService;
 import cms.sogi_cms.cms.file.entity.File;
 import cms.sogi_cms.cms.file.entity.ThumbnailFile;
 import cms.sogi_cms.cms.file.repository.FileRepository;
@@ -31,7 +33,13 @@ import java.util.UUID;
 @Transactional
 public class FileServiceImpl implements FileService {
 
+    private final String CONFIGURATION_ID = "file";
     private final String UPLOAD_WHITE_LIST = "upload_white_list";
+    private final String THUMBNAIL_DEFAULT_WIDTH = "thumbnail_default_width";
+    private final String THUMBNAIL_DEFAULT_HEIGHT = "thumbnail_default_height";
+    private final String UPLOAD_LIMIT_SIZE = "upload_limit_size";
+
+    private final ConfigurationService configurationService;
 
     private final FileRepository fileRepository;
     private final ThumbnailFileRepository thumbnailFileRepository;
@@ -93,9 +101,10 @@ public class FileServiceImpl implements FileService {
 
     // TODO validation으로 옮길 것
     private boolean uploadFileValidation(MultipartFile multipartFile, StringBuilder uploadErrorMessage) {
-        // TODO 설정 db 만들어야 한다.
-        List<String> uploadWhiteList = List.of(new String[]{"jpg"});
-        Long uploadSizeLimit = 100000L;
+        List<String> uploadWhiteList = getUploadWhiteList();
+
+        int uploadLimitSize = Integer.parseInt(
+                configurationService.getConfigurationById(CONFIGURATION_ID, UPLOAD_LIMIT_SIZE).getOptionValue());
 
         // 지원하지 않는 업로드 파일인 경우, 파일을 저장하지 않고 에러 정보를 담는다.
         if (!isUploadPossible(multipartFile.getOriginalFilename(), uploadWhiteList)) {
@@ -104,15 +113,21 @@ public class FileServiceImpl implements FileService {
         }
 
         // 업로드하고자 하는 파일이 시스템이 허용하는 최대 크기보다 큰 경우, 마찬가지로 파일을 저장하지 않고 에러 정보를 담는다.
-        if (multipartFile.getSize() > uploadSizeLimit) {
+        if (multipartFile.getSize() > uploadLimitSize) {
             uploadErrorMessage
                     .append("파일의 크기가 시스템의 허용 범위보다 큽니다. 업로드 가능 최대 크기: ")
-                    .append(uploadSizeLimit)
+                    .append(uploadLimitSize)
                     .append("byte");
             return false;
         }
 
         return true;
+    }
+
+    private List<String> getUploadWhiteList() {
+        String stringWhiteList = configurationService.getConfigurationById(CONFIGURATION_ID, UPLOAD_WHITE_LIST).getOptionValue();
+        List<String> uploadWhiteList = List.of(stringWhiteList.split(","));
+        return uploadWhiteList;
     }
 
     private boolean isUploadPossible(String filename, List<String> uploadWhiteList) {
@@ -185,9 +200,15 @@ public class FileServiceImpl implements FileService {
     public String makeThumbnail(java.io.File uploadFile) throws IOException {
         String thumbnailFilePath = uploadFile.getAbsolutePath().replace(".", "_thumbnail.");
 
+        int thumbnailDefaultWidth = Integer.parseInt(
+                configurationService.getConfigurationById(CONFIGURATION_ID, THUMBNAIL_DEFAULT_WIDTH).getOptionValue());
+
+        int thumbnailDefaultHeight = Integer.parseInt(
+                configurationService.getConfigurationById(CONFIGURATION_ID, THUMBNAIL_DEFAULT_HEIGHT).getOptionValue());
+
         Thumbnails.of(uploadFile)
-                .sourceRegion(Positions.CENTER, 400, 300)
-                .size(400, 300)
+                .sourceRegion(Positions.CENTER, thumbnailDefaultWidth, thumbnailDefaultHeight)
+                .size(thumbnailDefaultWidth, thumbnailDefaultHeight)
                 .toFile(thumbnailFilePath);
 
         return thumbnailFilePath;
