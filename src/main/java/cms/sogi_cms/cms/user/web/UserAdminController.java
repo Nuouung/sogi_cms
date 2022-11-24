@@ -56,13 +56,13 @@ public class UserAdminController {
 
     // r
     @GetMapping("/list")
-    public String userListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) {
+    public String userListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
         userSearch.setIsDeleted(false);
         Paging<UserResponseDto> paging = userService.getUserList(userSearch);
 
         model.addAttribute("paging", paging);
         model.addAttribute("urlPath", request.getRequestURI());
-        model.addAttribute("queryString", paging.getPagingSearch().queryString());
+        model.addAttribute("queryString", paging.getPagingSearch().getQueryString());
         model.addAttribute("totalPage", paging.getTotalPages());
         model.addAttribute("requestURI", request.getRequestURI());
 

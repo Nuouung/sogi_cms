@@ -1,8 +1,12 @@
 package cms.sogi_cms.cms.support.pagination;
 
+import cms.sogi_cms.cms.support.utils.PagingUtils;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Field;
 
 @Getter @Setter
 public class PagingSearch {
@@ -70,25 +74,7 @@ public class PagingSearch {
         return new PagingSearch(pageNumber + 1, size, sortProperty, sortDirection, isPaged);
     }
 
-    public String queryString() {
-        StringBuilder sb = new StringBuilder();
-
-        if (StringUtils.hasText(Integer.toString(getSize()))) {
-            sb.append("&size=").append(getSize());
-        }
-
-        if (StringUtils.hasText(getSortProperty())) {
-            sb.append("&sortProperty=").append(getSortProperty());
-        }
-
-        if (getSortDirection() != null) {
-            sb.append("&sortDirection=").append(getSortDirection());
-        }
-
-        if (getIsPaged() != null) {
-            sb.append("&isPaged=").append(getIsPaged());
-        }
-
-        return sb.toString();
+    public String getQueryString() throws IllegalAccessException {
+        return PagingUtils.getQueryString(new StringBuilder(), this); // 현재 클래스가 가진 필드 정보를 이용해 쿼리스트링 추출
     }
 }
