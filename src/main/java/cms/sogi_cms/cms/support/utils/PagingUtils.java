@@ -14,7 +14,7 @@ public class PagingUtils {
 
         // 쿼리 스트링용 StringBuilder에 값이 비지 않은 필드 값 주입
         for (Field field : fields) {
-            field.setAccessible(true);
+            field.setAccessible(true); // 외부에서 private 필드에 접근할 수 있도록 해주는 설정. oop의 추상화를 깨는 것이기 때문에 필요한 곳에서만 사용이 필요하다.
             if (field.get(t) != null) {
                 if (StringUtils.hasText(String.valueOf(field.get(t)))) {
                     sb.append("&").append(field.getName()).append("=")
