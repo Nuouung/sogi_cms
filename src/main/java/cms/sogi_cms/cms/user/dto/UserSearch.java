@@ -2,6 +2,7 @@ package cms.sogi_cms.cms.user.dto;
 
 import cms.sogi_cms.cms.support.pagination.PagingSearch;
 import cms.sogi_cms.cms.support.pagination.SortDirection;
+import cms.sogi_cms.cms.support.utils.PagingUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,45 +46,5 @@ public class UserSearch extends PagingSearch {
         this.isBirthdaySolar = isBirthdaySolar;
         this.isActive = isActive;
         this.isDeleted = isDeleted;
-    }
-
-    @Override
-    public String queryString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(super.queryString());
-
-        if (StringUtils.hasText(getUsername())) {
-            sb.append("&username=").append(getUsername());
-        }
-
-        if (StringUtils.hasText(getName())) {
-            sb.append("&name=").append(getName());
-        }
-
-        if (StringUtils.hasText(getEmail())) {
-            sb.append("&email=").append(getEmail());
-        }
-
-        if (getIsMailing() != null) {
-            sb.append("&isMailing=").append(getIsMailing());
-        }
-
-        if (StringUtils.hasText(getGender())) {
-            sb.append("&gender=").append(getGender());
-        }
-
-        if (getIsBirthdaySolar() != null) {
-            sb.append("&isBirthdaySolar=").append(getIsBirthdaySolar());
-        }
-
-        if (getIsActive() != null) {
-            sb.append("&isActive=").append(getIsActive());
-        }
-
-        if (getIsDeleted() != null) {
-            sb.append("&isDeleted=").append(getIsDeleted());
-        }
-
-        return sb.toString();
     }
 }
