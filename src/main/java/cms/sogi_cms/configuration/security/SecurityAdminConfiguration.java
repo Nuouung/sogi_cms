@@ -18,6 +18,8 @@ public class SecurityAdminConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().anyRequest().permitAll()
                 .and().formLogin()
                 .loginProcessingUrl("/sogi/admin/heheheheheh")
-                .loginProcessingUrl("/hello/admin");
+                .loginProcessingUrl("/hello/admin")
+                .and()
+                .csrf().disable();
     }
 }

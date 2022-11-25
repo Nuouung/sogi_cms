@@ -2,12 +2,15 @@ package cms.sogi_cms.cms.file.service.impl;
 
 import cms.sogi_cms.cms.configuration.entity.Configuration;
 import cms.sogi_cms.cms.configuration.service.ConfigurationService;
+import cms.sogi_cms.cms.file.dto.FileResponseDto;
+import cms.sogi_cms.cms.file.dto.FileSearch;
 import cms.sogi_cms.cms.file.entity.File;
 import cms.sogi_cms.cms.file.entity.ThumbnailFile;
 import cms.sogi_cms.cms.file.repository.FileRepository;
 import cms.sogi_cms.cms.file.repository.ThumbnailFileRepository;
 import cms.sogi_cms.cms.file.service.FileService;
 import cms.sogi_cms.cms.support.SogiConstant;
+import cms.sogi_cms.cms.support.pagination.Paging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -26,6 +29,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -126,8 +130,7 @@ public class FileServiceImpl implements FileService {
 
     private List<String> getUploadWhiteList() {
         String stringWhiteList = configurationService.getConfigurationById(CONFIGURATION_ID, UPLOAD_WHITE_LIST).getOptionValue();
-        List<String> uploadWhiteList = List.of(stringWhiteList.split(","));
-        return uploadWhiteList;
+        return List.of(stringWhiteList.split(","));
     }
 
     private boolean isUploadPossible(String filename, List<String> uploadWhiteList) {
@@ -139,6 +142,31 @@ public class FileServiceImpl implements FileService {
         }
 
         return false;
+    }
+
+    @Override
+    public Paging<FileResponseDto> getFileList(FileSearch fileSearch) {
+        List<FileResponseDto> contents = fileRepository.findList(fileSearch).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+        Long total = fileRepository.count(fileSearch);
+
+        return new Paging<>(contents, total, fileSearch);
+    }
+
+    private FileResponseDto toResponseDto(File file) {
+        FileResponseDto dto = new FileResponseDto();
+        dto.setUsername(file.getUser() == null ? "Anonymous" : file.getUser().getUsername());
+        dto.setFilePath(file.getFilePath());
+        dto.setFileOriginalName(file.getFileOriginalName());
+        dto.setFileHashedName(file.getFileHashedName());
+        dto.setFileExtension(file.getFileExtension());
+        dto.setFileMimeType(file.getFileMimeType());
+        dto.setFileSize(file.getFileSize());
+        dto.setRegisteredDateTime(file.getRegisteredDateTime());
+        dto.setDownloadCount(file.getDownloadCount());
+
+        return dto;
     }
 
     @Override

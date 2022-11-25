@@ -37,8 +37,6 @@ public class File {
 
     private String fileExtension;
     private String fileMimeType;
-//    @Enumerated(EnumType.STRING)
-//    private MediaType fileMediaType;
 
     private Long fileSize;
 
@@ -49,7 +47,6 @@ public class File {
     private Long imageWidth;
     private Long imageHeight;
 
-    // 썸네일 연결
     @OneToOne
     @JoinColumn(name = "THUMBNAIL_ID")
     private ThumbnailFile thumbnailFile;
