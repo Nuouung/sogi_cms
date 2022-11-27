@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymelear.org">
+<head th:replace="~{admin/common/include :: head}"></head>
+<body>
+<header th:replace="~{admin/common/include :: header_admin}"></header>
+<main>
+    <form th:action="${requestURI}" method="post">
+        <input name="username">
+        <input type="password" name="password">
+        <button type="submit">로그인하기</button>
+    </form>
+</main>
+</body>
+</html>
