@@ -4,20 +4,17 @@ import cms.sogi_cms.cms.file.entity.File;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.management.relation.Role;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Entity
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = SogiConstant.MAIN_SITE_PREFIX + "_USER")
-public class User implements UserDetails {
+public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -138,30 +135,5 @@ public class User implements UserDetails {
                 .zipCode(dto.getZipCode())
                 .extraAddress(dto.getExtraAddress())
                 .build();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 }

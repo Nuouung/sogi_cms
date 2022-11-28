@@ -1,4 +1,4 @@
-package cms.sogi_cms.configuration.security;
+package cms.sogi_cms.configuration.security.filterChain;
 
 import cms.sogi_cms.cms.support.SogiConstant;
 import org.springframework.context.annotation.Bean;
@@ -27,13 +27,13 @@ public class SecurityAdminConfiguration {
 
                 .authorizeRequests()
                 .antMatchers(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login*").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().hasRole("ADMIN")
 
                 .and()
                 .formLogin()
                 .loginPage(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")
                 .loginProcessingUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")
-                .defaultSuccessUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/")
+                .defaultSuccessUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/main")
 
                 .and()
                 .csrf().disable();

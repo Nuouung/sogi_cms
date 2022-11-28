@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.security.authentication.service;
 
+import cms.sogi_cms.cms.security.authentication.model.FormUserDetails;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,10 @@ public class UserFormUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // User 객체가 UserDetails 구현 객체
-        return userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("조건에 맞는 회원을 찾을 수 없습니다."));
+
+        // TODO Authority 정보 넣어줘야 한다.
+        return new FormUserDetails(user, null);
     }
 }

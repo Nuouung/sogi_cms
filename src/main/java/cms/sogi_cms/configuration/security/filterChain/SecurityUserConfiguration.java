@@ -1,4 +1,4 @@
-package cms.sogi_cms.configuration.security;
+package cms.sogi_cms.configuration.security.filterChain;
 
 import cms.sogi_cms.cms.support.SogiConstant;
 import org.springframework.context.annotation.Bean;
