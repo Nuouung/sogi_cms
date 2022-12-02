@@ -22,6 +22,9 @@ public interface AuthorityService {
 
     Paging<Authority> getAuthorityList(AuthoritySearch authoritySearch);
 
+    LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceMap();
+
+
     Long getTotalNumber(AuthoritySearch authoritySearch);
 
     // u
@@ -29,7 +32,4 @@ public interface AuthorityService {
 
     // d
     void deleteAuthority(Long id);
-
-    // 뭔지 정확히 모름 나중에 수정 필요
-    LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceMap();
 }

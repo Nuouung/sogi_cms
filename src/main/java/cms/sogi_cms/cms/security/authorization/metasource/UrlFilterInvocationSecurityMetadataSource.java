@@ -1,7 +1,5 @@
 package cms.sogi_cms.cms.security.authorization.metasource;
 
-import cms.sogi_cms.cms.authority.service.AuthorityService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;

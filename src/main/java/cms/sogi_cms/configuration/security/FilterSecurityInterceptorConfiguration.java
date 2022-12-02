@@ -1,6 +1,7 @@
 package cms.sogi_cms.configuration.security;
 
 import cms.sogi_cms.cms.authority.service.AuthorityService;
+import cms.sogi_cms.cms.role.service.RoleService;
 import cms.sogi_cms.cms.security.authorization.metasource.UrlFilterInvocationSecurityMetadataSource;
 import cms.sogi_cms.cms.security.authorization.metasource.UrlResourceMapFactoryBean;
 import lombok.RequiredArgsConstructor;

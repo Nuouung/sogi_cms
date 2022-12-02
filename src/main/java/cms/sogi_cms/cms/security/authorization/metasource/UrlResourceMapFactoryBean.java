@@ -1,10 +1,12 @@
 package cms.sogi_cms.cms.security.authorization.metasource;
 
 import cms.sogi_cms.cms.authority.service.AuthorityService;
+import cms.sogi_cms.cms.role.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,9 +28,7 @@ public class UrlResourceMapFactoryBean implements FactoryBean<LinkedHashMap<Requ
     }
 
     private void init() {
-        resourceMap = new LinkedHashMap<>();
-        // TODO
-//        resourceMap = authorityService.getResourceMap();
+        resourceMap = authorityService.getResourceMap();
     }
 
     @Override
