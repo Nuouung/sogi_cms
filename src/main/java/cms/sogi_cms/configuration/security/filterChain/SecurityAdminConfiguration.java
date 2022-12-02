@@ -27,7 +27,7 @@ public class SecurityAdminConfiguration {
 
                 .authorizeRequests()
                 .antMatchers(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login*").permitAll()
-                .anyRequest().hasRole("ADMIN")
+                .anyRequest().authenticated()
 
                 .and()
                 .formLogin()
