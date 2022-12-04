@@ -27,11 +27,12 @@ public class SecurityAdminConfiguration {
         http
                 .antMatcher(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/**") // 필터 적용 범위. 어드민 보안 설정이므로 어드민 경로 이하를 잡는다.
 
-                /*.authorizeRequests()
+                .authorizeRequests()
                 .antMatchers(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login*").permitAll()
-                .anyRequest().authenticated()*/
+                .anyRequest().authenticated()
 
-                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class)
+                .and()
+//                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class)
 
                 .formLogin()
                 .loginPage(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")

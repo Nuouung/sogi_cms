@@ -14,14 +14,15 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Array;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthorityServiceImpl implements AuthorityService {
 
@@ -29,17 +30,22 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public Long saveAuthority(AuthorityCreateUpdateDto authorityDto) {
-        return null;
+        Authority authority = Authority.create(authorityDto);
+        authorityRepository.save(authority);
+
+        return authority.getId();
     }
 
     @Override
     public Authority getAuthorityById(Long id) {
-        return null;
+        return authorityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("권한 정보를 조회할 수 없습니다."));
     }
 
     @Override
     public Authority getAuthorityByAuthorityName(String authorityName) {
-        return null;
+        return authorityRepository.findByAuthorityName(authorityName)
+                .orElseThrow(() -> new EntityNotFoundException("권한 정보를 조회할 수 없습니다."));
     }
 
     @Override
@@ -51,25 +57,21 @@ public class AuthorityServiceImpl implements AuthorityService {
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceMap() {
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap = new LinkedHashMap<>();
         authorityRepository.findAll()
-                .forEach(authorityToResourceMap(resourceMap));
+                .forEach(authority -> {
+                    ArrayList<ConfigAttribute> configAttributeList = new ArrayList<>();
+
+                    authority.getRoleAuthorityList()
+                            .forEach(roleAuthority -> {
+                                Role role = roleAuthority.getRole();
+                                configAttributeList.add(new SecurityConfig(role.getRoleName()));
+                            });
+
+                    resourceMap.put(
+                            new AntPathRequestMatcher(authority.getUrlPath()),
+                            configAttributeList);
+                });
 
         return resourceMap;
-    }
-
-    private Consumer<Authority> authorityToResourceMap(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap) {
-        return authority -> {
-            ArrayList<ConfigAttribute> configAttributeList = new ArrayList<>();
-
-            authority.getRoleAuthorityList()
-                    .forEach(roleAuthority -> {
-                        Role role = roleAuthority.getRole();
-                        configAttributeList.add(new SecurityConfig(role.getRoleName()));
-                    });
-
-            resourceMap.put(
-                    new AntPathRequestMatcher(authority.getUrlPath()),
-                    configAttributeList);
-        };
     }
 
     @Override
@@ -79,11 +81,17 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public void updateAuthority(Long id, AuthorityCreateUpdateDto authorityDto) {
+        Authority authority = authorityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("권한 정보를 조회할 수 없습니다."));
 
+        authority.update(authorityDto);
     }
 
     @Override
     public void deleteAuthority(Long id) {
+        Authority authority = authorityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("권한 정보를 조회할 수 없습니다."));
 
+        authorityRepository.delete(authority);
     }
 }

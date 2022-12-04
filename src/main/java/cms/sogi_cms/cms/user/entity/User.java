@@ -1,11 +1,11 @@
 package cms.sogi_cms.cms.user.entity;
 
 import cms.sogi_cms.cms.file.entity.File;
+import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import lombok.*;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -48,9 +48,9 @@ public class User {
 
     // TODO 프로필 사진
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ROLE_NAME")
-//    private Role role;
+    @OneToOne
+    @JoinColumn(name = "ROLE_NAME", columnDefinition = "varchar(255)", referencedColumnName = "roleName")
+    private Role role;
 
     private boolean isActive;
     private boolean isDeleted;
@@ -79,6 +79,7 @@ public class User {
                 .birthday(dto.getBirthdayYear() + "-" + birthdayMonth + "-" + birthdayDay)
                 .isBirthdaySolar(dto.getIsBirthdaySolar())
                 .address(address)
+                .role(role)
                 .isActive(true)
                 .isDeleted(false)
                 .build();

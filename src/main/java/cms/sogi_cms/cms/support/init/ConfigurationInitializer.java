@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ConfigurationInitialize {
+public class ConfigurationInitializer {
 
     @Value("${spring.jpa.hibernate.ddl-auto:none}")
     private String ddlMode;

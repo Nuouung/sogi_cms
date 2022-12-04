@@ -32,9 +32,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class FileServiceImpl implements FileService {
 
     private final String CONFIGURATION_ID = "file";

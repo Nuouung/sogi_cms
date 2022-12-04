@@ -30,9 +30,9 @@ public class Authority implements GrantedAuthority {
     private HttpMethod httpMethod;
     private String urlPath;
 
-    private int authorityPriority; // 기본값 100. 값이 커질수록 높은 권한
+    private int priority; // 기본값 100. 값이 낮아질수록 높은 권한
 
-    private boolean isDefault; // 기본 권한인지
+    private boolean isDefault; // 사용자 지정 권한이 아닌 시스템 기본 권한인지
 
     @OneToMany(mappedBy = "authority")
     private List<RoleAuthority> roleAuthorityList = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Authority implements GrantedAuthority {
                 .description(dto.getDescription())
                 .httpMethod(dto.getHttpMethod())
                 .urlPath(dto.getUrlPath())
-                .authorityPriority(dto.getAuthorityPriority())
+                .priority(dto.getPriority())
                 .isDefault(dto.isDefault())
                 .registerDateTime(LocalDateTime.now())
                 .lastModifiedDateTime(LocalDateTime.now())
@@ -64,7 +64,7 @@ public class Authority implements GrantedAuthority {
         this.description = dto.getDescription();
         this.httpMethod = dto.getHttpMethod();
         this.urlPath = dto.getUrlPath();
-        this.authorityPriority = dto.getAuthorityPriority();
+        this.priority = dto.getPriority();
         this.isDefault = dto.isDefault();
         this.registerDateTime = LocalDateTime.now();
         this.lastModifiedDateTime = LocalDateTime.now();

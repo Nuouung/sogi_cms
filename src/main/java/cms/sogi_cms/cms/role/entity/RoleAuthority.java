@@ -2,13 +2,15 @@ package cms.sogi_cms.cms.role.entity;
 
 import cms.sogi_cms.cms.authority.entity.Authority;
 import cms.sogi_cms.cms.support.SogiConstant;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Table(name = SogiConstant.MAIN_SITE_PREFIX + "_ROLE_AUTHORITY")
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Table(name = SogiConstant.MAIN_SITE_PREFIX + "_ROLE_AUTHORITY_RELATION")
 public class RoleAuthority {
 
     @Id
@@ -22,4 +24,11 @@ public class RoleAuthority {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AUTHORITY_NAME")
     private Authority authority;
+
+    public static RoleAuthority create(Role role, Authority authority) {
+        return RoleAuthority.builder()
+                .role(role)
+                .authority(authority)
+                .build();
+    }
 }

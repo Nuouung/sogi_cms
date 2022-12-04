@@ -1,5 +1,7 @@
 package cms.sogi_cms.cms.user.service.impl;
 
+import cms.sogi_cms.cms.role.entity.Role;
+import cms.sogi_cms.cms.role.service.RoleService;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import cms.sogi_cms.cms.user.dto.UserResponseDto;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +26,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final RoleService roleService;
+
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -30,13 +35,22 @@ public class UserServiceImpl implements UserService {
         // 비밀번호 암호화
         String hashedPassword = passwordEncoder.encode(userDto.getPassword());
 
-        // 회원가입 기본 역할 조회 및 할당 TODO
+        // 회원가입 기본 역할 조회
+        Role role = getRole(userDto);
 
         // 객체 생성 및 저장
-        User user = User.create(userDto, hashedPassword, null);
+        User user = User.create(userDto, hashedPassword, role);
         userRepository.save(user);
 
         return user.getId();
+    }
+
+    private Role getRole(UserCreateUpdateDto userDto) {
+        if (StringUtils.hasText(userDto.getRoleName())) {
+            return roleService.getRoleByRoleName(userDto.getRoleName());
+        }
+
+        return roleService.getDefaultUserRole();
     }
 
     @Override

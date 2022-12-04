@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UserInitialize {
+public class UserInitializer {
 
     @Value("${spring.jpa.hibernate.ddl-auto:none}")
     private String ddlMode;
@@ -44,32 +44,9 @@ public class UserInitialize {
             dto.setLotNumberAddress("경기 양주시 덕계동 732");
             dto.setDetailAddress("1층");
             dto.setZipCode("11442");
+            dto.setRoleName("ROLE_ADMIN");
 
             userService.saveUser(dto);
-
-            for (int i = 0; i < 10; i++) {
-                UserCreateUpdateDto dtoo = new UserCreateUpdateDto();
-                dtoo.setUsername("user" + (i + 2));
-                dtoo.setPassword("dlwlstjrakstp");
-                dtoo.setLastname("테스트");
-                dtoo.setFirstname("회원");
-                dtoo.setEmail("testUser@gmail.com");
-                dtoo.setIsMailing(false);
-                dtoo.setPhoneNumberFront("010");
-                dtoo.setPhoneNumberMiddle("1111");
-                dtoo.setPhoneNumberLast("2222");
-                dtoo.setGender("X");
-                dtoo.setBirthdayYear("2000");
-                dtoo.setBirthdayMonth("1");
-                dtoo.setBirthdayDay("1");
-                dtoo.setIsBirthdaySolar(true);
-                dtoo.setRoadNameAddress("경기 양주시 평화로1429번길 43-90");
-                dtoo.setLotNumberAddress("경기 양주시 덕계동 732");
-                dtoo.setDetailAddress("1층");
-                dtoo.setZipCode("11442");
-
-                userService.saveUser(dtoo);
-            }
         }
     }
 }
