@@ -20,7 +20,6 @@ public class UserFormUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("조건에 맞는 회원을 찾을 수 없습니다."));
 
-        // TODO Authority 정보 넣어줘야 한다.
-        return new FormUserDetails(user, null);
+        return new FormUserDetails(user, user.getRole().getRoleName());
     }
 }

@@ -4,20 +4,22 @@ import cms.sogi_cms.cms.authority.entity.Authority;
 import cms.sogi_cms.cms.user.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 public class FormUserDetails implements UserDetails {
 
     private final User user;
-    private final Set<Authority> authorities;
+    private final String roleName;
 
-    public FormUserDetails(User user, Set<Authority> authorities) {
+    public FormUserDetails(User user, String roleName) {
         this.user = user;
-        this.authorities = authorities;
+        this.roleName = roleName;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class FormUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return List.of(new SimpleGrantedAuthority(roleName));
     }
 
     @Override
