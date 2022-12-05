@@ -10,10 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
-import java.util.List;
-
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Order(1)
 @RequiredArgsConstructor
 public class SecurityAdminConfiguration {
@@ -27,19 +25,13 @@ public class SecurityAdminConfiguration {
         http
                 .antMatcher(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/**") // 필터 적용 범위. 어드민 보안 설정이므로 어드민 경로 이하를 잡는다.
 
-                .authorizeRequests()
-                .antMatchers(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login*").permitAll()
-                .anyRequest().authenticated()
-
-                .and()
-//                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class)
-
                 .formLogin()
                 .loginPage(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")
                 .loginProcessingUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")
                 .defaultSuccessUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/main")
 
                 .and()
+                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class)
                 .csrf().disable();
 
         return http.build();

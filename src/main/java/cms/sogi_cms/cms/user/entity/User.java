@@ -49,7 +49,7 @@ public class User {
     // TODO 프로필 사진
 
     @OneToOne
-    @JoinColumn(name = "ROLE_NAME", columnDefinition = "varchar(255)", referencedColumnName = "roleName")
+    @JoinColumn(name = "ROLE_ID")
     private Role role;
 
     private boolean isActive;
