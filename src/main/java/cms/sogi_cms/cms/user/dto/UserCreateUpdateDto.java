@@ -1,6 +1,7 @@
 package cms.sogi_cms.cms.user.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 
@@ -53,7 +54,7 @@ public class UserCreateUpdateDto {
     private String zipCode; // 우편번호
     private String extraAddress; // 참고사항
 
-    // TODO 프로필 사진
+    private MultipartFile profilePicture;
 
     private String roleName;
 

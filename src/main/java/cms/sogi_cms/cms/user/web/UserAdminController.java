@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user")
@@ -37,7 +38,7 @@ public class UserAdminController {
     }
 
     @PostMapping("/new")
-    public String insertUserPost(@ModelAttribute @Valid UserCreateUpdateDto userDto, BindingResult bindingResult, Model model) {
+    public String insertUserPost(@ModelAttribute @Valid UserCreateUpdateDto userDto, BindingResult bindingResult, Model model) throws IOException {
         userCreateUpdateValidator.validate(userDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("formMode", "INSERT");

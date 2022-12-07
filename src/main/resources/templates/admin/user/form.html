@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymelear.org">
-<head th:replace="~{admin/common/include :: head}"></head>
+<head th:replace="~{admin/common/head :: head}"></head>
 <body>
-    <header th:replace="~{admin/common/include :: header_admin}"></header>
+    <header th:replace="~{admin/common/header :: header}"></header>
     <main>
-        <form th:object="${userCreateUpdateDto}" th:action="${requestURI}" method="post">
+        <form th:object="${userCreateUpdateDto}" th:action="${requestURI}" method="post" enctype="multipart/form-data">
             <div th:if="${formMode eq 'UPDATE'}">
                 <input type="hidden" th:field="*{id}">
             </div>
@@ -113,6 +113,12 @@
                 <label>
                     <span>양력</span>
                     <input type="checkbox" th:field="*{isBirthdaySolar}">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>프로필사진</span>
+                    <input type="file" th:field="*{profilePicture}">
                 </label>
             </div>
             <div>

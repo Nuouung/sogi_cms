@@ -1,5 +1,7 @@
 package cms.sogi_cms.cms.user.service.impl;
 
+import cms.sogi_cms.cms.file.entity.File;
+import cms.sogi_cms.cms.file.service.FileService;
 import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.role.service.RoleService;
 import cms.sogi_cms.cms.support.pagination.Paging;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +30,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final RoleService roleService;
+    private final FileService fileService;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Long saveUser(UserCreateUpdateDto userDto) {
+    public Long saveUser(UserCreateUpdateDto userDto) throws IOException {
         // 비밀번호 암호화
         String hashedPassword = passwordEncoder.encode(userDto.getPassword());
 
@@ -40,6 +44,15 @@ public class UserServiceImpl implements UserService {
 
         // 객체 생성 및 저장
         User user = User.create(userDto, hashedPassword, role);
+
+        // 프로필 사진 저장
+        if (userDto.getProfilePicture() != null && !userDto.getProfilePicture().isEmpty()) {
+            Long fileId = fileService.saveFile(userDto.getProfilePicture());
+            File file = fileService.getFileByFileId(fileId);
+
+            user.setFile(file);
+        }
+
         userRepository.save(user);
 
         return user.getId();

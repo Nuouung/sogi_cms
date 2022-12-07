@@ -42,11 +42,9 @@ public class User {
     @Embedded
     private Address address;
 
-    // 읽기 전용. 데이터베이스에서 조회해 가져오기 때문에 setter, builder, constructor는 없다.
-    @OneToOne(mappedBy = "user")
+    @OneToOne
+    @JoinColumn(name = "PROFILE_ID")
     private File file;
-
-    // TODO 프로필 사진
 
     @OneToOne
     @JoinColumn(name = "ROLE_ID")
@@ -136,5 +134,9 @@ public class User {
                 .zipCode(dto.getZipCode())
                 .extraAddress(dto.getExtraAddress())
                 .build();
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }

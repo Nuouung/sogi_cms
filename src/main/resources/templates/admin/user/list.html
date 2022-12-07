@@ -1,76 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymelear.org">
-<head th:replace="~{admin/common/include :: head}"></head>
+<!--<head th:replace="~{admin/common/head :: head}"></head>-->
+<head>
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+</head>
 <body>
-    <header th:replace="~{admin/common/include :: header_admin}"></header>
-    <main>
-        <section>
-            <form method="get" th:action="${requestURI}">
-                <div>
-                    <label>정렬조건</label>
+    <header th:replace="~{admin/common/header :: header}"></header>
+    <main class="d-flex flex-nowrap">
+        <div th:replace="~{admin/common/left :: left}"></div>
+        <div class="b-example-divider b-example-vr"></div>
+
+
+        <section class="d-flex flex-column">
+            <section>
+                <form method="get" th:action="${requestURI}">
                     <div>
-                        <select id="size" name="size">
-                            <option value="10">10개씩</option>
-                            <option value="20">20개씩</option>
-                            <option value="40">40개씩</option>
-                        </select>
-                        <select id="sortProperty" name="sortProperty">
-                            <option value="registeredDateTime">가입일시</option>
-                            <option value="username">회원아이디</option>
-                            <option value="name">회원이름</option>
-                        </select>
-                        <select id="sortDirection" name="sortDirection">
-                            <option value="DESC">내림차순</option>
-                            <option value="ASC">오름차순</option>
-                        </select>
+                        <label>정렬조건</label>
+                        <div>
+                            <select id="size" name="size">
+                                <option value="10">10개씩</option>
+                                <option value="20">20개씩</option>
+                                <option value="40">40개씩</option>
+                            </select>
+                            <select id="sortProperty" name="sortProperty">
+                                <option value="registeredDateTime">가입일시</option>
+                                <option value="username">회원아이디</option>
+                                <option value="name">회원이름</option>
+                            </select>
+                            <select id="sortDirection" name="sortDirection">
+                                <option value="DESC">내림차순</option>
+                                <option value="ASC">오름차순</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <label>회원이름</label>
-                    <input name="name">
-                </div>
-<!--                <div>-->
-<!--                    <label>가입기간</label>-->
-<!--                    <input type="date" name="registeredDateTime_start"> ~ <input type="date" name="registeredDateTime_end">-->
-<!--                </div>-->
-                <button type="submit">검색</button>
-            </form>
-        </section>
-        <section>
-            <table style="border: black 1px solid">
-                <thead>
-                <tr>
-                    <th>아이디</th>
-                    <th>회원이름</th>
-                    <th>이메일</th>
-                    <th>전화번호</th>
-                    <th>생년월일</th>
-                    <th>동작</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${paging.contents}">
-                    <td>
-                        <a th:href="@{/sogi/admin/user/{id}(id=${user.id})}" th:text="${user.username}"></a>
-                    </td>
-                    <td th:text="|${user.lastname}${user.firstname}|"></td>
-                    <td th:text="${user.email}"></td>
-                    <td th:text="${user.phoneNumber}"></td>
-                    <td th:text="${user.birthday}"></td>
-                    <td>
-                        <button type="button" th:onclick="|location.href='@{/sogi/admin/user/update/{id}(id=${user.id})}'|">수정</button>
-                        <form method="post" th:action="|@{/sogi/admin/user/delete/{id}(id=${user.id})}|">
-                            <input type="hidden" name="${user.id}" value="${user.id}">
-                            <button type="submit">삭제</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section th:replace="~{admin/common/include :: page_button}"></section>
-        <section>
-            <button onclick="location.href='/sogi/admin/user/new'">회원등록</button>
+                    <div>
+                        <label>회원이름</label>
+                        <input name="name">
+                    </div>
+                    <!--                <div>-->
+                    <!--                    <label>가입기간</label>-->
+                    <!--                    <input type="date" name="registeredDateTime_start"> ~ <input type="date" name="registeredDateTime_end">-->
+                    <!--                </div>-->
+                    <button type="submit" class="btn btn-dark">검색</button>
+                </form>
+            </section>
+            <section>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">아이디</th>
+                        <th scope="col">회원이름</th>
+                        <th scope="col">이메일</th>
+                        <th scope="col">전화번호</th>
+                        <th scope="col">생년월일</th>
+                        <th scope="col">동작</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${paging.contents}">
+                        <td>
+                            <a th:href="@{/sogi/admin/user/{id}(id=${user.id})}" th:text="${user.username}"></a>
+                        </td>
+                        <td th:text="|${user.lastname}${user.firstname}|"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.phoneNumber}"></td>
+                        <td th:text="${user.birthday}"></td>
+                        <td>
+                            <div style="display: flex;">
+                                <button type="button" class="btn btn-dark" th:onclick="|location.href='@{/sogi/admin/user/update/{id}(id=${user.id})}'|">수정</button>
+                                <form method="post" th:action="|@{/sogi/admin/user/delete/{id}(id=${user.id})}|">
+                                    <input type="hidden" name="${user.id}" value="${user.id}">
+                                    <button type="submit" class="btn btn-danger">삭제</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section th:replace="~{admin/common/include :: page_button}"></section>
+            <section>
+                <button onclick="location.href='/sogi/admin/user/new'" class="btn btn-dark">회원등록</button>
+            </section>
         </section>
     </main>
 </body>

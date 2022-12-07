@@ -26,11 +26,6 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO 파일을 등록한 회원을 연결
-    @OneToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
-
     private String filePath;
     private String fileOriginalName;
     private String fileHashedName;

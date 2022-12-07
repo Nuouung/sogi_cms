@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -145,6 +146,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public File getFileByFileId(Long id) {
+        return fileRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("파일을 찾을 수 없습니다."));
+    }
+
+    @Override
     public Paging<FileResponseDto> getFileList(FileSearch fileSearch) {
         List<FileResponseDto> contents = fileRepository.findList(fileSearch).stream()
                 .map(this::toResponseDto)
@@ -156,7 +163,6 @@ public class FileServiceImpl implements FileService {
 
     private FileResponseDto toResponseDto(File file) {
         FileResponseDto dto = new FileResponseDto();
-        dto.setUsername(file.getUser() == null ? "Anonymous" : file.getUser().getUsername());
         dto.setFilePath(file.getFilePath());
         dto.setFileOriginalName(file.getFileOriginalName());
         dto.setFileHashedName(file.getFileHashedName());

@@ -20,14 +20,7 @@ public class LoginAdminController {
     public String loginPageGet(HttpServletRequest request, Model model) {
         model.addAttribute("requestURI", request.getRequestURI());
 
-        return "admin/login/form";
-    }
-
-    @GetMapping("/main")
-    public void hello(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        SecurityContext context = SecurityContextHolder.getContext();
-        System.out.println("hello");
+        return "admin/login/login";
     }
 
     @PostMapping("/login")

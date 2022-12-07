@@ -1,0 +1,12 @@
+spring:
+
+  profiles:
+    active: local
+
+  thymeleaf:
+    prefix: classpath:/templates/
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
