@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.user.dto;
 
+import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.support.pagination.PagingSearch;
 import cms.sogi_cms.cms.support.pagination.SortDirection;
 import cms.sogi_cms.cms.support.utils.PagingUtils;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter @Setter
 public class UserSearch extends PagingSearch {
@@ -28,7 +30,7 @@ public class UserSearch extends PagingSearch {
     private String gender;
     private Boolean isBirthdaySolar;
 
-//    private Role role;
+    private List<Role> roleList;
 
     private Boolean isActive;
     private Boolean isDeleted;

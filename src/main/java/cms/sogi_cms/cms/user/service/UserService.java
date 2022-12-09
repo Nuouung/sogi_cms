@@ -21,6 +21,10 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
+    Paging<UserResponseDto> getAdminUserList(UserSearch userSearch);
+
+    Paging<UserResponseDto> getNonUserList(UserSearch userSearch);
+
     Paging<UserResponseDto> getUserList(UserSearch userSearch);
 
     Long getTotalNumber(UserSearch userSearch);

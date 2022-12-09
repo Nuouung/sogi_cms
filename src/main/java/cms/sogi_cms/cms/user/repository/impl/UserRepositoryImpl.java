@@ -1,9 +1,11 @@
 package cms.sogi_cms.cms.user.repository.impl;
 
+import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.repository.UserRepositoryCustom;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
@@ -24,6 +26,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     @Override
     public List<User> findList(UserSearch userSearch) {
+
         return queryFactory.selectFrom(user)
                 .orderBy(order(userSearch))
                 .where(
@@ -35,7 +38,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                         genderEquals(userSearch.getGender()),
                         isBirthdaySolar(userSearch.getIsBirthdaySolar()),
                         isActive(userSearch.getIsActive()),
-                        isDeleted(userSearch.getIsDeleted()))
+                        isDeleted(userSearch.getIsDeleted()),
+                        getRolesEquals(userSearch))
                 .offset(userSearch.getOffset())
                 .limit(userSearch.getSize())
                 .fetch();
@@ -54,10 +58,19 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                         genderEquals(userSearch.getGender()),
                         isBirthdaySolar(userSearch.getIsBirthdaySolar()),
                         isActive(userSearch.getIsActive()),
-                        isDeleted(userSearch.getIsDeleted()))
+                        isDeleted(userSearch.getIsDeleted()),
+                        getRolesEquals(userSearch))
                 .fetchOne();
 
         return count == null ? 0 : count;
+    }
+
+    private BooleanBuilder getRolesEquals(UserSearch userSearch) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        for (Role role : userSearch.getRoleList()) {
+            booleanBuilder.or(roleEquals(role));
+        }
+        return booleanBuilder;
     }
 
     private Predicate isDeleted(Boolean deleted) {
@@ -74,6 +87,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     private Predicate genderEquals(String gender) {
         return gender != null ? user.gender.eq(gender) : null;
+    }
+
+    private Predicate roleEquals(Role role) {
+        return user.role.id.eq(role.getId());
     }
 
     private Predicate isMailing(Boolean mailing) {

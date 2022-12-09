@@ -53,8 +53,6 @@ public class RoleAuthorityInitializer {
             roleDto.setDefaultUser(false);
             roleDto.setAuthorityNameList(List.of("admin-access"));
 
-            roleService.saveRole(roleDto);
-
             // ROLE_USER
             RoleCreateUpdateDto roleDto2 = new RoleCreateUpdateDto();
             roleDto2.setRoleName("ROLE_USER");
@@ -64,6 +62,17 @@ public class RoleAuthorityInitializer {
             roleDto2.setDefaultUser(true);
 
             roleService.saveRole(roleDto2);
+
+            // ROLE_MANAGER
+            RoleCreateUpdateDto roleDto3 = new RoleCreateUpdateDto();
+            roleDto3.setRoleName("ROLE_MANAGER");
+            roleDto3.setKoreanName("매니저");
+            roleDto3.setDescription("매니저");
+            roleDto3.setAdmin(false);
+            roleDto3.setDefaultUser(false);
+            roleDto3.setAuthorityNameList(List.of("admin-access"));
+
+            roleService.saveRole(roleDto3);
         }
     }
 }

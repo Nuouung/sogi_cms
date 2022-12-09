@@ -85,6 +85,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Paging<UserResponseDto> getAdminUserList(UserSearch userSearch) {
+        userSearch.setRoleList(roleService.getRoleListContainCertainAuthority("admin-access"));
+        return getUserList(userSearch);
+    }
+
+    @Override
+    public Paging<UserResponseDto> getNonUserList(UserSearch userSearch) {
+        return null;
+    }
+
+    @Override
     public Paging<UserResponseDto> getUserList(UserSearch userSearch) {
         List<UserResponseDto> contents = userRepository.findList(userSearch).stream()
                 .map(this::toResponseDto)
@@ -116,6 +127,7 @@ public class UserServiceImpl implements UserService {
         dto.setRegisteredDateTime(user.getRegisteredDateTime());
         dto.setPasswordLastUpdatedDateTime(user.getPasswordLastUpdatedDateTime());
         dto.setLastLoginDateTime(user.getLastLoginDateTime());
+        dto.setRoleKoreanName(user.getRole().getKoreanName());
 
         return dto;
     }

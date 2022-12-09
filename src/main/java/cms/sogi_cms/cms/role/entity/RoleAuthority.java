@@ -18,11 +18,11 @@ public class RoleAuthority {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROLE_NAME")
+    @JoinColumn(name = "ROLE_ID")
     private Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AUTHORITY_NAME")
+    @JoinColumn(name = "AUTHORITY_ID")
     private Authority authority;
 
     public static RoleAuthority create(Role role, Authority authority) {

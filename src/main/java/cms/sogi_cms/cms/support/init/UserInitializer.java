@@ -50,6 +50,29 @@ public class UserInitializer {
             dto.setRoleName("ROLE_ADMIN");
 
             userService.saveUser(dto);
+
+            UserCreateUpdateDto dto2 = new UserCreateUpdateDto();
+            dto2.setUsername("iamYourFather");
+            dto2.setPassword("wlstjr57!");
+            dto2.setLastname("이");
+            dto2.setFirstname("진석");
+            dto2.setEmail("jin6016@gmail.com");
+            dto2.setIsMailing(false);
+            dto2.setPhoneNumberFront("010");
+            dto2.setPhoneNumberMiddle("8139");
+            dto2.setPhoneNumberLast("2468");
+            dto2.setGender("M");
+            dto2.setBirthdayYear("1994");
+            dto2.setBirthdayMonth("6");
+            dto2.setBirthdayDay("16");
+            dto2.setIsBirthdaySolar(true);
+            dto2.setRoadNameAddress("경기 양주시 평화로1429번길 43-90");
+            dto2.setLotNumberAddress("경기 양주시 덕계동 732");
+            dto2.setDetailAddress("1층");
+            dto2.setZipCode("11442");
+            dto2.setRoleName("ROLE_MANAGER");
+
+            userService.saveUser(dto2);
         }
     }
 }

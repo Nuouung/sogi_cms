@@ -72,6 +72,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public List<Role> getRoleListContainCertainAuthority(String authorityName) {
+        return roleRepository.getRoleListByAuthorityName(authorityName);
+    }
+
+    @Override
     public Paging<Role> getRoleList(RoleSearch roleSearch) {
         return null;
     }

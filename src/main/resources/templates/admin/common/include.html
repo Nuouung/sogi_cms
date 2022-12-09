@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<section th:fragment="page_button">
+<section>
     <div th:with="actualPageNumber=${paging.pagingSearch.pageNumber + 1}, total=${paging.total}">
         <a th:if="${actualPageNumber - 2 gt 0}" th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 - 2}${queryString}|" th:text="${actualPageNumber - 2}"></a>
         <a th:if="${actualPageNumber - 1 gt 0}" th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 - 1}${queryString}|" th:text="${actualPageNumber - 1}"></a>
@@ -11,4 +11,40 @@
     </div>
 </section>
 
+<nav th:fragment="page_button" th:with="actualPageNumber=${paging.pagingSearch.pageNumber + 1}, total=${paging.total}" aria-label="Page navigation example">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;"
+        th:text="|총 ${paging.total}개의 데이터 중 ${paging.pageNumber * paging.size + 1} ~ ${(paging.pageNumber + 1) * paging.size}번 째의 데이터를 열람하고 있습니다.|"></div>
+    <ul class="pagination" style="justify-content: flex-end;">
+<!--        <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+        <li th:if="${actualPageNumber - 2 gt 0}" class="page-item"><a th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 - 2}${queryString}|" th:text="${actualPageNumber - 2}" class="page-link"></a></li>
+        <li th:if="${actualPageNumber - 1 gt 0}" class="page-item"><a th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 - 1}${queryString}|" th:text="${actualPageNumber - 1}" class="page-link"></a></li>
+        <li class="page-item active"><a th:text="${actualPageNumber}" class="page-link"></a></li>
+        <li th:if="${actualPageNumber + 1} le ${totalPage}" class="page-item"><a th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 + 1}${queryString}|" th:text="${actualPageNumber + 1}" class="page-link"></a></li>
+        <li th:if="${actualPageNumber + 2} le ${totalPage}" class="page-item"><a th:href="|${urlPath}?pageNumber=${actualPageNumber - 1 + 2}${queryString}|" th:text="${actualPageNumber + 2}" class="page-link"></a></li>
+<!--        <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
+    </ul>
+</nav>
+
+<div th:fragment="logout_modal" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a th:fragment="scroll_to_top_botton" class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 </html>

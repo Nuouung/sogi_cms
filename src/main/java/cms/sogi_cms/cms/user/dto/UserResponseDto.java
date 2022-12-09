@@ -41,9 +41,7 @@ public class UserResponseDto {
 
     // TODO 프로필 사진
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ROLE_NAME")
-//    private Role role;
+    private String roleKoreanName;
 
     private String captcha; // 캡차
 }

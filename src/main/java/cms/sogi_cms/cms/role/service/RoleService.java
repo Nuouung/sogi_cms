@@ -22,6 +22,8 @@ public interface RoleService {
 
     Role getDefaultUserRole();
 
+    List<Role> getRoleListContainCertainAuthority(String authorityName);
+
     Paging<Role> getRoleList(RoleSearch roleSearch);
 
     Long getTotalNumber(RoleSearch roleSearch);

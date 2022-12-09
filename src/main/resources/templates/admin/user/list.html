@@ -1,88 +1,149 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymelear.org">
-<!--<head th:replace="~{admin/common/head :: head}"></head>-->
-<head>
-    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-</head>
-<body>
-    <header th:replace="~{admin/common/header :: header}"></header>
-    <main class="d-flex flex-nowrap">
-        <div th:replace="~{admin/common/left :: left}"></div>
-        <div class="b-example-divider b-example-vr"></div>
 
+<head th:replace="~{admin/common/head :: head}"></head>
 
-        <section class="d-flex flex-column">
-            <section>
-                <form method="get" th:action="${requestURI}">
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="~{admin/common/left :: left}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{admin/common/topbar :: topbar}"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">회원 목록</h1>
+                <!--<p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                    For more information about DataTables, please visit the <a target="_blank"
+                                                                               href="https://datatables.net">official DataTables documentation</a>.</p>-->
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">회원 목록</h6>
+                    </div>
                     <div>
-                        <label>정렬조건</label>
-                        <div>
-                            <select id="size" name="size">
-                                <option value="10">10개씩</option>
-                                <option value="20">20개씩</option>
-                                <option value="40">40개씩</option>
-                            </select>
-                            <select id="sortProperty" name="sortProperty">
-                                <option value="registeredDateTime">가입일시</option>
-                                <option value="username">회원아이디</option>
-                                <option value="name">회원이름</option>
-                            </select>
-                            <select id="sortDirection" name="sortDirection">
-                                <option value="DESC">내림차순</option>
-                                <option value="ASC">오름차순</option>
-                            </select>
+                        <!--<form method="get" th:action="${requestURI}">
+                            <div class="row">
+                                <label>정렬조건</label>
+                                <div>
+                                    <select id="size" name="size">
+                                        <option value="10">10개씩</option>
+                                        <option value="20">20개씩</option>
+                                        <option value="40">40개씩</option>
+                                    </select>
+                                    <select id="sortProperty" name="sortProperty">
+                                        <option value="registeredDateTime">가입일시</option>
+                                        <option value="username">회원아이디</option>
+                                        <option value="name">회원이름</option>
+                                    </select>
+                                    <select id="sortDirection" name="sortDirection">
+                                        <option value="DESC">내림차순</option>
+                                        <option value="ASC">오름차순</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label>회원이름</label>
+                                <input name="name">
+                            </div>
+                           <button type="submit" class="btn btn-dark">검색</button>
+                        </form>-->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>아이디</th>
+                                    <th>회원이름</th>
+                                    <th>이메일</th>
+                                    <th>전화번호</th>
+                                    <th>생년월일</th>
+                                    <th>회원역할</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>아이디</th>
+                                    <th>회원이름</th>
+                                    <th>이메일</th>
+                                    <th>전화번호</th>
+                                    <th>생년월일</th>
+                                    <th>회원역할</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:if="${#strings.isEmpty(paging.contents)}">
+                                    <td colspan="6">데이터가 존재하지 않습니다</td>
+                                </tr>
+                                <tr th:if="${not #strings.isEmpty(paging.contents)}" th:each="user : ${paging.contents}">
+                                    <td><a href="" th:text="${user.username}"></a></td>
+                                    <td th:text="|${user.lastname}${user.firstname}|"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.phoneNumber}"></td>
+                                    <td th:text="${user.birthday}"></td>
+                                    <td th:text="${user.roleKoreanName}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:replace="~{admin/common/include :: page_button}"></div>
                         </div>
                     </div>
-                    <div>
-                        <label>회원이름</label>
-                        <input name="name">
-                    </div>
-                    <!--                <div>-->
-                    <!--                    <label>가입기간</label>-->
-                    <!--                    <input type="date" name="registeredDateTime_start"> ~ <input type="date" name="registeredDateTime_end">-->
-                    <!--                </div>-->
-                    <button type="submit" class="btn btn-dark">검색</button>
-                </form>
-            </section>
-            <section>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">아이디</th>
-                        <th scope="col">회원이름</th>
-                        <th scope="col">이메일</th>
-                        <th scope="col">전화번호</th>
-                        <th scope="col">생년월일</th>
-                        <th scope="col">동작</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user : ${paging.contents}">
-                        <td>
-                            <a th:href="@{/sogi/admin/user/{id}(id=${user.id})}" th:text="${user.username}"></a>
-                        </td>
-                        <td th:text="|${user.lastname}${user.firstname}|"></td>
-                        <td th:text="${user.email}"></td>
-                        <td th:text="${user.phoneNumber}"></td>
-                        <td th:text="${user.birthday}"></td>
-                        <td>
-                            <div style="display: flex;">
-                                <button type="button" class="btn btn-dark" th:onclick="|location.href='@{/sogi/admin/user/update/{id}(id=${user.id})}'|">수정</button>
-                                <form method="post" th:action="|@{/sogi/admin/user/delete/{id}(id=${user.id})}|">
-                                    <input type="hidden" name="${user.id}" value="${user.id}">
-                                    <button type="submit" class="btn btn-danger">삭제</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
-            <section th:replace="~{admin/common/include :: page_button}"></section>
-            <section>
-                <button onclick="location.href='/sogi/admin/user/new'" class="btn btn-dark">회원등록</button>
-            </section>
-        </section>
-    </main>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="~{admin/common/footer :: footer}"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{admin/common/include :: scroll_to_top_botton}"></a>
+
+<!-- Logout Modal-->
+<div th:replace="~{admin/common/include :: logout_modal}"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<!--<script src="/js/demo/datatables-demo.js"></script>-->
 </body>
+
 </html>
