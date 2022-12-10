@@ -39,12 +39,12 @@ public class FormUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return user.isActive();
+        return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.isActive();
+        return false;
     }
 
     @Override
@@ -54,6 +54,7 @@ public class FormUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isActive();
+        // 활성화되었고 탈퇴하지 않음 (is active and is not deleted) (activated but also not deleted)
+        return user.isActive() && !user.isDeleted();
     }
 }

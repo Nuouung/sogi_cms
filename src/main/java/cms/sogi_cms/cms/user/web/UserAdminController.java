@@ -98,6 +98,35 @@ public class UserAdminController {
         return "admin/user/list";
     }
 
+    @GetMapping("/inactive/list")
+    public String inactiveUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
+        userSearch.setIsDeleted(false);
+        userSearch.setIsActive(false);
+        Paging<UserResponseDto> paging = userService.getUserList(userSearch);
+
+        model.addAttribute("paging", paging);
+        model.addAttribute("urlPath", request.getRequestURI());
+        model.addAttribute("queryString", paging.getPagingSearch().getQueryString());
+        model.addAttribute("totalPage", paging.getTotalPages());
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "admin/user/list";
+    }
+
+    @GetMapping("/deleted/list")
+    public String deletedUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
+        userSearch.setIsDeleted(true);
+        Paging<UserResponseDto> paging = userService.getAdminUserList(userSearch);
+
+        model.addAttribute("paging", paging);
+        model.addAttribute("urlPath", request.getRequestURI());
+        model.addAttribute("queryString", paging.getPagingSearch().getQueryString());
+        model.addAttribute("totalPage", paging.getTotalPages());
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "admin/user/list";
+    }
+
     @GetMapping("/{id}")
     public String userDetailGet(@PathVariable Long id, Model model) {
         UserResponseDto userDto = userService.getUserById(id);

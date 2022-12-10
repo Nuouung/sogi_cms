@@ -75,7 +75,7 @@ public class UserInitializer {
             userService.saveUser(dto2);
 
             UserCreateUpdateDto dto3 = new UserCreateUpdateDto();
-            dto3.setUsername("iamYourFather");
+            dto3.setUsername("iamYourNotFather");
             dto3.setPassword("wlstjr57!");
             dto3.setLastname("이");
             dto3.setFirstname("진석");

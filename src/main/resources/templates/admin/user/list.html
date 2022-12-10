@@ -88,10 +88,10 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:if="${#strings.isEmpty(paging.contents)}">
+                                <tr th:if="${#lists.isEmpty(paging.contents)}">
                                     <td colspan="6">데이터가 존재하지 않습니다</td>
                                 </tr>
-                                <tr th:if="${not #strings.isEmpty(paging.contents)}" th:each="user : ${paging.contents}">
+                                <tr th:if="${not #lists.isEmpty(paging.contents)}" th:each="user : ${paging.contents}">
                                     <td><a href="" th:text="${user.username}"></a></td>
                                     <td th:text="|${user.lastname}${user.firstname}|"></td>
                                     <td th:text="${user.email}"></td>

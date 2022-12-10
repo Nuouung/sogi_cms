@@ -25,6 +25,10 @@ public class UserFormAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(approachedUsername);
 
+        if (!userDetails.isEnabled()) {
+            throw new BadCredentialsException("인증 정보가 올바르지 않습니다.");
+        }
+
         if (!passwordEncoder.matches(approachedPassword, userDetails.getPassword())) {
             throw new BadCredentialsException("인증 정보가 올바르지 않습니다.");
         }
