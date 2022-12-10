@@ -70,6 +70,34 @@ public class UserAdminController {
         return "admin/user/list";
     }
 
+    @GetMapping("/nonAdmin/list")
+    public String nonAdminUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
+        userSearch.setIsDeleted(false);
+        Paging<UserResponseDto> paging = userService.getNonAminUserList(userSearch);
+
+        model.addAttribute("paging", paging);
+        model.addAttribute("urlPath", request.getRequestURI());
+        model.addAttribute("queryString", paging.getPagingSearch().getQueryString());
+        model.addAttribute("totalPage", paging.getTotalPages());
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "admin/user/list";
+    }
+
+    @GetMapping("/admin/list")
+    public String adminUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
+        userSearch.setIsDeleted(false);
+        Paging<UserResponseDto> paging = userService.getAdminUserList(userSearch);
+
+        model.addAttribute("paging", paging);
+        model.addAttribute("urlPath", request.getRequestURI());
+        model.addAttribute("queryString", paging.getPagingSearch().getQueryString());
+        model.addAttribute("totalPage", paging.getTotalPages());
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "admin/user/list";
+    }
+
     @GetMapping("/{id}")
     public String userDetailGet(@PathVariable Long id, Model model) {
         UserResponseDto userDto = userService.getUserById(id);

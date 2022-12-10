@@ -87,12 +87,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Paging<UserResponseDto> getAdminUserList(UserSearch userSearch) {
         userSearch.setRoleList(roleService.getRoleListContainCertainAuthority("admin-access"));
+
         return getUserList(userSearch);
     }
 
     @Override
-    public Paging<UserResponseDto> getNonUserList(UserSearch userSearch) {
-        return null;
+    public Paging<UserResponseDto> getNonAminUserList(UserSearch userSearch) {
+        userSearch.setRoleList(List.of(roleService.getDefaultUserRole()));
+
+        return getUserList(userSearch);
     }
 
     @Override

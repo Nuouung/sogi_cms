@@ -23,7 +23,7 @@ public interface UserService {
 
     Paging<UserResponseDto> getAdminUserList(UserSearch userSearch);
 
-    Paging<UserResponseDto> getNonUserList(UserSearch userSearch);
+    Paging<UserResponseDto> getNonAminUserList(UserSearch userSearch);
 
     Paging<UserResponseDto> getUserList(UserSearch userSearch);
 

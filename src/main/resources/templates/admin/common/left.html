@@ -25,50 +25,27 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-      회원 관리
+      콘텐츠 관리
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
-         aria-expanded="true" aria-controls="collapseAdmin">
-        <i class="fas fa-fw fa-cog"></i>
-        <span>관리자 관리</span>
-      </a>
-      <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Admin Control:</h6>
-          <a class="collapse-item" href="/sogi/admin/user/list">회원 목록</a>
-          <a class="collapse-item" href="cards.html">휴면 회원 목록</a>
-          <a class="collapse-item" href="cards.html">탈퇴 회원 목록</a>
-        </div>
-      </div>
-    </li>
-
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
          aria-expanded="true" aria-controls="collapseUser">
-        <i class="fas fa-fw fa-wrench"></i>
-        <span>사용자 관리</span>
+        <i class="fas fa-fw fa-cog"></i>
+        <span>회원 관리</span>
       </a>
       <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">User Control:</h6>
-          <a class="collapse-item" href="/sogi/admin/user/list">회원 목록</a>
-          <a class="collapse-item" href="cards.html">휴면 회원 목록</a>
-          <a class="collapse-item" href="cards.html">탈퇴 회원 목록</a>
+          <a class="collapse-item" href="/sogi/admin/user/list">전체 회원 목록</a>
+          <a class="collapse-item" href="/sogi/admin/user/admin/list">관리자 목록</a>
+          <a class="collapse-item" href="/sogi/admin/user/nonAdmin/list">일반 회원 목록</a>
+          <a class="collapse-item" href="/sogi/admin/user/new">회원 등록</a>
+          <a class="collapse-item" href="cards.html">휴면 / 탈퇴 회원 목록</a>
         </div>
       </div>
     </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-      누어어엉
-    </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -90,6 +67,14 @@
         </div>
       </div>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      누어어엉
+    </div>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">

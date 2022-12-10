@@ -67,9 +67,13 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     private BooleanBuilder getRolesEquals(UserSearch userSearch) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        for (Role role : userSearch.getRoleList()) {
-            booleanBuilder.or(roleEquals(role));
+
+        if (userSearch.getRoleList() != null) {
+            for (Role role : userSearch.getRoleList()) {
+                booleanBuilder.or(roleEquals(role));
+            }
         }
+
         return booleanBuilder;
     }
 

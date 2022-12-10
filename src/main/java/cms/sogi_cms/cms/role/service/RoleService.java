@@ -4,6 +4,7 @@ import cms.sogi_cms.cms.role.dto.RoleCreateUpdateDto;
 import cms.sogi_cms.cms.role.dto.RoleSearch;
 import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.support.pagination.Paging;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 

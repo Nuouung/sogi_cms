@@ -53,6 +53,8 @@ public class RoleAuthorityInitializer {
             roleDto.setDefaultUser(false);
             roleDto.setAuthorityNameList(List.of("admin-access"));
 
+            roleService.saveRole(roleDto);
+
             // ROLE_USER
             RoleCreateUpdateDto roleDto2 = new RoleCreateUpdateDto();
             roleDto2.setRoleName("ROLE_USER");
