@@ -101,8 +101,16 @@
                                     <td th:text="${user.birthday}"></td>
                                     <td th:text="${user.roleKoreanName}"></td>
                                     <td>
-                                        <a href="">수정</a>
-                                        <a href="#!">삭제</a>
+                                        <a th:href="@{/sogi/admin/user/update/{id}(id=${user.id})}">수정</a>
+                                        <a href="" th:onclick="|deleteUser('${user.id}')|">삭제</a>
+                                        <script th:inline="javascript">
+                                            function deleteUser(id) {
+                                                const xmlHttpRequest = new XMLHttpRequest();
+                                                const url = `/sogi/admin/user/delete/${id}`;
+                                                xmlHttpRequest.open('POST', url, false);
+                                                xmlHttpRequest.send();
+                                            }
+                                        </script>
                                     </td>
                                 </tr>
                                 </tbody>

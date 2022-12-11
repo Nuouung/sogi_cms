@@ -90,7 +90,7 @@ public class User {
         String birthdayDay = dto.getBirthdayDay().length() == 1 ? "0" + dto.getBirthdayDay() : dto.getBirthdayDay();
 
 
-        this.username = dto.getUsername();
+//        this.username = dto.getUsername(); 회원 아이디는 변경할 수 없다.
         this.registeredDateTime = LocalDateTime.now();
         this.passwordLastUpdatedDateTime = LocalDateTime.now();
         this.lastLoginDateTime = LocalDateTime.now();

@@ -350,6 +350,10 @@ figure {
   margin: 0 0 1rem;
 }
 
+.error_message {
+  color: red;
+}
+
 img,
 svg {
   vertical-align: middle;

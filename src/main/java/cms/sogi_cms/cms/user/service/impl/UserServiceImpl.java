@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,13 +76,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        User foundUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
-
-        foundUser.removePassword();
-
-        return foundUser;
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override

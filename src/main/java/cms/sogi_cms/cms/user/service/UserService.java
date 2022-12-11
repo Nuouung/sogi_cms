@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -19,7 +20,7 @@ public interface UserService {
     // r
     UserResponseDto getUserById(Long id);
 
-    User getUserByUsername(String username);
+    Optional<User> getUserByUsername(String username);
 
     Paging<UserResponseDto> getAdminUserList(UserSearch userSearch);
 
