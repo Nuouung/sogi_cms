@@ -75,6 +75,7 @@
                                     <th>전화번호</th>
                                     <th>생년월일</th>
                                     <th>회원역할</th>
+                                    <th>편집</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -85,6 +86,7 @@
                                     <th>전화번호</th>
                                     <th>생년월일</th>
                                     <th>회원역할</th>
+                                    <th>편집</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -92,12 +94,16 @@
                                     <td colspan="6">데이터가 존재하지 않습니다</td>
                                 </tr>
                                 <tr th:if="${not #lists.isEmpty(paging.contents)}" th:each="user : ${paging.contents}">
-                                    <td><a href="" th:text="${user.username}"></a></td>
+                                    <td th:text="${user.username}"></td>
                                     <td th:text="|${user.lastname}${user.firstname}|"></td>
                                     <td th:text="${user.email}"></td>
                                     <td th:text="${user.phoneNumber}"></td>
                                     <td th:text="${user.birthday}"></td>
                                     <td th:text="${user.roleKoreanName}"></td>
+                                    <td>
+                                        <a href="">수정</a>
+                                        <a href="#!">삭제</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
