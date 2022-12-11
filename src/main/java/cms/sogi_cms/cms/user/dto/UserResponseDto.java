@@ -41,6 +41,7 @@ public class UserResponseDto {
 
     // TODO 프로필 사진
 
+    private String roleName;
     private String roleKoreanName;
 
     private String captcha; // 캡차

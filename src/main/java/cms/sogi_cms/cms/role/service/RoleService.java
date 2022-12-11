@@ -1,6 +1,7 @@
 package cms.sogi_cms.cms.role.service;
 
 import cms.sogi_cms.cms.role.dto.RoleCreateUpdateDto;
+import cms.sogi_cms.cms.role.dto.RoleResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleSearch;
 import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.support.pagination.Paging;
@@ -25,6 +26,8 @@ public interface RoleService {
 
     List<Role> getRoleListContainCertainAuthority(String authorityName);
 
+    List<Role> getAllRoles();
+
     Paging<Role> getRoleList(RoleSearch roleSearch);
 
     Long getTotalNumber(RoleSearch roleSearch);
@@ -34,4 +37,7 @@ public interface RoleService {
 
     // d
     void deleteRole(Long id);
+
+    // utils
+    RoleResponseDto toRoleResponseDto(Role role);
 }

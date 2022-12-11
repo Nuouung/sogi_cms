@@ -83,7 +83,7 @@ public class User {
                 .build();
     }
 
-    public void update(UserCreateUpdateDto dto) {
+    public void update(UserCreateUpdateDto dto, Role role) {
         Address address = getAddress();
 
         String birthdayMonth = dto.getBirthdayMonth().length() == 1 ? "0" + dto.getBirthdayMonth() : dto.getBirthdayMonth();
@@ -104,8 +104,12 @@ public class User {
         this.birthday = dto.getBirthdayYear() + "-" + birthdayMonth + "-" + birthdayDay;
         this.isBirthdaySolar = dto.getIsBirthdaySolar();
         this.address = address;
-        this.isActive = true;
-        this.isDeleted = false;
+        this.role = role;
+        this.isActive = dto.getIsActive();
+        this.isDeleted = dto.getIsDeleted();
+
+        // 탈퇴 회원은 휴면 처리하지 않는다.
+        if (isDeleted) isActive = true;
     }
 
     public void updatePassword(String hashedPassword) {

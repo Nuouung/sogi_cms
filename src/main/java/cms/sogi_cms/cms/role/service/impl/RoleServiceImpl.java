@@ -4,6 +4,7 @@ import cms.sogi_cms.cms.authority.entity.Authority;
 import cms.sogi_cms.cms.authority.repository.AuthorityRepository;
 import cms.sogi_cms.cms.authority.service.AuthorityService;
 import cms.sogi_cms.cms.role.dto.RoleCreateUpdateDto;
+import cms.sogi_cms.cms.role.dto.RoleResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleSearch;
 import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.role.entity.RoleAuthority;
@@ -77,6 +78,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
+    @Override
     public Paging<Role> getRoleList(RoleSearch roleSearch) {
         return null;
     }
@@ -112,5 +118,30 @@ public class RoleServiceImpl implements RoleService {
 
         // 역할을 삭제한다.
         roleRepository.delete(role);
+    }
+
+    @Override
+    public RoleResponseDto toRoleResponseDto(Role role) {
+        RoleResponseDto dto = new RoleResponseDto();
+
+        dto.setId(role.getId());
+        dto.setRoleName(role.getRoleName());
+        dto.setKoreanName(role.getKoreanName());
+        dto.setDescription(role.getDescription());
+
+        List<String> authorityNameList = new ArrayList<>();
+        List<RoleAuthority> roleAuthorityList = new ArrayList<>();
+        for (RoleAuthority roleAuthority : role.getRoleAuthorityList()) {
+            authorityNameList.add(roleAuthority.getAuthority().getAuthorityName());
+            roleAuthorityList.add(roleAuthority);
+        }
+
+        dto.setAuthorityNameList(authorityNameList);
+        dto.setRoleAuthorityList(roleAuthorityList);
+
+        dto.setAdmin(role.isAdmin());
+        dto.setDefaultUser(role.isDefaultUser());
+
+        return dto;
     }
 }

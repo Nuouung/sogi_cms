@@ -18,7 +18,7 @@ public interface UserService {
     Long saveUser(UserCreateUpdateDto userDto) throws IOException;
 
     // r
-    UserResponseDto getUserById(Long id);
+    Optional<User> getUserById(Long id);
 
     Optional<User> getUserByUsername(String username);
 
@@ -43,4 +43,8 @@ public interface UserService {
     void deleteUser(Long id);
 
     void deleteUsers(List<Long> idList);
+
+    // utils
+    UserResponseDto toResponseDto(User user);
+
 }

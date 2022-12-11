@@ -58,5 +58,8 @@ public class UserCreateUpdateDto {
 
     private String roleName;
 
+    private Boolean isActive;
+    private Boolean isDeleted;
+
     private String captcha; // 캡차
 }

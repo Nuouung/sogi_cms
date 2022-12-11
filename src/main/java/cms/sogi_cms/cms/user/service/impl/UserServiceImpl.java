@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         // 비밀번호 암호화
         String hashedPassword = passwordEncoder.encode(userDto.getPassword());
 
-        // 회원가입 기본 역할 조회
+        // 부여할 역할 조회
         Role role = getRole(userDto);
 
         // 객체 생성 및 저장
@@ -68,11 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto getUserById(Long id) {
-        User foundUser = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
-
-        return toResponseDto(foundUser);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
@@ -104,7 +101,7 @@ public class UserServiceImpl implements UserService {
         return new Paging<>(contents, total, userSearch);
     }
 
-    private UserResponseDto toResponseDto(User user) {
+    public UserResponseDto toResponseDto(User user) {
         UserResponseDto dto = new UserResponseDto();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
@@ -127,6 +124,7 @@ public class UserServiceImpl implements UserService {
         dto.setPasswordLastUpdatedDateTime(user.getPasswordLastUpdatedDateTime());
         dto.setLastLoginDateTime(user.getLastLoginDateTime());
         dto.setRoleKoreanName(user.getRole().getKoreanName());
+        dto.setRoleName(user.getRole().getRoleName());
 
         return dto;
     }
@@ -141,7 +139,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
 
-        user.update(userDto);
+        // 역할을 조회한다. (update에서는 userDto에 roleName이 빈 값일 수 없다. 왜냐하면 업데이트 하려고 하는 회원은 무조건 역할을 가지고 있어야 하기 때문이다)
+        // "" 체크는 검증단에서 이미 진행함.
+        Role role = getRole(userDto);
+
+        user.update(userDto, role);
     }
 
     @Override

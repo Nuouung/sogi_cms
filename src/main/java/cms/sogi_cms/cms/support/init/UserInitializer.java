@@ -29,8 +29,8 @@ public class UserInitializer {
             log.info("[SOGICMS] 회원 데이터 초기화 작업을 수행합니다. [대상 데이터 베이스 테이블 = SOGI_USER]");
 
             UserCreateUpdateDto dto = new UserCreateUpdateDto();
-            dto.setUsername("jin6016");
-            dto.setPassword("wlstjr57!");
+            dto.setUsername("admin");
+            dto.setPassword("adminadmin");
             dto.setLastname("이");
             dto.setFirstname("진석");
             dto.setEmail("jin6016@gmail.com");
@@ -52,8 +52,8 @@ public class UserInitializer {
             userService.saveUser(dto);
 
             UserCreateUpdateDto dto2 = new UserCreateUpdateDto();
-            dto2.setUsername("iamYourFather");
-            dto2.setPassword("wlstjr57!");
+            dto2.setUsername("manager");
+            dto2.setPassword("managermanager");
             dto2.setLastname("이");
             dto2.setFirstname("진석");
             dto2.setEmail("jin6016@gmail.com");
@@ -75,8 +75,8 @@ public class UserInitializer {
             userService.saveUser(dto2);
 
             UserCreateUpdateDto dto3 = new UserCreateUpdateDto();
-            dto3.setUsername("iamYourNotFather");
-            dto3.setPassword("wlstjr57!");
+            dto3.setUsername("user");
+            dto3.setPassword("useruser");
             dto3.setLastname("이");
             dto3.setFirstname("진석");
             dto3.setEmail("jin6016@gmail.com");

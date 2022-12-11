@@ -1,13 +1,18 @@
 package cms.sogi_cms.cms.user.web;
 
+import cms.sogi_cms.cms.role.dto.RoleResponseDto;
+import cms.sogi_cms.cms.role.entity.Role;
+import cms.sogi_cms.cms.role.service.RoleService;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import cms.sogi_cms.cms.user.dto.UserPasswordDto;
 import cms.sogi_cms.cms.user.dto.UserResponseDto;
 import cms.sogi_cms.cms.user.dto.UserSearch;
+import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user")
@@ -23,6 +30,7 @@ import java.io.IOException;
 public class UserAdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     private final UserCreateValidator userCreateUpdateValidator;
     private final UserPasswordValidator userPasswordValidator;
@@ -33,6 +41,7 @@ public class UserAdminController {
         model.addAttribute("userCreateUpdateDto", userDto);
         model.addAttribute("formMode", "INSERT");
         model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("roles", getRoleResponseDtoList());
 
         return "admin/user/form";
     }
@@ -49,7 +58,6 @@ public class UserAdminController {
         userService.saveUser(userDto);
         return "redirect:" + SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/user/list";
     }
-
 //    @GetMapping
 //    public void userExcelGet() {
 //
@@ -59,6 +67,7 @@ public class UserAdminController {
     @GetMapping("/list")
     public String userListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
         userSearch.setIsDeleted(false);
+        userSearch.setIsActive(true);
         Paging<UserResponseDto> paging = userService.getUserList(userSearch);
 
         model.addAttribute("paging", paging);
@@ -73,6 +82,7 @@ public class UserAdminController {
     @GetMapping("/nonAdmin/list")
     public String nonAdminUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
         userSearch.setIsDeleted(false);
+        userSearch.setIsActive(true);
         Paging<UserResponseDto> paging = userService.getNonAminUserList(userSearch);
 
         model.addAttribute("paging", paging);
@@ -87,6 +97,7 @@ public class UserAdminController {
     @GetMapping("/admin/list")
     public String adminUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
         userSearch.setIsDeleted(false);
+        userSearch.setIsActive(true);
         Paging<UserResponseDto> paging = userService.getAdminUserList(userSearch);
 
         model.addAttribute("paging", paging);
@@ -116,7 +127,7 @@ public class UserAdminController {
     @GetMapping("/deleted/list")
     public String deletedUserListGet(HttpServletRequest request, @ModelAttribute UserSearch userSearch, Model model) throws IllegalAccessException {
         userSearch.setIsDeleted(true);
-        Paging<UserResponseDto> paging = userService.getAdminUserList(userSearch);
+        Paging<UserResponseDto> paging = userService.getUserList(userSearch);
 
         model.addAttribute("paging", paging);
         model.addAttribute("urlPath", request.getRequestURI());
@@ -129,7 +140,10 @@ public class UserAdminController {
 
     @GetMapping("/{id}")
     public String userDetailGet(@PathVariable Long id, Model model) {
-        UserResponseDto userDto = userService.getUserById(id);
+        User user = userService.getUserById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("회원을 조회할 수 없습니다"));
+        UserResponseDto userDto = userService.toResponseDto(user);
+
         model.addAttribute("userDto", userDto);
 
         return "admin/user/detail";
@@ -143,13 +157,28 @@ public class UserAdminController {
     // u
     @GetMapping("/update/{id}")
     public String updateUserGet(HttpServletRequest request, @PathVariable Long id, Model model) {
-        UserResponseDto responseDto = userService.getUserById(id);
+        User user = userService.getUserById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("회원을 조회할 수 없습니다"));
+        UserResponseDto responseDto = userService.toResponseDto(user);
+
         UserCreateUpdateDto userDto = responseDtoToCreateUpdateDto(responseDto);
         model.addAttribute("userCreateUpdateDto", userDto);
         model.addAttribute("formMode", "UPDATE");
         model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("roles", getRoleResponseDtoList());
 
         return "admin/user/form";
+    }
+
+    private List<RoleResponseDto> getRoleResponseDtoList() {
+        List<Role> roleList = roleService.getAllRoles();
+        List<RoleResponseDto> roleResponseDtoList = new ArrayList<>();
+        for (Role role : roleList) {
+            RoleResponseDto roleResponseDto = roleService.toRoleResponseDto(role);
+            roleResponseDtoList.add(roleResponseDto);
+        }
+
+        return roleResponseDtoList;
     }
 
     private UserCreateUpdateDto responseDtoToCreateUpdateDto(UserResponseDto responseDto) {
@@ -175,12 +204,16 @@ public class UserAdminController {
         updateDto.setDetailAddress(responseDto.getDetailAddress());
         updateDto.setZipCode(responseDto.getZipCode());
         updateDto.setExtraAddress(responseDto.getExtraAddress());
+        updateDto.setRoleName(responseDto.getRoleName());
+        updateDto.setIsActive(responseDto.isActive());
+        updateDto.setIsDeleted(responseDto.isDeleted());
 
         return updateDto;
     }
 
     @PostMapping("/update/{id}")
     public String updateUserPost(@PathVariable Long id, @ModelAttribute UserCreateUpdateDto userDto, BindingResult bindingResult, Model model) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("formMode", "UPDATE");
             model.addAttribute("userCreateUpdateDto", userDto);
@@ -200,7 +233,7 @@ public class UserAdminController {
     }
 
     @PostMapping("/update/password/{id}")
-    public String updateUserPasswordPost(@PathVariable Long id, @ModelAttribute UserPasswordDto userDto, BindingResult bindingResult, Model model) {
+    public String updateUserPasswordPost(@PathVariable Long id, @ModelAttribute @Valid UserPasswordDto userDto, BindingResult bindingResult, Model model) {
         userPasswordValidator.validate(userDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("userPasswordDto", userDto);

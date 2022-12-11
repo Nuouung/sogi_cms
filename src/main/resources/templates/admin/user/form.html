@@ -43,6 +43,7 @@
                                             <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                                             <!-- Profile picture upload button-->
                                             <input class="btn btn-primary" type="file" th:field="*{profilePicture}">
+                                            <div class="error_message" th:errors="*{profilePicture}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -56,14 +57,25 @@
                                             </div>
                                             <!-- Form Group (ID)-->
                                             <div class="mb-3">
-                                                <label class="small mb-1">ID</label>
-                                                <input
-                                                    type="text"
-                                                    disabled
-                                                    th:field="*{username}"
-                                                    class="form-control"
-                                                    placeholder="아이디를 입력해주세요."/>
-                                                <div class="error_message" th:errors="*{username}"></div>
+                                                <div th:if="${formMode eq 'INSERT'}">
+                                                    <label class="small mb-1">ID</label>
+                                                    <input
+                                                            type="text"
+                                                            th:field="*{username}"
+                                                            class="form-control"
+                                                            placeholder="아이디를 입력해주세요."/>
+                                                    <div class="error_message" th:errors="*{username}"></div>
+                                                </div>
+                                                <div th:if="${formMode eq 'UPDATE'}">
+                                                    <label class="small mb-1">ID</label>
+                                                    <input
+                                                            type="text"
+                                                            disabled
+                                                            th:field="*{username}"
+                                                            class="form-control"
+                                                            placeholder="아이디를 입력해주세요."/>
+                                                    <div class="error_message" th:errors="*{username}"></div>
+                                                </div>
                                             </div>
                                             <div th:if="${formMode eq 'INSERT'}">
                                                 <!-- Form Group (password)-->
@@ -240,7 +252,30 @@
                                                     </div>
                                                 </label>
                                             </div>
-
+                                            <!-- Form Group (role)-->
+                                            <div class="mb-3">
+                                                <label class="small mb-1">역할</label>
+                                                <select id="roleName" name="roleName" class="form-select" aria-label="Default select example">
+                                                    <option value="">역할</option>
+                                                    <th:block th:each="role : ${roles}">
+                                                        <option th:value="${role.roleName}" th:text="${role.roleName}" th:selected="${userCreateUpdateDto.roleName eq role.roleName}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                            <div th:if="${formMode eq 'UPDATE'}">
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" th:field="*{isActive}">
+                                                        <span>활성화된 회원입니다.</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" th:field="*{isDeleted}">
+                                                        <span>탈퇴 처리된 회원입니다.</span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                             <button class="btn btn-primary" th:if="${formMode eq 'INSERT'}" type="submit">회원가입</button>
                                             <button class="btn btn-primary" th:if="${formMode eq 'UPDATE'}" type="submit">회원정보 변경</button>
                                         </div>
