@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.user.dto;
 
+import cms.sogi_cms.cms.file.dto.FileResponseDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -39,7 +40,7 @@ public class UserResponseDto {
     private LocalDateTime passwordLastUpdatedDateTime;
     private LocalDateTime lastLoginDateTime;
 
-    // TODO 프로필 사진
+    private FileResponseDto file;
 
     private String roleName;
     private String roleKoreanName;

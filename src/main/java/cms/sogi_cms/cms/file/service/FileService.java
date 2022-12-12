@@ -25,7 +25,8 @@ public interface FileService {
     // d
     void deleteFile(Long id) throws FileNotFoundException;
 
-    // etc
+    // utils
     String makeThumbnail(java.io.File uploadFile) throws IOException;
     void addOneDownloadCount(Long id) throws IOException;
+    FileResponseDto toResponseDto(File file);
 }

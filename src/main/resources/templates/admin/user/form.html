@@ -35,10 +35,13 @@
                                         <div class="card-header">Profile Picture</div>
                                         <div class="card-body text-center">
                                             <!-- Profile picture image-->
-                                            <img
+                                            <img th:if="${file == null}"
+                                                 class="img-account-profile rounded-circle mb-2"
+                                                 src="/img/undraw_profile.svg">
+                                            <img th:if="${file != null}"
+                                                 width="305.99px;" height="305.99px;"
                                                 class="img-account-profile rounded-circle mb-2"
-                                                src="/img/undraw_profile.svg"
-                                                alt=""/>
+                                                th:src="@{/image?filePath={filePath}(filePath=${file.filePath})}">
                                             <!-- Profile picture help block-->
                                             <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                                             <!-- Profile picture upload button-->
@@ -68,6 +71,9 @@
                                                 </div>
                                                 <div th:if="${formMode eq 'UPDATE'}">
                                                     <label class="small mb-1">ID</label>
+                                                    <input
+                                                            type="hidden"
+                                                            th:field="*{username}">
                                                     <input
                                                             type="text"
                                                             disabled

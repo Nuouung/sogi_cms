@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.user.dto;
 
+import cms.sogi_cms.cms.file.dto.FileResponseDto;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

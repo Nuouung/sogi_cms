@@ -171,8 +171,12 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span th:text="${#authentication.getPrincipal()}" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
-                <img class="img-profile rounded-circle"
+                <span th:text="|${#authentication.getPrincipal()}(${currentUser.role.koreanName})|" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                <img th:if="${currentUser != null && currentUser.file != null}"
+                     class="img-profile rounded-circle"
+                     th:src="@{/image?filePath={filePath}(filePath=${currentUser.file.filePath})}">
+                <img th:if="${currentUser == null || currentUser.file == null}"
+                     class="img-profile rounded-circle"
                      src="/img/undraw_profile.svg">
             </a>
             <!-- Dropdown - User Information -->

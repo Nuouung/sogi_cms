@@ -31,7 +31,7 @@ public interface UserService {
     Long getTotalNumber(UserSearch userSearch);
 
     // u
-    void updateUser(Long id, UserCreateUpdateDto userDto);
+    void updateUser(Long id, UserCreateUpdateDto userDto) throws IOException;
 
     void updatePassword(Long id, String newPassword);
 

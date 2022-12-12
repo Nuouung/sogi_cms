@@ -104,7 +104,6 @@ public class FileServiceImpl implements FileService {
         return uploadDirectory.toString();
     }
 
-    // TODO validation으로 옮길 것
     private boolean uploadFileValidation(MultipartFile multipartFile, StringBuilder uploadErrorMessage) {
         List<String> uploadWhiteList = getUploadWhiteList();
 
@@ -161,7 +160,8 @@ public class FileServiceImpl implements FileService {
         return new Paging<>(contents, total, fileSearch);
     }
 
-    private FileResponseDto toResponseDto(File file) {
+    @Override
+    public FileResponseDto toResponseDto(File file) {
         FileResponseDto dto = new FileResponseDto();
         dto.setFilePath(file.getFilePath());
         dto.setFileOriginalName(file.getFileOriginalName());

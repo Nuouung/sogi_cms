@@ -1,5 +1,6 @@
 package cms.sogi_cms.configuration.security.filterChain;
 
+import cms.sogi_cms.cms.security.authentication.hadler.FormLoginSuccessHandler;
 import cms.sogi_cms.cms.support.SogiConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -19,6 +20,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 public class SecurityAdminConfiguration {
 
     private final FilterSecurityInterceptor filterSecurityInterceptor;
+    private final FormLoginSuccessHandler formLoginSuccessHandler;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -36,6 +38,8 @@ public class SecurityAdminConfiguration {
                 .loginPage(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")
                 .loginProcessingUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/login")
                 .defaultSuccessUrl(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/main")
+                .successHandler(formLoginSuccessHandler)
+
 
                 .and()
                 .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class) // 인가 처리리

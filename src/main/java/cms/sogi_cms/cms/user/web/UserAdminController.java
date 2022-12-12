@@ -32,7 +32,8 @@ public class UserAdminController {
     private final UserService userService;
     private final RoleService roleService;
 
-    private final UserCreateValidator userCreateUpdateValidator;
+    private final UserCreateValidator userCreateValidator;
+    private final UserUpdateValidator userUpdateValidator;
     private final UserPasswordValidator userPasswordValidator;
 
     // c
@@ -48,7 +49,7 @@ public class UserAdminController {
 
     @PostMapping("/new")
     public String insertUserPost(@ModelAttribute @Valid UserCreateUpdateDto userDto, BindingResult bindingResult, Model model) throws IOException {
-        userCreateUpdateValidator.validate(userDto, bindingResult);
+        userCreateValidator.validate(userDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("formMode", "INSERT");
             model.addAttribute("userCreateUpdateDto", userDto);
@@ -166,6 +167,7 @@ public class UserAdminController {
         model.addAttribute("formMode", "UPDATE");
         model.addAttribute("requestURI", request.getRequestURI());
         model.addAttribute("roles", getRoleResponseDtoList());
+        model.addAttribute("file", responseDto.getFile());
 
         return "admin/user/form";
     }
@@ -212,8 +214,8 @@ public class UserAdminController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUserPost(@PathVariable Long id, @ModelAttribute UserCreateUpdateDto userDto, BindingResult bindingResult, Model model) {
-
+    public String updateUserPost(@PathVariable Long id, @ModelAttribute UserCreateUpdateDto userDto, BindingResult bindingResult, Model model) throws IOException {
+        userUpdateValidator.validate(userDto, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("formMode", "UPDATE");
             model.addAttribute("userCreateUpdateDto", userDto);

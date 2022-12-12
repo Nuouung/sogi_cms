@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,10 +49,7 @@ public class UserServiceImpl implements UserService {
 
         // 프로필 사진 저장
         if (userDto.getProfilePicture() != null && !userDto.getProfilePicture().isEmpty()) {
-            Long fileId = fileService.saveFile(userDto.getProfilePicture());
-            File file = fileService.getFileByFileId(fileId);
-
-            user.setFile(file);
+            setFile(userDto, user);
         }
 
         userRepository.save(user);
@@ -101,6 +99,7 @@ public class UserServiceImpl implements UserService {
         return new Paging<>(contents, total, userSearch);
     }
 
+    @Override
     public UserResponseDto toResponseDto(User user) {
         UserResponseDto dto = new UserResponseDto();
         dto.setId(user.getId());
@@ -124,6 +123,7 @@ public class UserServiceImpl implements UserService {
         dto.setPasswordLastUpdatedDateTime(user.getPasswordLastUpdatedDateTime());
         dto.setLastLoginDateTime(user.getLastLoginDateTime());
         dto.setRoleKoreanName(user.getRole().getKoreanName());
+        dto.setFile(user.getFile() == null ? null : fileService.toResponseDto(user.getFile()));
         dto.setRoleName(user.getRole().getRoleName());
 
         return dto;
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, UserCreateUpdateDto userDto) {
+    public void updateUser(Long id, UserCreateUpdateDto userDto) throws IOException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
 
@@ -143,7 +143,18 @@ public class UserServiceImpl implements UserService {
         // "" 체크는 검증단에서 이미 진행함.
         Role role = getRole(userDto);
 
+        if (userDto.getProfilePicture() != null && !userDto.getProfilePicture().isEmpty()) {
+            setFile(userDto, user);
+        }
+
         user.update(userDto, role);
+    }
+
+    private void setFile(UserCreateUpdateDto userDto, User user) throws IOException {
+        Long fileId = fileService.saveFile(userDto.getProfilePicture());
+        File file = fileService.getFileByFileId(fileId);
+
+        user.setFile(file);
     }
 
     @Override
