@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long>, RoleRepositoryCustom {
 
     @Query("select r from Role r where r.isDefaultUser = true")
     Role getDefaultUserRole();

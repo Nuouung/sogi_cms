@@ -20,7 +20,7 @@ public class AuthorityCreateUpdateDto {
     private HttpMethod httpMethod;
     private String urlPath;
 
-    private int priority;
+    private Integer priority;
 
     private boolean isDefault;
 }

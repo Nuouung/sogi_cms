@@ -3,6 +3,7 @@ package cms.sogi_cms.cms.role.service.impl;
 import cms.sogi_cms.cms.authority.entity.Authority;
 import cms.sogi_cms.cms.authority.repository.AuthorityRepository;
 import cms.sogi_cms.cms.authority.service.AuthorityService;
+import cms.sogi_cms.cms.role.dto.RoleAuthorityResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleCreateUpdateDto;
 import cms.sogi_cms.cms.role.dto.RoleResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleSearch;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -83,8 +85,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Paging<Role> getRoleList(RoleSearch roleSearch) {
-        return null;
+    public Paging<RoleResponseDto> getRoleList(RoleSearch roleSearch) {
+        List<RoleResponseDto> contents = roleRepository.findList(roleSearch).stream()
+                .map(this::toRoleResponseDto)
+                .collect(Collectors.toList());
+        long total = roleRepository.count();
+
+        return new Paging<>(contents, total, roleSearch);
     }
 
     @Override
@@ -130,18 +137,33 @@ public class RoleServiceImpl implements RoleService {
         dto.setDescription(role.getDescription());
 
         List<String> authorityNameList = new ArrayList<>();
-        List<RoleAuthority> roleAuthorityList = new ArrayList<>();
         for (RoleAuthority roleAuthority : role.getRoleAuthorityList()) {
             authorityNameList.add(roleAuthority.getAuthority().getAuthorityName());
-            roleAuthorityList.add(roleAuthority);
         }
 
         dto.setAuthorityNameList(authorityNameList);
-        dto.setRoleAuthorityList(roleAuthorityList);
-
+        dto.setRoleAuthorityList(getRoleAuthorityResponseDtoList(role));
         dto.setAdmin(role.isAdmin());
         dto.setDefaultUser(role.isDefaultUser());
+        dto.setRegisterDate(role.getRegisterDate());
 
         return dto;
+    }
+
+    @Override
+    public List<RoleAuthorityResponseDto> getRoleAuthorityResponseDtoList(Role role) {
+        List<RoleAuthorityResponseDto> list = new ArrayList<>();
+
+        for (RoleAuthority roleAuthority : role.getRoleAuthorityList()) {
+            RoleAuthorityResponseDto roleAuthorityResponseDto = new RoleAuthorityResponseDto();
+
+            roleAuthorityResponseDto.setId(roleAuthority.getId());
+            roleAuthorityResponseDto.setRole(role);
+            roleAuthorityResponseDto.setAuthority(roleAuthority.getAuthority());
+
+            list.add(roleAuthorityResponseDto);
+        }
+
+        return list;
     }
 }

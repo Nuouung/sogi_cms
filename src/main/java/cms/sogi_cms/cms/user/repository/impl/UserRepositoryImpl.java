@@ -1,7 +1,6 @@
 package cms.sogi_cms.cms.user.repository.impl;
 
 import cms.sogi_cms.cms.role.entity.Role;
-import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserSearch;
 import cms.sogi_cms.cms.user.entity.User;
 import cms.sogi_cms.cms.user.repository.UserRepositoryCustom;

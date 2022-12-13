@@ -1,6 +1,7 @@
 package cms.sogi_cms.cms.authority.service;
 
 import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
+import cms.sogi_cms.cms.authority.dto.AuthorityResponseDto;
 import cms.sogi_cms.cms.authority.dto.AuthoritySearch;
 import cms.sogi_cms.cms.authority.entity.Authority;
 import cms.sogi_cms.cms.support.pagination.Paging;
@@ -20,7 +21,7 @@ public interface AuthorityService {
 
     Authority getAuthorityByAuthorityName(String authorityName);
 
-    Paging<Authority> getAuthorityList(AuthoritySearch authoritySearch);
+    Paging<AuthorityResponseDto> getAuthorityList(AuthoritySearch authoritySearch);
 
     LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceMap();
 
@@ -32,4 +33,7 @@ public interface AuthorityService {
 
     // d
     void deleteAuthority(Long id);
+
+    // utils
+    AuthorityResponseDto toResponseDto(Authority authority);
 }

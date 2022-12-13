@@ -1,12 +1,14 @@
 package cms.sogi_cms.cms.authority.service.impl;
 
 import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
+import cms.sogi_cms.cms.authority.dto.AuthorityResponseDto;
 import cms.sogi_cms.cms.authority.dto.AuthoritySearch;
 import cms.sogi_cms.cms.authority.entity.Authority;
 import cms.sogi_cms.cms.authority.repository.AuthorityRepository;
 import cms.sogi_cms.cms.authority.service.AuthorityService;
 import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.role.entity.RoleAuthority;
+import cms.sogi_cms.cms.role.repository.RoleAuthorityRepository;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,9 +31,14 @@ import java.util.List;
 public class AuthorityServiceImpl implements AuthorityService {
 
     private final AuthorityRepository authorityRepository;
+    private final RoleAuthorityRepository roleAuthorityRepository;
 
     @Override
     public Long saveAuthority(AuthorityCreateUpdateDto authorityDto) {
+        if (authorityDto.getPriority() == null) {
+            authorityDto.setPriority(100);
+        }
+
         Authority authority = Authority.create(authorityDto);
         authorityRepository.save(authority);
 
@@ -50,8 +58,13 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Paging<Authority> getAuthorityList(AuthoritySearch authoritySearch) {
-        return null;
+    public Paging<AuthorityResponseDto> getAuthorityList(AuthoritySearch authoritySearch) {
+        List<AuthorityResponseDto> contents = authorityRepository.findList(authoritySearch).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+        long total = authorityRepository.count();
+
+        return new Paging<>(contents, total, authoritySearch);
     }
 
     @Override
@@ -77,7 +90,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public Long getTotalNumber(AuthoritySearch authoritySearch) {
-        return null;
+        return authorityRepository.count(authoritySearch);
     }
 
     @Override
@@ -93,6 +106,28 @@ public class AuthorityServiceImpl implements AuthorityService {
         Authority authority = authorityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("권한 정보를 조회할 수 없습니다."));
 
+        // 권한을 가지고 있는 모든 역할에서 삭제하려고 하는 이 권한 삭제
+        List<RoleAuthority> roleAuthorityList = authority.getRoleAuthorityList();
+        roleAuthorityRepository.deleteAll(roleAuthorityList);
+
         authorityRepository.delete(authority);
+    }
+
+    @Override
+    public AuthorityResponseDto toResponseDto(Authority authority) {
+        AuthorityResponseDto dto = new AuthorityResponseDto();
+
+        dto.setId(authority.getId());
+        dto.setAuthorityName(authority.getAuthorityName());
+        dto.setAuthorityKoreanName(authority.getAuthorityKoreanName());
+        dto.setDescription(authority.getDescription());
+        dto.setHttpMethod(authority.getHttpMethod().name());
+        dto.setUrlPath(authority.getUrlPath());
+        dto.setPriority(authority.getPriority());
+        dto.setDefault(authority.isDefault());
+        dto.setRegisterDateTime(authority.getRegisterDateTime());
+        dto.setLastModifiedDateTime(authority.getLastModifiedDateTime());
+
+        return dto;
     }
 }

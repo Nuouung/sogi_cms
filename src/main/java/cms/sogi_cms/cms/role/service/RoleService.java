@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.role.service;
 
+import cms.sogi_cms.cms.role.dto.RoleAuthorityResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleCreateUpdateDto;
 import cms.sogi_cms.cms.role.dto.RoleResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleSearch;
@@ -28,7 +29,7 @@ public interface RoleService {
 
     List<Role> getAllRoles();
 
-    Paging<Role> getRoleList(RoleSearch roleSearch);
+    Paging<RoleResponseDto> getRoleList(RoleSearch roleSearch);
 
     Long getTotalNumber(RoleSearch roleSearch);
 
@@ -40,4 +41,5 @@ public interface RoleService {
 
     // utils
     RoleResponseDto toRoleResponseDto(Role role);
+    List<RoleAuthorityResponseDto> getRoleAuthorityResponseDtoList(Role role);
 }
