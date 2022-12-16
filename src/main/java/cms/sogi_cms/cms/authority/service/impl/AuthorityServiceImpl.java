@@ -35,11 +35,15 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public Long saveAuthority(AuthorityCreateUpdateDto authorityDto) {
+        // priority가 null이면 100으로 초기화
         if (authorityDto.getPriority() == null) {
             authorityDto.setPriority(100);
         }
 
-        Authority authority = Authority.create(authorityDto);
+        // authorityName을 소문자로 치환
+        authorityDto.setAuthorityName(authorityDto.getAuthorityName().toLowerCase());
+
+       Authority authority = Authority.create(authorityDto);
         authorityRepository.save(authority);
 
         return authority.getId();
@@ -68,6 +72,11 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
+    public Long getTotalNumber(AuthoritySearch authoritySearch) {
+        return authorityRepository.count(authoritySearch);
+    }
+
+    @Override
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceMap() {
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap = new LinkedHashMap<>();
         authorityRepository.findAll()
@@ -89,8 +98,10 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Long getTotalNumber(AuthoritySearch authoritySearch) {
-        return authorityRepository.count(authoritySearch);
+    public List<AuthorityResponseDto> getAllAuthorityList() {
+        return authorityRepository.findAll().stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override

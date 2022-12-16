@@ -1,5 +1,6 @@
 package cms.sogi_cms.cms.user.service;
 
+import cms.sogi_cms.cms.role.entity.Role;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import cms.sogi_cms.cms.user.dto.UserResponseDto;

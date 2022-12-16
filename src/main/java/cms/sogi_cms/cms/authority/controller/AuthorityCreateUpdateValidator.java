@@ -25,10 +25,13 @@ public class AuthorityCreateUpdateValidator implements Validator {
         AuthorityCreateUpdateDto authorityDto = (AuthorityCreateUpdateDto) target;
         BindingResult bindingResult = (BindingResult) errors;
 
-        // TODO 알파벳 검증 필요 (authorityName은 영어만 올 수 있음)
-
         if (!StringUtils.hasText(authorityDto.getAuthorityName())) {
             bindingResult.addError(new FieldError("authorityCreateUpdateDto", "authorityName", "권한 아이디 값을 입력해 주십시오."));
+        }
+
+        // 영어만 가능
+        if (!authorityDto.getAuthorityName().matches("^[a-zA-Z]*$")) {
+            bindingResult.addError(new FieldError("authorityCreateUpdateDto", "authorityName", "권한 아이디 값을 영어만 입력할 수 있습니다."));
         }
 
         if (!StringUtils.hasText(authorityDto.getAuthorityKoreanName())) {

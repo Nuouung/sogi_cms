@@ -1,5 +1,8 @@
 package cms.sogi_cms.cms.role.controller;
 
+import cms.sogi_cms.cms.authority.dto.AuthorityResponseDto;
+import cms.sogi_cms.cms.authority.entity.Authority;
+import cms.sogi_cms.cms.authority.service.AuthorityService;
 import cms.sogi_cms.cms.role.dto.RoleAuthorityResponseDto;
 import cms.sogi_cms.cms.role.dto.RoleCreateUpdateDto;
 import cms.sogi_cms.cms.role.dto.RoleResponseDto;
@@ -27,6 +30,7 @@ import java.util.List;
 public class RoleAdminController {
 
     private final RoleService roleService;
+    private final AuthorityService authorityService;
 
     private final RoleCreateUpdateValidator roleCreateUpdateValidator;
 
@@ -34,7 +38,7 @@ public class RoleAdminController {
     @GetMapping("/new")
     public String insertRoleGet(HttpServletRequest request, @ModelAttribute RoleCreateUpdateDto roleDto, Model model) {
 
-
+        model.addAttribute("authorities", authorityService.getAllAuthorityList());
         model.addAttribute("RoleCreateUpdateDto", roleDto);
         model.addAttribute("formMode", "INSERT");
         model.addAttribute("requestURI", request.getRequestURI());
@@ -75,7 +79,8 @@ public class RoleAdminController {
         Role Role = roleService.getRoleById(id);
         RoleCreateUpdateDto roleDto = toCreateUpdateDto(Role);
 
-        model.addAttribute("RoleCreateUpdateDto", roleDto);
+        model.addAttribute("authorities", authorityService.getAllAuthorityList());
+        model.addAttribute("roleCreateUpdateDto", roleDto);
         model.addAttribute("formMode", "UPDATE");
         model.addAttribute("requestURI", request.getRequestURI());
 
@@ -91,6 +96,7 @@ public class RoleAdminController {
         dto.setDescription(role.getDescription());
         dto.setAdmin(role.isAdmin());
         dto.setDefaultUser(role.isDefaultUser());
+        dto.setAuthorityNameList(getAuthorityNameList(role));
         dto.setRoleAuthorityList(roleService.getRoleAuthorityResponseDtoList(role));
 
         return dto;
@@ -114,5 +120,15 @@ public class RoleAdminController {
     public String deleteUserPost(@PathVariable Long id) {
         roleService.deleteRole(id);
         return "redirect:" + SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/role/list";
+    }
+
+    private List<String> getAuthorityNameList(Role role) {
+        List<String> authorityNameList = new ArrayList<>();
+        for (RoleAuthority roleAuthority : role.getRoleAuthorityList()) {
+            Authority authority = roleAuthority.getAuthority();
+            authorityNameList.add(authority.getAuthorityName());
+        }
+
+        return authorityNameList;
     }
 }

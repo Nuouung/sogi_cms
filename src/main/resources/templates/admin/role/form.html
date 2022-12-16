@@ -24,7 +24,7 @@
                     <!-- Begin Page Content -->
                     <div class="container-xl px-4 mt-4">
                         <form
-                            th:object="${authorityCreateUpdateDto}"
+                            th:object="${roleCreateUpdateDto}"
                             th:action="${requestURI}"
                             method="post"
                             enctype="multipart/form-data">
@@ -32,7 +32,7 @@
                                 <div class="col-xl-8">
                                     <!-- Account details card-->
                                     <div class="card mb-4">
-                                        <div class="card-header">Authority Details</div>
+                                        <div class="card-header">Role Details</div>
                                         <div class="card-body">
                                             <div th:if="${formMode eq 'UPDATE'}">
                                                 <input type="hidden" th:field="*{id}">
@@ -44,7 +44,7 @@
                                                             type="text"
                                                             th:field="*{roleName}"
                                                             class="form-control"
-                                                            placeholder="역할 아이디 값을 입력해주세요. (반드시 영어)"/>
+                                                            placeholder="반드시 영어로 값을 입력해 주세요. 접두사 ROLE_을 생략하면 자동으로 값이 들어갑니다."/>
                                                     <div class="error_message" th:errors="*{roleName}"></div>
                                                 </div>
                                                 <div th:if="${formMode eq 'UPDATE'}">
@@ -57,7 +57,7 @@
                                                             disabled
                                                             th:field="*{roleName}"
                                                             class="form-control"
-                                                            placeholder="역할 아이디 값을 입력해주세요. (반드시 영어)"/>
+                                                            placeholder="반드시 영어로 값을 입력해 주세요. 접두사 ROLE_을 생략하면 자동으로 값이 들어갑니다."/>
                                                     <div class="error_message" th:errors="*{roleName}"></div>
                                                 </div>
                                             </div>
@@ -79,36 +79,25 @@
                                                         placeholder="역할 설명을 입력해 주세요."/>
                                                 <div class="error_message" th:errors="*{description}"></div>
                                             </div>
-                                            <!--<div class="mb-3">
-                                                <label class="small mb-1">http 메소드</label>
-                                                <select
-                                                        id="httpMethod"
-                                                        name="httpMethod"
-                                                        class="form-select"
-                                                        aria-label="Default select example">
-                                                    <option value="ALL" th:selected="${authorityCreateUpdateDto.httpMethod eq 'ALL'}">ALL</option>
-                                                    <option value="GET" th:selected="${authorityCreateUpdateDto.httpMethod eq 'GET'}">GET</option>
-                                                    <option value="POST" th:selected="${authorityCreateUpdateDto.httpMethod eq 'POST'}">POST</option>
-                                                </select>
-                                            </div>
                                             <div class="mb-3">
-                                                <label class="small mb-1">권한 값</label>
-                                                <input
-                                                        type="text"
-                                                        th:field="*{urlPath}"
-                                                        class="form-control"
-                                                        placeholder="권한 값을 입력해 주세요. (url 형태로)"/>
-                                                <div class="error_message" th:errors="*{urlPath}"></div>
+                                                <label class="small mb-1">권한 설정</label>
+                                                <table class="table table-bordered">
+                                                    <th>선택</th>
+                                                    <th>권한 아이디 값</th>
+                                                    <th>권한 이름</th>
+                                                    <th>권한 허용 메소드</th>
+                                                    <th>권한 값</th>
+                                                    <th>우선순위</th>
+                                                    <tr th:each="authority : ${authorities}">
+                                                        <td><input type="checkbox" name="authorityNameList" th:value="${authority.authorityName}" th:checked="${#lists.contains(roleCreateUpdateDto.authorityNameList, authority.authorityName)}"></td>
+                                                        <td th:text="${authority.authorityName}"></td>
+                                                        <td th:text="${authority.authorityKoreanName}"></td>
+                                                        <td th:text="${authority.httpMethod}"></td>
+                                                        <td th:text="${authority.urlPath}"></td>
+                                                        <td th:text="${authority.priority}"></td>
+                                                    </tr>
+                                                </table>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="small mb-1">우선순위</label>
-                                                <input
-                                                        type="text"
-                                                        th:field="*{priority}"
-                                                        class="form-control"
-                                                        placeholder="기본값 100. 값이 낮을수록 우선순위 높음. 자연수만 가능"/>
-                                                <div class="error_message" th:errors="*{priority}"></div>
-                                            </div>-->
                                             <button class="btn btn-primary" th:if="${formMode eq 'INSERT'}" type="submit">등록</button>
                                             <button class="btn btn-primary" th:if="${formMode eq 'UPDATE'}" type="submit">수정</button>
                                         </div>

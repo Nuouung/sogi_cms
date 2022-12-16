@@ -101,14 +101,16 @@
                                     <td th:if="${role.isDefaultUser == true}">O</td><td th:if="${role.isDefaultUser == false}">X</td>
                                     <td th:text="${#temporals.format(role.registerDate, 'yyyy.MM.dd')}"></td>
                                     <td>
-                                        <a th:href="@{/sogi/admin/authority/update/{id}(id=${role.id})}">수정</a>
+                                        <a th:href="@{/sogi/admin/role/update/{id}(id=${role.id})}">수정</a>
                                         <a href="" th:onclick="|deleteUser('${role.id}')|">삭제</a>
                                         <script th:inline="javascript">
                                             function deleteUser(id) {
-                                                const xmlHttpRequest = new XMLHttpRequest();
-                                                const url = `/sogi/admin/role/delete/${id}`;
-                                                xmlHttpRequest.open('POST', url, false);
-                                                xmlHttpRequest.send();
+                                                if (confirm('역할 삭제 시 해당 역할을 가진 모든 회원의 역할이 기본 역할로 초기화 됩니다. 진행하시겠습니까?')) {
+                                                    const xmlHttpRequest = new XMLHttpRequest();
+                                                    const url = `/sogi/admin/role/delete/${id}`;
+                                                    xmlHttpRequest.open('POST', url, false);
+                                                    xmlHttpRequest.send();
+                                                }
                                             }
                                         </script>
                                     </td>

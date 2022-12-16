@@ -13,6 +13,9 @@ import cms.sogi_cms.cms.role.repository.RoleAuthorityRepository;
 import cms.sogi_cms.cms.role.repository.RoleRepository;
 import cms.sogi_cms.cms.role.service.RoleService;
 import cms.sogi_cms.cms.support.pagination.Paging;
+import cms.sogi_cms.cms.user.entity.User;
+import cms.sogi_cms.cms.user.repository.UserRepository;
+import cms.sogi_cms.cms.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +32,20 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final AuthorityService authorityService;
+    private final UserRepository userRepository;
 
     private final RoleAuthorityRepository roleAuthorityRepository;
 
     @Override
     public Long saveRole(RoleCreateUpdateDto roleDto) {
+        // roleName이 ROLE_ 접두사를 갖지 않을 경우, 자동으로 이 값이 바인딩 된다.
+        if (!roleDto.getRoleName().startsWith("ROLE_")) {
+            roleDto.setRoleName("ROLE_" + roleDto.getRoleName());
+        }
+
+        // roleName이 소문자를 가질 경우를 대비해 모든 값을 대문자로 치환한다.
+        roleDto.setRoleName(roleDto.getRoleName().toUpperCase());
+
         // 역할 생성
         Role role = Role.create(roleDto);
 
@@ -123,8 +135,19 @@ public class RoleServiceImpl implements RoleService {
         // 매핑된 역할과 권한 관계 정보들을 먼저 삭제한다.
         roleAuthorityRepository.deleteAll(role.getRoleAuthorityList());
 
+        // 해당 역할을 가진 회원들이 존재할 수 있으므로 지우려고 하는 역할을 가진 회원들의 역할을 default 역할로 초기화한다.
+        setDefaultRoleToUsers(role);
+
         // 역할을 삭제한다.
         roleRepository.delete(role);
+    }
+
+    private void setDefaultRoleToUsers(Role role) {
+        List<User> userList = userRepository.findAllByRole(role);
+        Role defaultUserRole = roleRepository.getDefaultUserRole();
+        for (User user : userList) {
+            user.updateRole(defaultUserRole);
+        }
     }
 
     @Override

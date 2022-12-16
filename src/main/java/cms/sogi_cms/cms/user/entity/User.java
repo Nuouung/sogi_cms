@@ -112,6 +112,10 @@ public class User {
         if (isDeleted) isActive = true;
     }
 
+    public void updateRole(Role role) {
+        this.role = role;
+    }
+
     public void updatePassword(String hashedPassword) {
         this.password = hashedPassword;
         this.passwordLastUpdatedDateTime = LocalDateTime.now();

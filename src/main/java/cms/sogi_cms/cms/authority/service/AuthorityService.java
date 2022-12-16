@@ -23,10 +23,11 @@ public interface AuthorityService {
 
     Paging<AuthorityResponseDto> getAuthorityList(AuthoritySearch authoritySearch);
 
+    Long getTotalNumber(AuthoritySearch authoritySearch);
+
     LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceMap();
 
-
-    Long getTotalNumber(AuthoritySearch authoritySearch);
+    List<AuthorityResponseDto> getAllAuthorityList();
 
     // u
     void updateAuthority(Long id, AuthorityCreateUpdateDto authorityDto);
