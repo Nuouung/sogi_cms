@@ -75,10 +75,30 @@
     </div>
 
     <!-- Nav Item - Charts -->
-    <li class="nav-item">
+    <!--<li class="nav-item">
       <a class="nav-link" href="charts.html">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>Charts</span></a>
+    </li>-->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseARole"
+         aria-expanded="true" aria-controls="collapseARole">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>권한 / 역할 관리</span>
+      </a>
+      <div id="collapseARole" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Authorization Control:</h6>
+          <th:block th:each="archiveCategory : ${archiveCategories}">
+            <a class="collapse-item" th:text="${archiveCategory.id}" th:href="@{/sogi/admin/archive/{id}(id=${archiveCategory.id})}"></a>
+          </th:block>
+          <a class="collapse-item" href="/sogi/admin/authority/list">권한 목록</a>
+          <a class="collapse-item" href="/sogi/admin/authority/new">권한 등록</a>
+          <a class="collapse-item" href="/sogi/admin/role/list">역할 목록</a>
+          <a class="collapse-item" href="/sogi/admin/role/new">역할 등록</a>
+        </div>
+      </div>
     </li>
 
     <!-- Nav Item - Tables -->

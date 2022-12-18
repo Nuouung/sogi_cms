@@ -5,10 +5,12 @@ import cms.sogi_cms.cms.archive.dto.ArchiveResponseDto;
 import cms.sogi_cms.cms.archive.dto.ArchiveSearch;
 import cms.sogi_cms.cms.support.pagination.Paging;
 
+import java.io.IOException;
+
 public interface ArchiveService {
 
     // c
-    Long saveArchive(ArchiveCreateUpdateDto archiveDto);
+    Long saveArchive(ArchiveCreateUpdateDto archiveDto) throws IOException;
 
     // r
     ArchiveResponseDto getArchiveById(Long id);

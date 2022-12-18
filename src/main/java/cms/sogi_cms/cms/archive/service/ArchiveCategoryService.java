@@ -1,13 +1,27 @@
 package cms.sogi_cms.cms.archive.service;
 
+import cms.sogi_cms.cms.archive.dto.ArchiveCategoryCreateUpdateDto;
+import cms.sogi_cms.cms.archive.dto.ArchiveCategoryResponseDto;
+import cms.sogi_cms.cms.archive.entity.ArchiveCategory;
+
+import java.util.List;
+
 public interface ArchiveCategoryService {
 
     // c
-//    Long
+    Long saveArchiveCategory(ArchiveCategoryCreateUpdateDto archiveCategoryDto);
 
     // r
+    ArchiveCategory getArchiveCategoryById(Long id);
+
+    List<ArchiveCategoryResponseDto> getAllArchiveCategory();
 
     // u
+    void updateArchiveCategory(Long id, ArchiveCategoryCreateUpdateDto archiveCategoryDto);
 
     // d
+    void deleteArchiveCategory(Long id);
+
+    // utils
+    ArchiveCategoryResponseDto toResponseDto(ArchiveCategory archiveCategory);
 }

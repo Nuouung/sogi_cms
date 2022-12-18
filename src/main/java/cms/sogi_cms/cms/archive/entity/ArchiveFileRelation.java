@@ -21,4 +21,11 @@ public class ArchiveFileRelation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private File file;
+
+    public static ArchiveFileRelation create(Archive archive, File file) {
+        return ArchiveFileRelation.builder()
+                .archive(archive)
+                .file(file)
+                .build();
+    }
 }
