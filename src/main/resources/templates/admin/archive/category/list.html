@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymelear.org">
+
+<head th:replace="~{admin/common/head :: head}"></head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="~{admin/common/left :: left}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{admin/common/topbar :: topbar}"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">아카이브 카테고리 목록</h1>
+                <!--<p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                    For more information about DataTables, please visit the <a target="_blank"
+                                                                               href="https://datatables.net">official DataTables documentation</a>.</p>-->
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">아카이브 카테고리 목록</h6>
+                    </div>
+                    <div>
+                        <!--<form method="get" th:action="${requestURI}">
+                            <div class="row">
+                                <label>정렬조건</label>
+                                <div>
+                                    <select id="size" name="size">
+                                        <option value="10">10개씩</option>
+                                        <option value="20">20개씩</option>
+                                        <option value="40">40개씩</option>
+                                    </select>
+                                    <select id="sortProperty" name="sortProperty">
+                                        <option value="registeredDateTime">가입일시</option>
+                                        <option value="username">회원아이디</option>
+                                        <option value="name">회원이름</option>
+                                    </select>
+                                    <select id="sortDirection" name="sortDirection">
+                                        <option value="DESC">내림차순</option>
+                                        <option value="ASC">오름차순</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label>회원이름</label>
+                                <input name="name">
+                            </div>
+                           <button type="submit" class="btn btn-dark">검색</button>
+                        </form>-->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>아이디 값</th>
+                                    <th>카테고리 이름</th>
+                                    <th>관리자 form 스킨</th>
+                                    <th>관리자 리스트 스킨</th>
+                                    <th>사용자 리스트 스킨</th>
+                                    <th>사용자 상세 페이지 스킨</th>
+                                    <th>리스트 사이즈</th>
+                                    <th>정렬 기준</th>
+                                    <th>편집</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>아이디 값</th>
+                                    <th>카테고리 이름</th>
+                                    <th>관리자 form 스킨</th>
+                                    <th>관리자 리스트 스킨</th>
+                                    <th>사용자 리스트 스킨</th>
+                                    <th>사용자 상세 페이지 스킨</th>
+                                    <th>리스트 사이즈</th>
+                                    <th>정렬 기준</th>
+                                    <th>편집</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:if="${#lists.isEmpty(paging.contents)}">
+                                    <td colspan="9">데이터가 존재하지 않습니다</td>
+                                </tr>
+                                <tr th:if="${not #lists.isEmpty(paging.contents)}" th:each="archiveCategory : ${paging.contents}">
+                                    <td th:text="${archiveCategory.categoryName}"></td>
+                                    <td th:text="${archiveCategory.categoryKoreanName}"></td>
+                                    <td th:text="${archiveCategory.adminFormSkin}"></td>
+                                    <td th:text="${archiveCategory.adminListSkin}"></td>
+                                    <td th:text="${archiveCategory.userListSkin}"></td>
+                                    <td th:text="${archiveCategory.userDetailSkin}"></td>
+                                    <td th:text="${archiveCategory.pageSize}"></td>
+                                    <td th:text="${archiveCategory.sortDirection}"></td>
+                                    <td>
+                                        <a th:href="@{/sogi/admin/archiveCategory/update/{id}(id=${archiveCategory.id})}">수정</a>
+                                        <a href="" th:onclick="|deleteUser('${archiveCategory.id}')|">삭제</a>
+                                        <script th:inline="javascript">
+                                            function deleteUser(id) {
+                                                const xmlHttpRequest = new XMLHttpRequest();
+                                                const url = `/sogi/admin/archiveCategory/delete/${id}`;
+                                                xmlHttpRequest.open('POST', url, false);
+                                                xmlHttpRequest.send();
+                                            }
+                                        </script>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:replace="~{admin/common/include :: page_button}"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="~{admin/common/footer :: footer}"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{admin/common/include :: scroll_to_top_botton}"></a>
+
+<!-- Logout Modal-->
+<div th:replace="~{admin/common/include :: logout_modal}"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<!--<script src="/js/demo/datatables-demo.js"></script>-->
+</body>
+
+</html>

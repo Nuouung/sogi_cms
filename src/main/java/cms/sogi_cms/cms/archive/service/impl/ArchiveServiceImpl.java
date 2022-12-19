@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +79,46 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     @Override
     public Paging<ArchiveResponseDto> getArchiveList(ArchiveSearch archiveSearch) {
-        return null;
+        List<ArchiveResponseDto> contents = archiveRepository.findList(archiveSearch).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+        Long total = archiveRepository.count(archiveSearch);
+
+        return new Paging<>(contents, total, archiveSearch);
+    }
+
+    @Override
+    public ArchiveResponseDto toResponseDto(Archive archive) {
+        ArchiveResponseDto dto = new ArchiveResponseDto();
+
+        dto.setId(archive.getId());
+        dto.setUsername(archive.getUser().getUsername());
+        dto.setTitle(archive.getTitle());
+        dto.setContentHtml(archive.getContentHtml());
+        dto.setContentPlain(archive.getContentPlain());
+        dto.setContentSummary(archive.getContentSummary());
+        dto.setArchiveCategoryName(archive.getArchiveCategory().getCategoryName());
+        dto.setFilePathList(getFilePathList(archive));
+        dto.setCreatedDateTime(archive.getCreatedDateTime());
+        dto.setLastModifiedDateTime(archive.getLastModifiedDateTime());
+        dto.setHit(archive.getHit());
+        dto.setRecommend(archive.getRecommend());
+        dto.setPublish(archive.isPublish());
+        dto.setSticky(archive.isSticky());
+        dto.setStickyStartDate(archive.getStickyStartDate());
+        dto.setStickyEndDate(archive.getStickyEndDate());
+
+        return dto;
+    }
+
+    private List<String> getFilePathList(Archive archive) {
+        List<String> filePathList = new ArrayList<>();
+        for (ArchiveFileRelation archiveFileRelation : archive.getArchiveFileRelations()) {
+            File file = archiveFileRelation.getFile();
+            filePathList.add(file.getFilePath());
+        }
+
+        return filePathList;
     }
 
     @Override

@@ -2,12 +2,15 @@ package cms.sogi_cms.cms.archive.service.impl;
 
 import cms.sogi_cms.cms.archive.dto.ArchiveCategoryCreateUpdateDto;
 import cms.sogi_cms.cms.archive.dto.ArchiveCategoryResponseDto;
+import cms.sogi_cms.cms.archive.dto.ArchiveCategorySearch;
 import cms.sogi_cms.cms.archive.entity.ArchiveCategory;
 import cms.sogi_cms.cms.archive.repository.ArchiveCategoryRepository;
 import cms.sogi_cms.cms.archive.service.ArchiveCategoryService;
+import cms.sogi_cms.cms.support.pagination.Paging;
 import cms.sogi_cms.cms.support.pagination.SortDirection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -43,19 +46,19 @@ public class ArchiveCategoryServiceImpl implements ArchiveCategoryService {
     }
 
     private void initializeArchiveCategorySkins(ArchiveCategoryCreateUpdateDto archiveCategoryDto) {
-        if (archiveCategoryDto.getAdminFormSkin() == null) {
+        if (!StringUtils.hasText(archiveCategoryDto.getAdminFormSkin())) {
             archiveCategoryDto.setAdminFormSkin("form.html");
         }
 
-        if (archiveCategoryDto.getAdminListSkin() == null) {
+        if (!StringUtils.hasText(archiveCategoryDto.getAdminListSkin())) {
             archiveCategoryDto.setAdminListSkin("list.html");
         }
 
-        if (archiveCategoryDto.getUserListSkin() == null) {
+        if (!StringUtils.hasText(archiveCategoryDto.getUserListSkin())) {
             archiveCategoryDto.setUserListSkin("list.html");
         }
 
-        if (archiveCategoryDto.getUserDetailSkin() == null) {
+        if (!StringUtils.hasText(archiveCategoryDto.getUserDetailSkin())) {
             archiveCategoryDto.setUserDetailSkin("detail.html");
         }
     }
@@ -67,10 +70,26 @@ public class ArchiveCategoryServiceImpl implements ArchiveCategoryService {
     }
 
     @Override
+    public ArchiveCategory getArchiveCategoryByCategoryName(String categoryName) {
+        return archiveCategoryRepository.getArchiveCategoryByCategoryName(categoryName)
+                .orElseThrow(() -> new EntityNotFoundException("아카이브 카테고리를 찾을 수 없습니다."));
+    }
+
+    @Override
     public List<ArchiveCategoryResponseDto> getAllArchiveCategory() {
         return archiveCategoryRepository.findAll().stream()
                 .map(this::toResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Paging<ArchiveCategoryResponseDto> getArchiveCategoryList(ArchiveCategorySearch archiveCategorySearch) {
+        List<ArchiveCategoryResponseDto> contents = archiveCategoryRepository.findList(archiveCategorySearch).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+        Long total = archiveCategoryRepository.count(archiveCategorySearch);
+
+        return new Paging<>(contents, total, archiveCategorySearch);
     }
 
     @Override
@@ -93,6 +112,7 @@ public class ArchiveCategoryServiceImpl implements ArchiveCategoryService {
     public ArchiveCategoryResponseDto toResponseDto(ArchiveCategory archiveCategory) {
         ArchiveCategoryResponseDto dto = new ArchiveCategoryResponseDto();
 
+        dto.setId(archiveCategory.getId());
         dto.setCategoryName(archiveCategory.getCategoryName());
         dto.setCategoryKoreanName(archiveCategory.getCategoryKoreanName());
         dto.setAdminFormSkin(archiveCategory.getAdminFormSkin());

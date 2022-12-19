@@ -1,6 +1,8 @@
 package cms.sogi_cms.cms.authority.controller;
 
 import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
+import cms.sogi_cms.cms.authority.dto.AuthorityResponseDto;
+import cms.sogi_cms.cms.authority.service.AuthorityService;
 import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,9 +13,13 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class AuthorityCreateUpdateValidator implements Validator {
+
+    private final AuthorityService authorityService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -29,8 +35,16 @@ public class AuthorityCreateUpdateValidator implements Validator {
             bindingResult.addError(new FieldError("authorityCreateUpdateDto", "authorityName", "권한 아이디 값을 입력해 주십시오."));
         }
 
+        // 중복체크
+        List<AuthorityResponseDto> authorities = authorityService.getAllAuthorityList();
+        for (AuthorityResponseDto authority : authorities) {
+            if (authority.getAuthorityName().equals(authorityDto.getAuthorityName())) {
+                bindingResult.addError(new FieldError("authorityCreateUpdateDto", "authorityName", "중복된 권한 아이디 값이 존재합니다."));
+            }
+        }
+
         // 영어만 가능
-        if (!authorityDto.getAuthorityName().matches("^[a-zA-Z]*$")) {
+        if (!authorityDto.getAuthorityName().matches("^[a-zA-Z_\\-]*$")) {
             bindingResult.addError(new FieldError("authorityCreateUpdateDto", "authorityName", "권한 아이디 값을 영어만 입력할 수 있습니다."));
         }
 

@@ -24,6 +24,5 @@ public class BaseController {
     @ModelAttribute
     public void bindArchiveCategory(Model model) {
         model.addAttribute("archiveCategories", archiveCategoryService.getAllArchiveCategory());
-        System.out.println("hello");
     }
 }

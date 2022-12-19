@@ -105,7 +105,7 @@ public class AuthorityAdminController {
 
     // d
     @PostMapping("/delete/{id}")
-    public String deleteUserPost(@PathVariable Long id) {
+    public String deleteAuthorityPost(@PathVariable Long id) {
         authorityService.deleteAuthority(id);
         return "redirect:" + SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/authority/list";
     }
