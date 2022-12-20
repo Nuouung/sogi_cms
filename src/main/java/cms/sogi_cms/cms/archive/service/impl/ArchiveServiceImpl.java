@@ -57,13 +57,15 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     private void saveFileAndConnectWithArchive(ArchiveCreateUpdateDto archiveDto, Archive archive) throws IOException {
-        for (MultipartFile multipartFile : archiveDto.getMultipartFileList()) {
-            Long fileId = fileService.saveFile(multipartFile);
-            File file = fileService.getFileByFileId(fileId);
+        if (archiveDto.getMultipartFileList() != null) {
+            for (MultipartFile multipartFile : archiveDto.getMultipartFileList()) {
+                Long fileId = fileService.saveFile(multipartFile);
+                File file = fileService.getFileByFileId(fileId);
 
-            ArchiveFileRelation archiveFileRelation = ArchiveFileRelation.create(archive, file);
+                ArchiveFileRelation archiveFileRelation = ArchiveFileRelation.create(archive, file);
 
-            archiveFileRelationRepository.save(archiveFileRelation);
+                archiveFileRelationRepository.save(archiveFileRelation);
+            }
         }
     }
 

@@ -1,12 +1,10 @@
 package cms.sogi_cms.cms.archive.controller;
 
-import cms.sogi_cms.cms.archive.dto.ArchiveCategoryResponseDto;
-import cms.sogi_cms.cms.archive.dto.ArchiveCategorySearch;
-import cms.sogi_cms.cms.archive.dto.ArchiveResponseDto;
-import cms.sogi_cms.cms.archive.dto.ArchiveSearch;
+import cms.sogi_cms.cms.archive.dto.*;
 import cms.sogi_cms.cms.archive.entity.ArchiveCategory;
 import cms.sogi_cms.cms.archive.service.ArchiveCategoryService;
 import cms.sogi_cms.cms.archive.service.ArchiveService;
+import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.support.pagination.Paging;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +26,17 @@ public class ArchiveAdminController {
     private final ArchiveCategoryService archiveCategoryService;
 
     // c
+    @GetMapping("/{categoryName}/new")
+    public String insertArchiveGet(HttpServletRequest request, @PathVariable String categoryName, @ModelAttribute ArchiveCreateUpdateDto archiveDto, Model model) {
+        ArchiveCategory archiveCategory = archiveCategoryService.getArchiveCategoryByCategoryName(categoryName);
+
+        model.addAttribute("archiveCreateUpdateDto", archiveDto);
+        model.addAttribute("formMode", "INSERT");
+        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("archiveCategory", archiveCategory);
+
+        return "admin/archive/skin/" + removeHtmlSuffix(archiveCategory.getAdminFormSkin());
+    }
 
     // r
     @GetMapping("/{categoryName}/list")

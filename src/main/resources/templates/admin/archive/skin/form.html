@@ -5,23 +5,29 @@
     <body id="page-top">
 
         <!-- Page Wrapper -->
-        <main id="wrapper">
+        <textarea id="my-text-area"></textarea>
+        <script>
+            const easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});
+        </script>
+        <script src="https://unpkg.com/easymde/dist/easymde.min.js" crossorigin="anonymous"></script>
 
-            <!-- Sidebar -->
+        <!--<main id="wrapper">
+
+            &lt;!&ndash; Sidebar &ndash;&gt;
             <ul th:replace="~{admin/common/left :: left}"></ul>
-            <!-- End of Sidebar -->
+            &lt;!&ndash; End of Sidebar &ndash;&gt;
 
-            <!-- Content Wrapper -->
+            &lt;!&ndash; Content Wrapper &ndash;&gt;
             <div id="content-wrapper" class="d-flex flex-column">
 
-                <!-- Main Content -->
+                &lt;!&ndash; Main Content &ndash;&gt;
                 <div id="content">
 
-                    <!-- Topbar -->
+                    &lt;!&ndash; Topbar &ndash;&gt;
                     <nav th:replace="~{admin/common/topbar :: topbar}"></nav>
-                    <!-- End of Topbar -->
+                    &lt;!&ndash; End of Topbar &ndash;&gt;
 
-                    <!-- Begin Page Content -->
+                    &lt;!&ndash; Begin Page Content &ndash;&gt;
                     <div class="container-xl px-4 mt-4">
                         <form
                             th:object="${archiveCategoryCreateUpdateDto}"
@@ -30,7 +36,7 @@
                             enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-xl-8">
-                                    <!-- Account details card-->
+                                    &lt;!&ndash; Account details card&ndash;&gt;
                                     <div class="card mb-4">
                                         <div class="card-header">Archive Category Details</div>
                                         <div class="card-body">
@@ -71,7 +77,7 @@
                                                 <div class="error_message" th:errors="*{categoryKoreanName}"></div>
                                             </div>
                                             <div class="row gx-3 mb-3">
-                                                <!-- Form Group (first name)-->
+                                                &lt;!&ndash; Form Group (first name)&ndash;&gt;
                                                 <div class="col-md-6">
                                                     <label class="small mb-1">관리자 form 스킨</label>
                                                     <input
@@ -81,7 +87,7 @@
                                                             placeholder="기본: form.html"/>
                                                     <div class="error_message" th:errors="*{adminFormSkin}"></div>
                                                 </div>
-                                                <!-- Form Group (last name)-->
+                                                &lt;!&ndash; Form Group (last name)&ndash;&gt;
                                                 <div class="col-md-6">
                                                     <label class="small mb-1">관리자 list 스킨</label>
                                                     <input
@@ -93,7 +99,7 @@
                                                 </div>
                                             </div>
                                             <div class="row gx-3 mb-3">
-                                                <!-- Form Group (first name)-->
+                                                &lt;!&ndash; Form Group (first name)&ndash;&gt;
                                                 <div class="col-md-6">
                                                     <label class="small mb-1">사용자 list 스킨</label>
                                                     <input
@@ -103,7 +109,7 @@
                                                             placeholder="기본: list.html"/>
                                                     <div class="error_message" th:errors="*{userListSkin}"></div>
                                                 </div>
-                                                <!-- Form Group (last name)-->
+                                                &lt;!&ndash; Form Group (last name)&ndash;&gt;
                                                 <div class="col-md-6">
                                                     <label class="small mb-1">사용자 상세 화면 스킨</label>
                                                     <input
@@ -131,19 +137,19 @@
                             </div>
                         </form>
                     </div>
-                    <!-- /.container-fluid -->
+                    &lt;!&ndash; /.container-fluid &ndash;&gt;
 
                 </div>
-                <!-- End of Main Content -->
+                &lt;!&ndash; End of Main Content &ndash;&gt;
 
-                <!-- Footer -->
+                &lt;!&ndash; Footer &ndash;&gt;
                 <footer th:replace="~{admin/common/footer :: footer}"></footer>
-                <!-- End of Footer -->
+                &lt;!&ndash; End of Footer &ndash;&gt;
 
             </div>
-            <!-- End of Content Wrapper -->
+            &lt;!&ndash; End of Content Wrapper &ndash;&gt;
 
-        </main>
+        </main>-->
         <!-- End of Page Wrapper -->
 
         <!-- Scroll to Top Button-->
