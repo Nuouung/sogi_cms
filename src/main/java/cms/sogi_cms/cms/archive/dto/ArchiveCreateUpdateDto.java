@@ -21,7 +21,7 @@ public class ArchiveCreateUpdateDto {
 
     private Long archiveCategoryId;
 
-    List<MultipartFile> multipartFileList;
+    private List<MultipartFile> multipartFileList;
 
     private LocalDateTime createdDateTime;
     private LocalDateTime lastModifiedDateTime;

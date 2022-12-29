@@ -1,155 +1,118 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymelear.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
     <head th:replace="~{admin/common/head :: head}"></head>
     <body id="page-top">
 
-        <!-- Page Wrapper -->
-        <textarea id="my-text-area"></textarea>
-        <script>
-            const easyMDE = new EasyMDE({element: document.getElementById('my-text-area')});
-        </script>
-        <script src="https://unpkg.com/easymde/dist/easymde.min.js" crossorigin="anonymous"></script>
 
-        <!--<main id="wrapper">
+        <main id="wrapper">
 
-            &lt;!&ndash; Sidebar &ndash;&gt;
+            <!-- Sidebar -->
             <ul th:replace="~{admin/common/left :: left}"></ul>
-            &lt;!&ndash; End of Sidebar &ndash;&gt;
+            <!-- End of Sidebar -->
 
-            &lt;!&ndash; Content Wrapper &ndash;&gt;
+            <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
 
-                &lt;!&ndash; Main Content &ndash;&gt;
+                <!-- Main Content -->
                 <div id="content">
 
-                    &lt;!&ndash; Topbar &ndash;&gt;
+                    <!-- Topbar -->
                     <nav th:replace="~{admin/common/topbar :: topbar}"></nav>
-                    &lt;!&ndash; End of Topbar &ndash;&gt;
+                    <!-- End of Topbar -->
 
-                    &lt;!&ndash; Begin Page Content &ndash;&gt;
+                    <!-- Begin Page Content -->
                     <div class="container-xl px-4 mt-4">
                         <form
-                            th:object="${archiveCategoryCreateUpdateDto}"
+                            id="archiveCreateUpdateForm"
+                            th:object="${archiveCreateUpdateDto}"
                             th:action="${requestURI}"
                             method="post"
                             enctype="multipart/form-data">
+
+                            <!--<textarea id="editor"></textarea>
+                            <script>
+                                ClassicEditor.create(document.querySelector('#editor'), {
+                                    language: 'ko'
+                                });
+                            </script>-->
+
                             <div class="row">
                                 <div class="col-xl-8">
-                                    &lt;!&ndash; Account details card&ndash;&gt;
+                                    <!-- Account details card-->
                                     <div class="card mb-4">
                                         <div class="card-header">Archive Category Details</div>
                                         <div class="card-body">
                                             <div th:if="${formMode eq 'UPDATE'}">
                                                 <input type="hidden" th:field="*{id}">
                                             </div>
+                                            <input type="hidden" name="archiveCategoryId" th:value="${archiveCategory.id}">
                                             <div class="mb-3">
-                                                <div th:if="${formMode eq 'INSERT'}">
-                                                    <label class="small mb-1">카테고리 아이디 값</label>
-                                                    <input
-                                                            type="text"
-                                                            th:field="*{categoryName}"
-                                                            class="form-control"
-                                                            placeholder="아카이브 카테고리 아이디 값을 입력해주세요. (반드시 영어)"/>
-                                                    <div class="error_message" th:errors="*{categoryName}"></div>
-                                                </div>
-                                                <div th:if="${formMode eq 'UPDATE'}">
-                                                    <label class="small mb-1">권한 아이디 값</label>
-                                                    <input
-                                                            type="hidden"
-                                                            th:field="*{categoryName}">
-                                                    <input
-                                                            type="text"
-                                                            disabled
-                                                            th:field="*{categoryName}"
-                                                            class="form-control"
-                                                            placeholder="아카이브 카테고리 아이디 값을 입력해주세요. (반드시 영어)"/>
-                                                    <div class="error_message" th:errors="*{categoryName}"></div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="small mb-1">아카이브 카테고리 이름</label>
+                                                <label class="small mb-1">제목</label>
                                                 <input
                                                         type="text"
-                                                        th:field="*{categoryKoreanName}"
+                                                        th:field="*{title}"
                                                         class="form-control"
-                                                        placeholder="아카이브 카테고리 이름을 입력해 주세요."/>
-                                                <div class="error_message" th:errors="*{categoryKoreanName}"></div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                                &lt;!&ndash; Form Group (first name)&ndash;&gt;
-                                                <div class="col-md-6">
-                                                    <label class="small mb-1">관리자 form 스킨</label>
-                                                    <input
-                                                            th:field="*{adminFormSkin}"
-                                                            class="form-control"
-                                                            type="text"
-                                                            placeholder="기본: form.html"/>
-                                                    <div class="error_message" th:errors="*{adminFormSkin}"></div>
-                                                </div>
-                                                &lt;!&ndash; Form Group (last name)&ndash;&gt;
-                                                <div class="col-md-6">
-                                                    <label class="small mb-1">관리자 list 스킨</label>
-                                                    <input
-                                                            th:field="*{adminListSkin}"
-                                                            class="form-control"
-                                                            type="text"
-                                                            placeholder="기본: list.html"/>
-                                                    <div class="error_message" th:errors="*{adminListSkin}"></div>
-                                                </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                                &lt;!&ndash; Form Group (first name)&ndash;&gt;
-                                                <div class="col-md-6">
-                                                    <label class="small mb-1">사용자 list 스킨</label>
-                                                    <input
-                                                            th:field="*{userListSkin}"
-                                                            class="form-control"
-                                                            type="text"
-                                                            placeholder="기본: list.html"/>
-                                                    <div class="error_message" th:errors="*{userListSkin}"></div>
-                                                </div>
-                                                &lt;!&ndash; Form Group (last name)&ndash;&gt;
-                                                <div class="col-md-6">
-                                                    <label class="small mb-1">사용자 상세 화면 스킨</label>
-                                                    <input
-                                                            th:field="*{userDetailSkin}"
-                                                            class="form-control"
-                                                            type="text"
-                                                            placeholder="기본: detail.html"/>
-                                                    <div class="error_message" th:errors="*{userDetailSkin}"></div>
-                                                </div>
+                                                        placeholder="제목을 입력해주세요."/>
+                                                <div class="error_message" th:errors="*{title}"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="small mb-1">페이지 사이즈</label>
+                                                <label class="small mb-1">본문</label>
                                                 <input
                                                         type="text"
-                                                        th:field="*{pageSize}"
-                                                        class="form-control"
-                                                        placeholder="페이지 사이즈를 정수로 입력해주세요. (기본 10)"/>
-                                                <div class="error_message" th:errors="*{pageSize}"></div>
+                                                        th:field="*{contentHtml}"
+                                                        class="contentHtml form-control"
+                                                        placeholder="내용을 작성해주세요."/>
+                                                <div class="error_message" th:errors="*{contentHtml}"></div>
                                             </div>
-                                            <button class="btn btn-primary" th:if="${formMode eq 'INSERT'}" type="submit">등록</button>
+                                            <div class="mb-3">
+                                                <label class="small mb-1">본문 요약</label>
+                                                <textarea
+                                                        type="text"
+                                                        th:field="*{contentSummary}"
+                                                        class="form-control"
+                                                        placeholder="내용을 작성해주세요." style="height: 100px;"/>
+                                                <div class="error_message" th:errors="*{contentSummary}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="small mb-1">첨부파일</label>
+                                                <input type="file" id="multipartFileList" name="multipartFileList" multiple>
+                                                <div class="error_message" th:errors="*{multipartFileList}"></div>
+                                            </div>
+                                            <button class="btn btn-primary" th:if="${formMode eq 'INSERT'}" onclick="clickSubmitButton()">등록</button>
                                             <button class="btn btn-primary" th:if="${formMode eq 'UPDATE'}" type="submit">수정</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <script>
+                            let contentHtmlEditor;
+                            ClassicEditor
+                                .create(document.querySelector('.contentHtml'))
+                                .then(e => {
+                                    contentHtmlEditor = e;
+                                });
+
+                            function clickSubmitButton() {
+                                document.getElementById('contentHtml').value = contentHtmlEditor.getData();
+                                document.getElementById('archiveCreateUpdateForm').submit();
+                            }
+                        </script>
                     </div>
-                    &lt;!&ndash; /.container-fluid &ndash;&gt;
+                    <!-- /.container-fluid -->
 
                 </div>
-                &lt;!&ndash; End of Main Content &ndash;&gt;
+                <!-- End of Main Content -->
 
-                &lt;!&ndash; Footer &ndash;&gt;
+                <!-- Footer -->
                 <footer th:replace="~{admin/common/footer :: footer}"></footer>
-                &lt;!&ndash; End of Footer &ndash;&gt;
+                <!-- End of Footer -->
 
             </div>
-            &lt;!&ndash; End of Content Wrapper &ndash;&gt;
+            <!-- End of Content Wrapper -->
 
-        </main>-->
+        </main>
         <!-- End of Page Wrapper -->
 
         <!-- Scroll to Top Button-->

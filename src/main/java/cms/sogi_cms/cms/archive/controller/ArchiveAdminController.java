@@ -10,12 +10,11 @@ import cms.sogi_cms.cms.support.pagination.Paging;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/archive")
@@ -24,6 +23,8 @@ public class ArchiveAdminController {
 
     private final ArchiveService archiveService;
     private final ArchiveCategoryService archiveCategoryService;
+
+    private final ArchiveCreateUpdateValidator archiveCreateUpdateValidator;
 
     // c
     @GetMapping("/{categoryName}/new")
@@ -36,6 +37,25 @@ public class ArchiveAdminController {
         model.addAttribute("archiveCategory", archiveCategory);
 
         return "admin/archive/skin/" + removeHtmlSuffix(archiveCategory.getAdminFormSkin());
+    }
+
+    @PostMapping("/{categoryName}/new")
+    public String insertArchivePost(HttpServletRequest request, @PathVariable String categoryName, @ModelAttribute ArchiveCreateUpdateDto archiveDto, BindingResult bindingResult, Model model) throws IOException {
+        ArchiveCategory archiveCategory = archiveCategoryService.getArchiveCategoryByCategoryName(categoryName);
+
+        archiveCreateUpdateValidator.validate(archiveDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("formMode", "INSERT");
+            model.addAttribute("archiveCreateUpdateDto", archiveDto);
+            model.addAttribute("archiveCategory", archiveCategory);
+
+            return "admin/archive/skin/" + removeHtmlSuffix(archiveCategory.getAdminFormSkin());
+        }
+
+        archiveService.saveArchive(archiveDto);
+
+        return null;
+//        return "admin/archive/skin/" + removeHtmlSuffix(archiveCategory.getAdminFormSkin());
     }
 
     // r
