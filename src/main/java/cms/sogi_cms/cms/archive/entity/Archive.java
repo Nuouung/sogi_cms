@@ -5,6 +5,7 @@ import cms.sogi_cms.cms.file.entity.File;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.user.entity.User;
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,8 +28,11 @@ public class Archive {
     private User user;
 
     private String title;
+    @Column(columnDefinition = "LONGTEXT")
     private String contentHtml;
+    @Column(columnDefinition = "LONGTEXT")
     private String contentPlain;
+    @Column(columnDefinition = "LONGTEXT")
     private String contentSummary;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -58,14 +62,14 @@ public class Archive {
                 .contentPlain(dto.getContentPlain())
                 .contentSummary(dto.getContentSummary())
                 .archiveCategory(archiveCategory)
-                .createdDateTime(dto.getCreatedDateTime())
-                .lastModifiedDateTime(dto.getLastModifiedDateTime())
+                .createdDateTime(LocalDateTime.now())
+                .lastModifiedDateTime(LocalDateTime.now())
                 .hit(0)
                 .recommend(0)
-                .isPublish(dto.isPublish())
-                .isSticky(dto.isSticky())
-                .stickyStartDate(dto.getStickyStartDate())
-                .stickyEndDate(dto.getStickyEndDate())
+                .isPublish(dto.getIsPublish() != null && dto.getIsPublish())
+                .isSticky(dto.getIsSticky() != null && dto.getIsSticky())
+                .stickyStartDate(StringUtils.hasText(dto.getStickyStartDate()) ? LocalDate.parse(dto.getStickyStartDate()) : null)
+                .stickyEndDate(StringUtils.hasText(dto.getStickyEndDate()) ? LocalDate.parse(dto.getStickyEndDate()) : null)
                 .build();
     }
 }

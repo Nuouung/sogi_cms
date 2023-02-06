@@ -14,7 +14,7 @@ public interface ArchiveService {
     Long saveArchive(ArchiveCreateUpdateDto archiveDto) throws IOException;
 
     // r
-    ArchiveResponseDto getArchiveById(Long id);
+    Archive getArchiveById(Long id);
 
     ArchiveResponseDto getArchiveByTitle(String title);
 

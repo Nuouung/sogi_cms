@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,19 +60,22 @@ public class ArchiveServiceImpl implements ArchiveService {
     private void saveFileAndConnectWithArchive(ArchiveCreateUpdateDto archiveDto, Archive archive) throws IOException {
         if (archiveDto.getMultipartFileList() != null) {
             for (MultipartFile multipartFile : archiveDto.getMultipartFileList()) {
-                Long fileId = fileService.saveFile(multipartFile);
-                File file = fileService.getFileByFileId(fileId);
+                if (!multipartFile.isEmpty()) {
+                    Long fileId = fileService.saveFile(multipartFile);
+                    File file = fileService.getFileByFileId(fileId);
 
-                ArchiveFileRelation archiveFileRelation = ArchiveFileRelation.create(archive, file);
+                    ArchiveFileRelation archiveFileRelation = ArchiveFileRelation.create(archive, file);
 
-                archiveFileRelationRepository.save(archiveFileRelation);
+                    archiveFileRelationRepository.save(archiveFileRelation);
+                }
             }
         }
     }
 
     @Override
-    public ArchiveResponseDto getArchiveById(Long id) {
-        return null;
+    public Archive getArchiveById(Long id) {
+        return archiveRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("아카이브를 찾을 수 없습니다."));
     }
 
     @Override

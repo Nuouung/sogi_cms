@@ -74,6 +74,21 @@
                                                         placeholder="내용을 작성해주세요." style="height: 100px;"/>
                                                 <div class="error_message" th:errors="*{contentSummary}"></div>
                                             </div>
+                                            <div>
+                                                <label>
+                                                    <input type="checkbox" th:field="*{isSticky}">
+                                                    <span>고정글여부</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <span>고정글 기간</span>
+                                                    <input type="date" th:field="*{stickyStartDate}">
+                                                    ~
+                                                    <input type="date" th:field="*{stickyEndDate}">
+                                                    <div class="error_message" th:errors="*{stickyStartDate}"></div>
+                                                </label>
+                                            </div>
                                             <div class="mb-3">
                                                 <label class="small mb-1">첨부파일</label>
                                                 <input type="file" id="multipartFileList" name="multipartFileList" multiple>
@@ -86,18 +101,21 @@
                                 </div>
                             </div>
                         </form>
-                        <script>
+                        <script th:inline="javascript">
+                            /*<![CDATA[*/
                             let contentHtmlEditor;
                             ClassicEditor
                                 .create(document.querySelector('.contentHtml'))
                                 .then(e => {
                                     contentHtmlEditor = e;
-                                });
+                                    contentHtmlEditor.setData(/*[[${archiveCreateUpdateDto.contentHtml}]]*/);
+                                })
 
                             function clickSubmitButton() {
                                 document.getElementById('contentHtml').value = contentHtmlEditor.getData();
                                 document.getElementById('archiveCreateUpdateForm').submit();
                             }
+                            /*]]>*/
                         </script>
                     </div>
                     <!-- /.container-fluid -->

@@ -1,20 +1,13 @@
 package cms.sogi_cms.cms.support.init.initializer;
 
 import cms.sogi_cms.cms.archive.dto.ArchiveCategoryCreateUpdateDto;
-import cms.sogi_cms.cms.archive.dto.ArchiveCreateUpdateDto;
 import cms.sogi_cms.cms.archive.service.ArchiveCategoryService;
 import cms.sogi_cms.cms.archive.service.ArchiveService;
-import cms.sogi_cms.cms.support.utils.InitializeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -33,20 +26,5 @@ public class ArchiveInitializer {
         archiveCategoryDto.setCategoryKoreanName("공지사항");
 
         archiveCategoryService.saveArchiveCategory(archiveCategoryDto);
-
-        // 공지사항 게시글 하나 추가
-        ArchiveCreateUpdateDto archiveDto = new ArchiveCreateUpdateDto();
-        archiveDto.setUsername("admin");
-        archiveDto.setTitle("제목이여라");
-        archiveDto.setContentHtml("헬로여라");
-        archiveDto.setContentPlain("헬로여라");
-        archiveDto.setContentSummary("헬로여라");
-        archiveDto.setArchiveCategoryId(archiveCategoryService.getArchiveCategoryByCategoryName("notice-board").getId());
-        archiveDto.setCreatedDateTime(LocalDateTime.now());
-        archiveDto.setLastModifiedDateTime(LocalDateTime.now());
-        archiveDto.setPublish(true);
-        archiveDto.setSticky(false);
-
-        archiveService.saveArchive(archiveDto);
     }
 }

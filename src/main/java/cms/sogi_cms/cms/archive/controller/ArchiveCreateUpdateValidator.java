@@ -12,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -36,8 +37,14 @@ public class ArchiveCreateUpdateValidator implements Validator {
             bindingResult.addError(new FieldError("archiveCreateUpdateDto", "contentHtml", "본문을 입력해 주십시오."));
         }
 
-        if (!StringUtils.hasText(archiveDto.getContentSummary())) {
-            bindingResult.addError(new FieldError("archiveCreateUpdateDto", "contentSummary", "본문 요약을 입력해 주십시오."));
+        if (archiveDto.getIsSticky() != null && archiveDto.getIsSticky()) {
+            if (!StringUtils.hasText(archiveDto.getStickyStartDate()) || !StringUtils.hasText(archiveDto.getStickyEndDate())) {
+                bindingResult.addError(new FieldError("archiveCreateUpdateDto", "stickyStartDate", "고정글을 체크하였다면 고정글 기간을 입력해 주십시오."));
+            }
+
+            if (!LocalDate.parse(archiveDto.getStickyStartDate()).isBefore(LocalDate.parse(archiveDto.getStickyEndDate()))) {
+                bindingResult.addError(new FieldError("archiveCreateUpdateDto", "stickyStartDate", "고정글 기간을 재조정해 주십시오."));
+            }
         }
     }
 }

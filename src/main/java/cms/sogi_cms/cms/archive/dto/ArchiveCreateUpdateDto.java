@@ -22,6 +22,7 @@ public class ArchiveCreateUpdateDto {
     private Long archiveCategoryId;
 
     private List<MultipartFile> multipartFileList;
+    private List<String> fileNameList;
 
     private LocalDateTime createdDateTime;
     private LocalDateTime lastModifiedDateTime;
@@ -29,9 +30,9 @@ public class ArchiveCreateUpdateDto {
     private Integer hit; // 조회수
     private Integer recommend; // 추천수
 
-    private boolean isPublish; // 게시 여부
-    private boolean isSticky; // 고정글 여부
+    private Boolean isPublish; // 게시 여부
+    private Boolean isSticky; // 고정글 여부
 
-    private LocalDate stickyStartDate;
-    private LocalDate stickyEndDate;
+    private String stickyStartDate;
+    private String stickyEndDate;
 }
