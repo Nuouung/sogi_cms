@@ -10,11 +10,8 @@ import cms.sogi_cms.cms.authority.dto.AuthorityCreateUpdateDto;
 import cms.sogi_cms.cms.file.entity.File;
 import cms.sogi_cms.cms.support.SogiConstant;
 import cms.sogi_cms.cms.support.pagination.Paging;
-import cms.sogi_cms.cms.user.dto.UserCreateUpdateDto;
-import cms.sogi_cms.cms.user.dto.UserResponseDto;
 import cms.sogi_cms.cms.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -24,9 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping(SogiConstant.SITE_PATH + SogiConstant.ADMIN_PATH + "/archive")
