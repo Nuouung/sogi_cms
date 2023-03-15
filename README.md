@@ -175,4 +175,5 @@ public class ArchiveCategoryServiceImpl implements ArchiveCategoryService {
 ```
 
 ### 파일 시스템 기능
-* 회원의 프로필 사진 등을 데이터베이스 시스템에 저장할 수 있는 기능이 구현되어 있으며 pdf, img 등의 미디어 파일을 아카이브와 연동하여 다운로드받을 수 있는 기능이 구현되어 있다.
+* 회원의 프로필 사진 등을 데이터베이스 시스템에 저장할 수 있는 기능이 구현되어 있으며 pdf, img 등의 미디어 파일을 아카이브와 연동하여 다운로드 받을 수 있는 기능이 구현되어 있다.
+
