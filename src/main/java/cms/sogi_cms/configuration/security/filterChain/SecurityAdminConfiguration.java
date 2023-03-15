@@ -42,8 +42,8 @@ public class SecurityAdminConfiguration {
 
 
                 .and()
-                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class) // 인가 처리리
-               .csrf().disable();
+                .addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class) // 인가 처리
+                .csrf().disable();
 
         return http.build();
     }

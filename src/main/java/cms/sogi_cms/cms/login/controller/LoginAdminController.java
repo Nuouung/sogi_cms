@@ -23,12 +23,6 @@ public class LoginAdminController {
         return "admin/login/login";
     }
 
-    @PostMapping("/login")
-    public String loginPost() {
-        System.out.println("hello");
-        return null;
-    }
-
     @PostMapping("/logout")
     public String logoutPost() {
         return null;
